@@ -10,20 +10,78 @@ New-Item -ItemType Directory -Path "results" -Force | Out-Null
 & $python -m py_compile app.py audit.py config.py detector.py scoring.py stylometry.py scenarios.py run_eval.py run_attacks.py
 if ($LASTEXITCODE -ne 0) { throw "Python syntax check failed." }
 
-$attackFile = Get-ChildItem -Path $PSScriptRoot -Filter "attacks.csv" -File -Recurse | Select-Object -First 1
+# A course-site download can return an HTML page instead of a ZIP.
+# Check the contents before trying to extract it.
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+
+function Test-AttackZip([string]$Path) {
+    if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) { return $false }
+    $archive = $null
+    try {
+        $archive = [System.IO.Compression.ZipFile]::OpenRead($Path)
+        $names = @($archive.Entries | ForEach-Object { $_.FullName.Replace('\', '/') })
+        $hasText = @($names | Where-Object { $_ -match '(^|/)attacks\.csv$' }).Count -gt 0
+        $hasMalformed = @($names | Where-Object { $_ -match '(^|/)attacks_malformed_requests\.csv$' }).Count -gt 0
+        return ($hasText -and $hasMalformed)
+    } catch {
+        return $false
+    } finally {
+        if ($null -ne $archive) { $archive.Dispose() }
+    }
+}
+
+$attackFile = Get-ChildItem -Path $PSScriptRoot -Filter "attacks.csv" -File -Recurse |
+    Where-Object { $_.FullName -notmatch '[\\/]\.venv[\\/]' } | Select-Object -First 1
+
 if (-not $attackFile) {
     $zip = Join-Path $PSScriptRoot "attack_set.zip"
-    if (-not (Test-Path $zip)) {
-        Write-Host "Downloading the staff attack set..."
-        $url = "https://courses.codepath.org/course_files/ai201/fa26-29627bd0/attack_set.zip"
-        try {
-            Invoke-WebRequest -Uri $url -OutFile $zip -UseBasicParsing
-        } catch {
-            throw "Download failed. Download attack_set.zip from Unit 8 in the course portal and put it in this repo."
+
+    if ((Test-Path -LiteralPath $zip) -and -not (Test-AttackZip $zip)) {
+        Write-Host "Removing the invalid attack_set.zip from the earlier download." -ForegroundColor Yellow
+        Remove-Item -LiteralPath $zip -Force
+    }
+
+    # Copy an authenticated browser download automatically when available.
+    if (-not (Test-AttackZip $zip)) {
+        $downloads = Join-Path $HOME "Downloads"
+        if (Test-Path $downloads) {
+            $candidates = Get-ChildItem $downloads -Filter "*attack_set*.zip" -File |
+                Sort-Object LastWriteTime -Descending
+            foreach ($candidate in $candidates) {
+                if (Test-AttackZip $candidate.FullName) {
+                    Copy-Item -LiteralPath $candidate.FullName -Destination $zip -Force
+                    Write-Host "Using valid staff ZIP from Downloads: $($candidate.Name)" -ForegroundColor Green
+                    break
+                }
+            }
         }
     }
-    Expand-Archive -Path $zip -DestinationPath (Join-Path $PSScriptRoot "attack_set") -Force
-    $attackFile = Get-ChildItem -Path (Join-Path $PSScriptRoot "attack_set") -Filter "attacks.csv" -File -Recurse | Select-Object -First 1
+
+    if (-not (Test-AttackZip $zip)) {
+        $url = "https://courses.codepath.org/course_files/ai201/fa26-29627bd0/attack_set.zip"
+        $tempZip = Join-Path $PSScriptRoot "attack_set_download.tmp"
+        Write-Host "Trying the course link once..." -ForegroundColor Cyan
+        try {
+            Invoke-WebRequest -Uri $url -OutFile $tempZip -UseBasicParsing -ErrorAction Stop
+            if (Test-AttackZip $tempZip) {
+                Move-Item -LiteralPath $tempZip -Destination $zip -Force
+            }
+        } catch {
+            Write-Host "Direct course download was unavailable." -ForegroundColor Yellow
+        } finally {
+            if (Test-Path -LiteralPath $tempZip) {
+                Remove-Item -LiteralPath $tempZip -Force
+            }
+        }
+    }
+
+    if (-not (Test-AttackZip $zip)) {
+        throw "The course link did not provide a valid ZIP. Sign in to CodePath in your browser, download attack_set.zip from Unit 8, and leave it in Downloads (or this repo). Then rerun this script. Do not extract it yourself."
+    }
+
+    Expand-Archive -LiteralPath $zip -DestinationPath (Join-Path $PSScriptRoot "attack_set") -Force
+    $attackFile = Get-ChildItem -Path (Join-Path $PSScriptRoot "attack_set") -Filter "attacks.csv" -File -Recurse |
+        Select-Object -First 1
 }
 if (-not $attackFile) { throw "No attacks.csv found in the staff attack set." }
 $folder = $attackFile.DirectoryName
