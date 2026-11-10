@@ -198,6 +198,12 @@ The invalid JSON attempt was rejected cleanly. The valid submission saved both s
 - *What came back:* It implemented the stylometry signal, a 55/45 combining rule, a disagreement rule that moves scores toward unsure, the three reader labels, input validation, audit logging, and the appeal route.
 - *What I changed:* I kept the conservative unsure band and made sure the response exposes both signal scores so the next unit can diagnose which stage failed.
 
+**Moment 3 (Unit 8)**
+
+- *What I asked for:* I asked AI to prepare the Unit 8 testing workflow while keeping my five existing targets unchanged.
+- *What came back:* It enabled per-creator rate limiting, added five test scenarios, extended the evaluator to verify appeal logs, and prepared a PowerShell runner for the real staff attacks.
+- *What I changed:* I kept the model signals, weights, thresholds, and label text unchanged for the before-run measurement. The human-writing samples are identified as staff examples rather than being presented as my own work.
+
 <!-- ═══════════════════════ UNIT 8 — THE TEST ═══════════════════════ -->
 
 ---
