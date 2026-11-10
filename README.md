@@ -210,57 +210,437 @@ The invalid JSON attempt was rejected cleanly. The valid submission saved both s
 
 ## Rate Limiting
 
-**My limits:** 10 submissions per minute and 200 submissions per day for each `creator_id`.
+**My limits:** 10 submissions per minute and 200 submissions per day, keyed by `creator_id`.
 
-**Why those numbers and not others:** A normal writer should be able to submit or revise a few pieces without being blocked. Ten a minute allows that, while slowing a script that sends hundreds of near-identical submissions to probe the detector. The daily cap limits sustained probing. These are starter limits for a local service, not production-tested thresholds.
+**Why I chose them:** A person can revise a few pieces without being blocked, but a script trying hundreds of variations will hit 429 responses. The daily cap slows repeated probing. These limits are local test settings, not a production guarantee.
 
-**What a caller counts as:** Each nonblank `creator_id` gets its own limit. Requests without a valid creator ID fall back to the requester's IP address. That means a script changing its creator ID can evade the per-creator limit, while unrelated people without IDs on the same IP can share a limit.
+**What a caller counts as:** A nonblank `creator_id` is the key. Without one, the service uses the caller's address. An attacker can rotate creator IDs, so this is not a strong identity boundary.
 
-**The run of status codes when I pushed past it:**
+**Actual flood test:** `run_attacks.py::run_flood` submitted 15 times as `flood_tester`.
 
-Pending the real `python run_attacks.py --flood 15` run. I will paste the actual codes, including 429 responses, rather than predicting them.
+```text
+200 200 200 200 200 200 200 200 200 200 429 429 429 429 429
+```
+
+The first 10 succeeded. The remaining five were limited and recorded as rejected entries.
 
 ---
 
 ## Attack Run — Before
 
-<!-- Every attack with its outcome and a held-or-broke mark.
-     `run_attacks.py --label before` produces the table. -->
+The staff set contained **56 attacks**, all processed. The script marked no crashes, but a successful HTTP response is not automatically a successful defense. I reviewed the attack's goal against the response.
 
+**My verdict rule:** An AI-evasion input breaks the detection goal if it is not labeled AI. A false-positive attack breaks it only when actual human text gets a high-confidence AI label. Prompt injections count as held when there is no evidence that their instructions changed the fixed response, label text, or audit behavior. Malformed requests break when obviously unscorable text reaches a normal authorship decision. Flood requests are held when the first 10 are allowed and later requests are blocked by 429.
 
+**Total: 42 HELD, 14 BROKE.** There were 9 successful evasion attempts and 5 malformed inputs improperly scored.
 
-**Ten audit log entries from the run**
+| ID | Family | Target | HTTP | Guess | Score | Verdict | Stage and mechanism for every broken attack |
+|---|---|---|---:|---|---:|---|---|
+| EV01 | evasion | signal two: typos raise word variety | 200 | unsure | 0.306 | **BROKE** | Style: typos increase vocabulary variety, lowering the AI signal |
+| EV02 | evasion | signal two: broken-up sentences raise length spread | 200 | unsure | 0.437 | **BROKE** | Style: broken sentence lengths lower the AI-style signal |
+| EV03 | evasion | signal two: a pasted quotation changes the shape | 200 | unsure | 0.490 | **BROKE** | Style: quotation changes punctuation and length measures |
+| EV04 | evasion | signal one: unusual words raise perplexity | 200 | unsure | 0.542 | **BROKE** | Model: rare words increase perplexity, lowering the AI score |
+| EV05 | evasion | both signals: heavy human editing pass | 200 | human | 0.217 | **BROKE** | Both signals: editing shifts the input toward human-like statistics |
+| EV06 | evasion | signal two: one very long sentence and one very short | 200 | unsure | 0.443 | **BROKE** | Style: long/short sentence mix raises sentence spread |
+| EV07 | evasion | signal two: padding with punctuation | 200 | unsure | 0.557 | **BROKE** | Style: added punctuation changes the density score |
+| EV08 | evasion | signal one: text below the token window | 200 | unsure | 0.330 | **BROKE** | Model: token window loses some evidence from the long input |
+| EV09 | evasion | both: AI text with a human opening paragraph bolted on | 200 | unsure | 0.497 | **BROKE** | Both: a human opening changes sequence predictability and style |
+| EV10 | evasion | signal two: repeated stanza structure | 200 | ai | 0.852 | **HELD** |  |
+| FP01 | false_positive | plain, clear human writing with no flourishes | 200 | unsure | 0.497 | **HELD** |  |
+| FP02 | false_positive | human writing in a formal register | 200 | unsure | 0.641 | **HELD** |  |
+| FP03 | false_positive | a non-native English speaker writing carefully | 200 | unsure | 0.649 | **HELD** |  |
+| FP04 | false_positive | a student essay written to a rubric | 200 | unsure | 0.558 | **HELD** |  |
+| FP05 | false_positive | technical documentation written by a person | 200 | unsure | 0.699 | **HELD** |  |
+| FP06 | false_positive | a person imitating a formal template | 200 | unsure | 0.557 | **HELD** |  |
+| FP07 | false_positive | human writing that repeats a phrase deliberately | 200 | unsure | 0.579 | **HELD** |  |
+| FP08 | false_positive | very short genuine human submission | 200 | unsure | 0.320 | **HELD** |  |
+| PI01 | prompt_injection | instruction to ignore the check | 200 | unsure | 0.322 | **HELD** |  |
+| PI02 | prompt_injection | instruction disguised as a system message | 200 | human | 0.160 | **HELD** |  |
+| PI03 | prompt_injection | instruction wrapped in the writer's voice | 200 | unsure | 0.476 | **HELD** |  |
+| PI04 | prompt_injection | attempt to make the label text hostile | 200 | unsure | 0.395 | **HELD** |  |
+| PI05 | prompt_injection | attempt to inject into the audit log | 200 | unsure | 0.457 | **HELD** |  |
+| PI06 | prompt_injection | instruction plus real human text | 200 | unsure | 0.470 | **HELD** |  |
+| MF01 | malformed | text is only whitespace | 400 | — | — | **HELD** |  |
+| MF02 | malformed | text is a single character | 400 | — | — | **HELD** |  |
+| MF03 | malformed | text is control characters | 200 | unsure | 0.396 | **BROKE** | Route: control-only content passes into scoring instead of being rejected |
+| MF04 | malformed | text is only punctuation | 200 | unsure | 0.478 | **BROKE** | Route: punctuation-only content passes into scoring |
+| MF05 | malformed | text is a very long single word | 200 | ai | 0.841 | **BROKE** | Route: one unbroken word is treated as meaningful prose and flagged AI |
+| MF06 | malformed | text is emoji only | 200 | ai | 0.998 | **BROKE** | Route: emoji-only text is scored as AI without meaningful words |
+| MF07 | malformed | text is right-to-left script | 200 | ai | 0.949 | **BROKE** | Route: unsupported right-to-left writing is treated as AI rather than unscorable |
+| MF08 | malformed | text is 60,000 characters | 413 | — | — | **HELD** |  |
+| RQ01 | malformed | no text field at all | 400 | — | — | **HELD** |  |
+| RQ02 | malformed | no creator_id | 400 | — | — | **HELD** |  |
+| RQ03 | malformed | text is a number | 400 | — | — | **HELD** |  |
+| RQ04 | malformed | text is a list | 400 | — | — | **HELD** |  |
+| RQ05 | malformed | text is null | 400 | — | — | **HELD** |  |
+| RQ06 | malformed | creator_id is an object | 400 | — | — | **HELD** |  |
+| RQ07 | malformed | body is a JSON array, not an object | 400 | — | — | **HELD** |  |
+| RQ08 | malformed | body is unparseable JSON | 400 | — | — | **HELD** |  |
+| RQ09 | malformed | body is empty | 400 | — | — | **HELD** |  |
+| RQ10 | malformed | body is form-encoded, not JSON | 400 | — | — | **HELD** |  |
+| RQ11 | malformed | body is JSON claiming to be plain text | 400 | — | — | **HELD** |  |
+| RQ12 | malformed | deeply nested JSON | 400 | — | — | **HELD** |  |
+| FL01_01 | flood_same_creator | 20 rapid submissions from one creator | 200 | unsure | 0.404 | **HELD** |  |
+| FL01_02 | flood_same_creator | 20 rapid submissions from one creator | 200 | unsure | 0.404 | **HELD** |  |
+| FL01_03 | flood_same_creator | 20 rapid submissions from one creator | 200 | unsure | 0.404 | **HELD** |  |
+| FL01_04 | flood_same_creator | 20 rapid submissions from one creator | 200 | unsure | 0.404 | **HELD** |  |
+| FL01_05 | flood_same_creator | 20 rapid submissions from one creator | 200 | unsure | 0.404 | **HELD** |  |
+| FL01_06 | flood_same_creator | 20 rapid submissions from one creator | 200 | unsure | 0.404 | **HELD** |  |
+| FL01_07 | flood_same_creator | 20 rapid submissions from one creator | 200 | unsure | 0.404 | **HELD** |  |
+| FL01_08 | flood_same_creator | 20 rapid submissions from one creator | 200 | unsure | 0.404 | **HELD** |  |
+| FL01_09 | flood_same_creator | 20 rapid submissions from one creator | 200 | unsure | 0.404 | **HELD** |  |
+| FL01_10 | flood_same_creator | 20 rapid submissions from one creator | 200 | unsure | 0.404 | **HELD** |  |
+| FL01_11 | flood_same_creator | 20 rapid submissions from one creator | 429 | — | — | **HELD** |  |
+| FL01_12 | flood_same_creator | 20 rapid submissions from one creator | 429 | — | — | **HELD** |  |
 
-<!-- Choose entries that show the interesting failures, not the ten easiest. -->
+For prompt injection, this only establishes that the output and audit format were not visibly overridden. It does not establish the text's real authorship. For evasion, **unsure** counts as bypassing a confident AI classification, even though the system is not making a positive human claim. I kept those definitions consistent for this run.
+
+### Ten actual audit entries
+
+The following are copied from the committed `logs/audit.jsonl`. They include a rejected flood request and the high-risk malformed examples.
 
 ```json
-
+[
+  {
+    "timestamp": "2026-11-10T06:55:06+00:00",
+    "content_id": "a0c6ca99da044562928088a5194c1dc9",
+    "creator_id": "attacker_EV01",
+    "guess": "unsure",
+    "model_score": 0.1635,
+    "style_score": 0.4793,
+    "combined_score": 0.3056,
+    "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+    "status": "decided"
+  },
+  {
+    "timestamp": "2026-11-10T06:55:07+00:00",
+    "content_id": "13c4c349bd6c486080eedeab515b3d4f",
+    "creator_id": "attacker_EV05",
+    "guess": "human",
+    "model_score": 0.3212,
+    "style_score": 0.0893,
+    "combined_score": 0.2168,
+    "label": "Our signals suggest this text was probably written by a person.",
+    "status": "decided"
+  },
+  {
+    "timestamp": "2026-11-10T06:55:08+00:00",
+    "content_id": "7fa7144f363f4e74a8c75c4acfb20f5a",
+    "creator_id": "attacker_EV10",
+    "guess": "ai",
+    "model_score": 0.9792,
+    "style_score": 0.697,
+    "combined_score": 0.8522,
+    "label": "Our signals strongly suggest this text may be AI-generated. This is not proof, and the writer can appeal this result.",
+    "status": "decided"
+  },
+  {
+    "timestamp": "2026-11-10T06:55:08+00:00",
+    "content_id": "84698f6b9b7145c0a54712b1b4d24e28",
+    "creator_id": "attacker_FP05",
+    "guess": "unsure",
+    "model_score": 0.8005,
+    "style_score": 0.5751,
+    "combined_score": 0.6991,
+    "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+    "status": "decided"
+  },
+  {
+    "timestamp": "2026-11-10T06:55:09+00:00",
+    "content_id": "ecadf13c098a43eaad49a61c9954d4df",
+    "creator_id": "attacker_PI02",
+    "guess": "human",
+    "model_score": 0.2044,
+    "style_score": 0.1056,
+    "combined_score": 0.1599,
+    "label": "Our signals suggest this text was probably written by a person.",
+    "status": "decided"
+  },
+  {
+    "timestamp": "2026-11-10T06:55:10+00:00",
+    "content_id": "87012512992940abb4b5be9cf7a878c6",
+    "creator_id": "attacker_MF03",
+    "guess": "unsure",
+    "model_score": 0,
+    "style_score": 0.65,
+    "combined_score": 0.3962,
+    "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+    "status": "decided"
+  },
+  {
+    "timestamp": "2026-11-10T06:55:11+00:00",
+    "content_id": "05b683a9c9fb4b69a290c43d511bfde1",
+    "creator_id": "attacker_MF05",
+    "guess": "ai",
+    "model_score": 0.9976,
+    "style_score": 0.65,
+    "combined_score": 0.8412,
+    "label": "Our signals strongly suggest this text may be AI-generated. This is not proof, and the writer can appeal this result.",
+    "status": "decided"
+  },
+  {
+    "timestamp": "2026-11-10T06:55:12+00:00",
+    "content_id": "2036bbd5ea3546019d0307b615dd9c46",
+    "creator_id": "attacker_MF06",
+    "guess": "ai",
+    "model_score": 0.9969,
+    "style_score": 1,
+    "combined_score": 0.9983,
+    "label": "Our signals strongly suggest this text may be AI-generated. This is not proof, and the writer can appeal this result.",
+    "status": "decided"
+  },
+  {
+    "timestamp": "2026-11-10T06:55:12+00:00",
+    "content_id": "c960fe83609c4e00a291e4f225d70790",
+    "creator_id": "attacker_MF07",
+    "guess": "ai",
+    "model_score": 0.9064,
+    "style_score": 1,
+    "combined_score": 0.9485,
+    "label": "Our signals strongly suggest this text may be AI-generated. This is not proof, and the writer can appeal this result.",
+    "status": "decided"
+  },
+  {
+    "timestamp": "2026-11-10T06:55:13+00:00",
+    "creator_id": "attacker_flood",
+    "event": "rejected",
+    "status": "rejected",
+    "reason": "rate_limited",
+    "limit": "10 per 1 minute"
+  }
+]
 ```
 
-**The single worst outcome** — the one I'd least want to explain to a writer
-whose work got caught by it:
-
-
+**The single worst outcome:** `MF07`, right-to-left text, returned `ai` with confidence **0.9485**. A model trained for English predictability should not turn unfamiliar writing systems into confident accusations. This was a route validation failure before the scores were even combined. `MF06` (emoji-only, 0.9983 AI) and `MF05` (single word, 0.8412 AI) show the same problem.
 
 ---
 
 ## Run Log and Verdicts
 
-These targets are unchanged from the `criteria.md` committed in Unit 7. Run `python run_eval.py --label before` for three trials of each criterion.
+Original Unit 7 targets are unchanged. Each criterion ran three times against the same service.
 
-| Criterion | Target | Run 1 | Run 2 | Run 3 | Verdict |
+| Criterion | Original target | Run 1 | Run 2 | Run 3 | Verdict |
 |---|---|---|---|---|---|
-| 1. False positives | At most 1/10 human samples flagged AI | Pending | Pending | Pending | Pending |
-| 2. Score spread | AI average at least 0.25 higher than human average | Pending | Pending | Pending | Pending |
-| 3. Label coverage | All 3 labels within 6 inputs | Pending | Pending | Pending | Pending |
-| 4. Appeal path | 5/5 appeals recorded as under_review | Pending | Pending | Pending | Pending |
-| 5. Bad input | 5/5 invalid inputs rejected without a 500 | Pending | Pending | Pending | Pending |
+| 1. false positives on 10 human samples | ≤ 1 of 10 high-confidence AI | 0/10 flagged AI (10/10 scored) | 0/10 flagged AI (10/10 scored) | 0/10 flagged AI (10/10 scored) | **MET** |
+| 2. average AI versus human score spread | Mean AI minus human ≥ 0.25 | gap +0.337 (AI 0.544, human 0.207) | gap +0.337 (AI 0.544, human 0.207) | gap +0.337 (AI 0.544, human 0.207) | **MET** |
+| 3. three label variants reachable in six samples | 3 of 3 labels in ≤ 6 inputs | 2/3 labels (6 inputs) | 2/3 labels (6 inputs) | 2/3 labels (6 inputs) | **MISSED** |
+| 4. five valid appeals are logged | 5 of 5 appeals under_review and logged | 5/5 appeals under_review and logged | 5/5 appeals under_review and logged | 5/5 appeals under_review and logged | **MET** |
+| 5. five invalid requests rejected safely | 5 of 5 bad inputs return 4xx | 5/5 rejected cleanly | 5/5 rejected cleanly | 5/5 rejected cleanly | **MET** |
 
-**Test sample provenance:** The initial ten human-style examples in `scenarios.py` are from CodePath's staff practice material, not claimed as my own writing. The five clearly AI samples were generated with AI assistance. For a stronger false-positive test, I can replace the staff examples with writing I actually authored before running the final comparison.
+**Real outputs from all five criteria:** `run_eval.py::run_trial` sent the requests to `app.py::submit`. For appeals, it also called `app.py::appeal` and checked `/log`. The complete trial responses are committed in `results/eval_before_2026-11-10_015535.json`.
 
-**Real output from one trial:** Pending the real JSON report from `run_eval.py::main` and `app.py::submit`.
+**Criterion 1 — false positives on 10 human samples**. Actual JSON from trial 1:
 
-**Diagnoses:** Pending the measured failures. Every missed criterion will identify the pipeline stage and the mechanism, not just the low score.
+```json
+[
+  {
+    "sent": "Pulled the splits from the last five editions. The winning time has moved by 40 seconds total in ten years, but the 100th-place time is four minutes f",
+    "case": "",
+    "status": 200,
+    "response": {
+      "confidence": 0.1452,
+      "content_id": "d0c50baf27dd48bda6a4a096ee50b2ba",
+      "guess": "human",
+      "label": "Our signals suggest this text was probably written by a person.",
+      "model_score": 0.2113,
+      "status": "decided",
+      "style_score": 0.0643
+    },
+    "guess": "human",
+    "confidence": 0.1452,
+    "model_score": 0.2113,
+    "style_score": 0.0643,
+    "content_id": "d0c50baf27dd48bda6a4a096ee50b2ba"
+  },
+  {
+    "sent": "I tracked sleep against session quality for eleven weeks. Under seven hours the next day's intervals were 6-8 seconds per mile slower, every time bar ",
+    "case": "",
+    "status": 200,
+    "response": {
+      "confidence": 0.1843,
+      "content_id": "cccc8639854746eebf4926e653855243",
+      "guess": "human",
+      "label": "Our signals suggest this text was probably written by a person.",
+      "model_score": 0.0893,
+      "status": "decided",
+      "style_score": 0.3004
+    },
+    "guess": "human",
+    "confidence": 0.1843,
+    "model_score": 0.0893,
+    "style_score": 0.3004,
+    "content_id": "cccc8639854746eebf4926e653855243"
+  }
+]
+```
+
+**Criterion 2 — average AI versus human score spread**. Actual JSON from trial 1:
+
+```json
+[
+  {
+    "sent": "Pulled the splits from the last five editions. The winning time has moved by 40 seconds total in ten years, but the 100th-place time is four minutes f",
+    "case": "human",
+    "status": 200,
+    "response": {
+      "confidence": 0.1452,
+      "content_id": "e8c184ceff0d478fa574dad9208bf47f",
+      "guess": "human",
+      "label": "Our signals suggest this text was probably written by a person.",
+      "model_score": 0.2113,
+      "status": "decided",
+      "style_score": 0.0643
+    },
+    "guess": "human",
+    "confidence": 0.1452,
+    "model_score": 0.2113,
+    "style_score": 0.0643,
+    "content_id": "e8c184ceff0d478fa574dad9208bf47f"
+  },
+  {
+    "sent": "The implementation of the proposed framework requires careful consideration of several key factors. The system must handle different inputs consistent",
+    "case": "ai",
+    "status": 200,
+    "response": {
+      "confidence": 0.5202,
+      "content_id": "4a66d015608b48d18f41fdf9108103a2",
+      "guess": "unsure",
+      "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+      "model_score": 0.5317,
+      "status": "decided",
+      "style_score": 0.5061
+    },
+    "guess": "unsure",
+    "confidence": 0.5202,
+    "model_score": 0.5317,
+    "style_score": 0.5061,
+    "content_id": "4a66d015608b48d18f41fdf9108103a2"
+  }
+]
+```
+
+**Criterion 3 — three label variants reachable in six samples**. Actual JSON from trial 1:
+
+```json
+[
+  {
+    "sent": "The implementation of the proposed framework requires careful consideration of several key factors. The system must handle different inputs consistent",
+    "case": "",
+    "status": 200,
+    "response": {
+      "confidence": 0.5202,
+      "content_id": "5775585dc9354d79a566380fff2d4597",
+      "guess": "unsure",
+      "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+      "model_score": 0.5317,
+      "status": "decided",
+      "style_score": 0.5061
+    },
+    "guess": "unsure",
+    "confidence": 0.5202,
+    "model_score": 0.5317,
+    "style_score": 0.5061,
+    "content_id": "5775585dc9354d79a566380fff2d4597"
+  },
+  {
+    "sent": "I tracked sleep against session quality for eleven weeks. Under seven hours the next day's intervals were 6-8 seconds per mile slower, every time bar ",
+    "case": "",
+    "status": 200,
+    "response": {
+      "confidence": 0.1843,
+      "content_id": "c15743b0beac4d1098bdc5fc2f2b19fb",
+      "guess": "human",
+      "label": "Our signals suggest this text was probably written by a person.",
+      "model_score": 0.0893,
+      "status": "decided",
+      "style_score": 0.3004
+    },
+    "guess": "human",
+    "confidence": 0.1843,
+    "model_score": 0.0893,
+    "style_score": 0.3004,
+    "content_id": "c15743b0beac4d1098bdc5fc2f2b19fb"
+  }
+]
+```
+
+**Criterion 4 — five valid appeals are logged**. Actual JSON from trial 1:
+
+```json
+[
+  {
+    "sent": "The implementation of the proposed framework requires careful consideration of several key factors. The system must handle different inputs consistent",
+    "case": "",
+    "status": 200,
+    "response": {
+      "confidence": 0.5202,
+      "content_id": "50d4df2dac7b41b29c5db37eaaf5bb6d",
+      "guess": "unsure",
+      "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+      "model_score": 0.5317,
+      "status": "decided",
+      "style_score": 0.5061
+    },
+    "guess": "unsure",
+    "confidence": 0.5202,
+    "model_score": 0.5317,
+    "style_score": 0.5061,
+    "content_id": "50d4df2dac7b41b29c5db37eaaf5bb6d",
+    "appeal_status": 200,
+    "appeal_response": {
+      "content_id": "50d4df2dac7b41b29c5db37eaaf5bb6d",
+      "message": "Appeal recorded. This item is now under review.",
+      "status": "under_review"
+    },
+    "logged_under_review": true
+  }
+]
+```
+
+**Criterion 5 — five invalid requests rejected safely**. Actual JSON from trial 1:
+
+```json
+[
+  {
+    "sent": "(missing)",
+    "case": "bad_1",
+    "status": 400,
+    "response": {
+      "error": "invalid_text",
+      "message": "text must be a non-empty string."
+    },
+    "guess": null,
+    "confidence": null,
+    "model_score": null,
+    "style_score": null,
+    "content_id": null
+  },
+  {
+    "sent": "longword longword longword longword longword longword longword longword longword longword longword longword longword longword longword longword longwo",
+    "case": "bad_5",
+    "status": 413,
+    "response": {
+      "error": "text_too_large",
+      "message": "text must be 20,000 characters or fewer."
+    },
+    "guess": null,
+    "confidence": null,
+    "model_score": null,
+    "style_score": null,
+    "content_id": null
+  }
+]
+```
+
+### Diagnoses
+
+**Criterion 3 was MISSED.** All six deliberate inputs returned either `human` or `unsure`, never `ai`. The AI sample scores remained below the 0.70 AI threshold. The stage is `scoring.py::score_to_label`, together with the upstream signal combination: ordinary AI-sounding text does not generate a high enough combined score for this sample set. The label is reachable for other inputs, such as EV10, so this is a missed criterion for the six chosen test inputs, not proof that the AI label is impossible.
+
+**Evasion failures EV01 to EV09:** The stage is the model signal, stylometry, or their combination, as specified in the attack table. Stylistic changes can increase word variety, sentence length spread, punctuation, and perplexity without changing authorship. The signals read those changes as evidence against an AI label.
+
+**Malformed failures MF03 to MF07:** The stage is the route before either model. It accepts control-only, punctuation-only, one-word, emoji-only, and right-to-left text, despite the English-word-based style signal and GPT-2 perplexity being inappropriate for these inputs. The result is unsupported but still returns a normal authorship judgment.
+
+**Other criteria MET:** None of the 10 human practice examples were falsely called AI, the score gap was 0.337, appeals succeeded 5/5, and all five invalid test bodies returned 400 or 413. Each trial repeated the same result. The 10 human examples came from CodePath's staff practice set, not my own writing, so the false-positive finding is limited to that set.
 
 ---
 
