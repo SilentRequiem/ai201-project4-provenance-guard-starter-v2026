@@ -204,6 +204,12 @@ The invalid JSON attempt was rejected cleanly. The valid submission saved both s
 - *What came back:* It enabled per-creator rate limiting, added five test scenarios, extended the evaluator to verify appeal logs, and prepared a PowerShell runner for the real staff attacks.
 - *What I changed:* I kept the model signals, weights, thresholds, and label text unchanged for the before-run measurement. The human-writing samples are identified as staff examples rather than being presented as my own work.
 
+**Moment 4 (Unit 8)**
+
+- *What I asked for:* I asked AI to read the committed before-run evidence, mark every staff attack, and identify the stage behind the misses without changing the original criteria.
+- *What came back:* The run met four criteria but missed label coverage. The most concerning attack failures were unsupported inputs, including emoji-only and right-to-left writing, receiving high-confidence AI labels.
+- *What I changed:* I selected one input-validation improvement instead of moving the AI threshold. I kept the after-run verdicts pending until the real test runs.
+
 <!-- ═══════════════════════ UNIT 8 — THE TEST ═══════════════════════ -->
 
 ---
@@ -646,38 +652,29 @@ Original Unit 7 targets are unchanged. Each criterion ran three times against th
 
 ## The Improvement
 
-**What I changed:**
+**What I changed:** One input-validation check in `app.py::submit`. Before calling the model, the route now returns HTTP `422` with `error: unscorable_text` when the input contains control characters or fewer than three supported English word tokens. The rejection is written to the audit log. The response asks for human review instead of claiming the text is AI-generated.
 
-**Which diagnosis pointed at it:**
+**Which diagnosis pointed at it:** The staff attack set found five obviously unscorable inputs getting normal authorship decisions. `MF05` (a single word) scored 0.8412 AI, `MF06` (emoji-only) scored 0.9983 AI, and `MF07` (right-to-left writing) scored 0.9485 AI. The route was treating non-English or content-free input as reliable evidence of authorship. That is a more serious harm than leaving some AI evasion attempts at `unsure`.
+
+**What I left unchanged:** GPT-2, all stylometry calculations, the 0.55/0.45 weights, the 0.30/0.70 label thresholds, the label text, the 10/minute and 200/day rate limits, the original five targets, and the scenario text. This isolates one improvement to the input-validation stage.
 
 ### Attack Run — After
 
-<!-- Same format. `run_attacks.py --label after` -->
+**Pending the actual full after-run:** `python run_attacks.py --set <folder> --label after`, followed by `python run_eval.py --label after`. The PowerShell helper `run_unit8_after.ps1` performs both and commits the real evidence. I will use the same staff set and all three trials, then report every attack's HELD/BROKE outcome.
 
-
-
-**Did it help, and how do I know:**
-
-<!-- Widening the unsure band usually fixes one problem and creates another.
-     Reporting that trade honestly is worth full credit. -->
-
-
+**Did it help, and how do I know:** Not yet determined. The new guard is designed to stop the five malformed inputs from receiving author labels, but the effect must be measured with actual after-run responses. It should not be credited as successful before that run.
 
 ---
 
 ## What's Still Broken
 
-<!-- For each attack still getting through and each criterion still missed:
-     what you'd do, and why you stopped. -->
+**Before-run findings to revisit after the improvement:** Nine of ten evasion attacks avoided a confident AI label. The six-input coverage criterion reached only two of three labels. This input guard does not directly fix either problem. I will check which attacks still succeed after the rerun, instead of claiming they were resolved by a change at a different stage.
 
+I stopped after this one change so the two runs remain comparable. The next separate experiment would focus on whether the style signal overreacts to punctuation, quotations, and sentence-length editing. I would test that against fresh human-written samples before changing any weights or thresholds.
 
+**The trade I'd make if this ran for real:** I would rather send a piece of writing for human review than wrongly accuse its author of using AI. That means edited AI text may still get through, while writers using unsupported scripts and the people reviewing those submissions face extra work.
 
-**The trade I'd make if this ran for real:**
-
-<!-- Two sentences. Fewer wrong accusations means more AI text getting through.
-     Say which way you'd go and WHO PAYS FOR IT. -->
-
-
+---
 
 <!-- ═════════════════════════════════════════════════════════════════════
 
