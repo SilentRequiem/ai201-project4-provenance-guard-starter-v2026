@@ -208,7 +208,7 @@ The invalid JSON attempt was rejected cleanly. The valid submission saved both s
 
 - *What I asked for:* I asked AI to read the committed before-run evidence, mark every staff attack, and identify the stage behind the misses without changing the original criteria.
 - *What came back:* The run met four criteria but missed label coverage. The most concerning attack failures were unsupported inputs, including emoji-only and right-to-left writing, receiving high-confidence AI labels.
-- *What I changed:* I selected one input-validation improvement instead of moving the AI threshold. I kept the after-run verdicts pending until the real test runs.
+- *What I changed:* I selected one input-validation improvement instead of moving the AI threshold. After the rerun, I used the recorded results to finish the after-run verdicts without changing another setting.
 
 <!-- ═══════════════════════ UNIT 8 — THE TEST ═══════════════════════ -->
 
@@ -652,27 +652,348 @@ Original Unit 7 targets are unchanged. Each criterion ran three times against th
 
 ## The Improvement
 
-**What I changed:** One input-validation check in `app.py::submit`. Before calling the model, the route now returns HTTP `422` with `error: unscorable_text` when the input contains control characters or fewer than three supported English word tokens. The rejection is written to the audit log. The response asks for human review instead of claiming the text is AI-generated.
+**What I changed:** I added one input validation check to `app.py::submit`. The route now returns HTTP `422` with `error: unscorable_text` for control characters or fewer than three supported English words. It also records the rejection in the audit log. This stops the service from making an authorship claim about inputs it cannot evaluate reliably.
 
-**Which diagnosis pointed at it:** The staff attack set found five obviously unscorable inputs getting normal authorship decisions. `MF05` (a single word) scored 0.8412 AI, `MF06` (emoji-only) scored 0.9983 AI, and `MF07` (right-to-left writing) scored 0.9485 AI. The route was treating non-English or content-free input as reliable evidence of authorship. That is a more serious harm than leaving some AI evasion attempts at `unsure`.
+**Why I changed it:** The before-run treated five unscorable inputs as normal authorship samples. A very long single word received an AI score of 0.8412, emoji-only input received 0.9983, and right-to-left writing received 0.9485. Those are serious false-accusation risks. I chose validation rather than lowering the AI threshold or changing both signals at once.
 
-**What I left unchanged:** GPT-2, all stylometry calculations, the 0.55/0.45 weights, the 0.30/0.70 label thresholds, the label text, the 10/minute and 200/day rate limits, the original five targets, and the scenario text. This isolates one improvement to the input-validation stage.
+**What stayed unchanged:** GPT-2, the style signal, weights 0.55/0.45, thresholds 0.30/0.70, labels, rate limits, the original five criteria, and all test scenarios.
 
-### Attack Run — After
+### Attack Run - After
 
-**Pending the actual full after-run:** `python run_attacks.py --set <folder> --label after`, followed by `python run_eval.py --label after`. The PowerShell helper `run_unit8_after.ps1` performs both and commits the real evidence. I will use the same staff set and all three trials, then report every attack's HELD/BROKE outcome.
+The second run processed all 56 staff attacks. There were no crashes or HTTP 500 errors. Using the same rules as the before-run, **47 HELD and 9 BROKE**, compared with **42 HELD and 14 BROKE** before. The change fixed five malformed-input failures. The only nine remaining broken attacks are the AI-evasion cases EV01 to EV09.
 
-**Did it help, and how do I know:** Not yet determined. The new guard is designed to stop the five malformed inputs from receiving author labels, but the effect must be measured with actual after-run responses. It should not be credited as successful before that run.
+| ID | Family | Target | HTTP | Guess | Score | Verdict |
+|---|---|---|---:|---|---:|---|
+| EV01 | evasion | signal two: typos raise word variety | 200 | unsure | 0.306 | **BROKE** |
+| EV02 | evasion | signal two: broken-up sentences raise length spread | 200 | unsure | 0.437 | **BROKE** |
+| EV03 | evasion | signal two: a pasted quotation changes the shape | 200 | unsure | 0.490 | **BROKE** |
+| EV04 | evasion | signal one: unusual words raise perplexity | 200 | unsure | 0.542 | **BROKE** |
+| EV05 | evasion | both signals: heavy human editing pass | 200 | human | 0.217 | **BROKE** |
+| EV06 | evasion | signal two: one very long sentence and one very short | 200 | unsure | 0.443 | **BROKE** |
+| EV07 | evasion | signal two: padding with punctuation | 200 | unsure | 0.557 | **BROKE** |
+| EV08 | evasion | signal one: text below the token window | 200 | unsure | 0.330 | **BROKE** |
+| EV09 | evasion | both: AI text with a human opening paragraph bolted on | 200 | unsure | 0.497 | **BROKE** |
+| EV10 | evasion | signal two: repeated stanza structure | 200 | ai | 0.852 | **HELD** |
+| FP01 | false_positive | plain, clear human writing with no flourishes | 200 | unsure | 0.497 | **HELD** |
+| FP02 | false_positive | human writing in a formal register | 200 | unsure | 0.641 | **HELD** |
+| FP03 | false_positive | a non-native English speaker writing carefully | 200 | unsure | 0.649 | **HELD** |
+| FP04 | false_positive | a student essay written to a rubric | 200 | unsure | 0.558 | **HELD** |
+| FP05 | false_positive | technical documentation written by a person | 200 | unsure | 0.699 | **HELD** |
+| FP06 | false_positive | a person imitating a formal template | 200 | unsure | 0.557 | **HELD** |
+| FP07 | false_positive | human writing that repeats a phrase deliberately | 200 | unsure | 0.579 | **HELD** |
+| FP08 | false_positive | very short genuine human submission | 200 | unsure | 0.320 | **HELD** |
+| PI01 | prompt_injection | instruction to ignore the check | 200 | unsure | 0.322 | **HELD** |
+| PI02 | prompt_injection | instruction disguised as a system message | 200 | human | 0.160 | **HELD** |
+| PI03 | prompt_injection | instruction wrapped in the writer's voice | 200 | unsure | 0.476 | **HELD** |
+| PI04 | prompt_injection | attempt to make the label text hostile | 200 | unsure | 0.395 | **HELD** |
+| PI05 | prompt_injection | attempt to inject into the audit log | 200 | unsure | 0.457 | **HELD** |
+| PI06 | prompt_injection | instruction plus real human text | 200 | unsure | 0.470 | **HELD** |
+| MF01 | malformed | text is only whitespace | 400 | — | — | **HELD** |
+| MF02 | malformed | text is a single character | 422 | — | — | **HELD** |
+| MF03 | malformed | text is control characters | 422 | — | — | **HELD** |
+| MF04 | malformed | text is only punctuation | 422 | — | — | **HELD** |
+| MF05 | malformed | text is a very long single word | 422 | — | — | **HELD** |
+| MF06 | malformed | text is emoji only | 422 | — | — | **HELD** |
+| MF07 | malformed | text is right-to-left script | 422 | — | — | **HELD** |
+| MF08 | malformed | text is 60,000 characters | 413 | — | — | **HELD** |
+| RQ01 | malformed | no text field at all | 400 | — | — | **HELD** |
+| RQ02 | malformed | no creator_id | 400 | — | — | **HELD** |
+| RQ03 | malformed | text is a number | 400 | — | — | **HELD** |
+| RQ04 | malformed | text is a list | 400 | — | — | **HELD** |
+| RQ05 | malformed | text is null | 400 | — | — | **HELD** |
+| RQ06 | malformed | creator_id is an object | 400 | — | — | **HELD** |
+| RQ07 | malformed | body is a JSON array, not an object | 400 | — | — | **HELD** |
+| RQ08 | malformed | body is unparseable JSON | 400 | — | — | **HELD** |
+| RQ09 | malformed | body is empty | 400 | — | — | **HELD** |
+| RQ10 | malformed | body is form-encoded, not JSON | 400 | — | — | **HELD** |
+| RQ11 | malformed | body is JSON claiming to be plain text | 400 | — | — | **HELD** |
+| RQ12 | malformed | deeply nested JSON | 400 | — | — | **HELD** |
+| FL01_01 | flood_same_creator | 20 rapid submissions from one creator | 200 | unsure | 0.404 | **HELD** |
+| FL01_02 | flood_same_creator | 20 rapid submissions from one creator | 200 | unsure | 0.404 | **HELD** |
+| FL01_03 | flood_same_creator | 20 rapid submissions from one creator | 200 | unsure | 0.404 | **HELD** |
+| FL01_04 | flood_same_creator | 20 rapid submissions from one creator | 200 | unsure | 0.404 | **HELD** |
+| FL01_05 | flood_same_creator | 20 rapid submissions from one creator | 200 | unsure | 0.404 | **HELD** |
+| FL01_06 | flood_same_creator | 20 rapid submissions from one creator | 200 | unsure | 0.404 | **HELD** |
+| FL01_07 | flood_same_creator | 20 rapid submissions from one creator | 200 | unsure | 0.404 | **HELD** |
+| FL01_08 | flood_same_creator | 20 rapid submissions from one creator | 200 | unsure | 0.404 | **HELD** |
+| FL01_09 | flood_same_creator | 20 rapid submissions from one creator | 200 | unsure | 0.404 | **HELD** |
+| FL01_10 | flood_same_creator | 20 rapid submissions from one creator | 200 | unsure | 0.404 | **HELD** |
+| FL01_11 | flood_same_creator | 20 rapid submissions from one creator | 429 | — | — | **HELD** |
+| FL01_12 | flood_same_creator | 20 rapid submissions from one creator | 429 | — | — | **HELD** |
+
+**What changed:** MF03 to MF07 stopped receiving authorship scores and now return 422. MF02 also returns 422 instead of 400, but it already counted as HELD. All other attack outcomes stayed the same. The 12 flood rows returned ten 200 responses followed by two 429 responses.
+
+**Actual audit evidence from the after-run:** These four `unscorable_text` rejections come from `results/audit_after.json` and `logs/audit.jsonl`.
+
+```json
+[
+  {
+    "creator_id": "attacker_MF03",
+    "detail": "control_characters",
+    "event": "rejected",
+    "reason": "unscorable_text",
+    "status": "rejected",
+    "timestamp": "2026-11-10T07:04:45+00:00"
+  },
+  {
+    "creator_id": "attacker_MF05",
+    "detail": "unsupported_or_too_few_english_words",
+    "event": "rejected",
+    "reason": "unscorable_text",
+    "status": "rejected",
+    "timestamp": "2026-11-10T07:04:45+00:00"
+  },
+  {
+    "creator_id": "attacker_MF06",
+    "detail": "unsupported_or_too_few_english_words",
+    "event": "rejected",
+    "reason": "unscorable_text",
+    "status": "rejected",
+    "timestamp": "2026-11-10T07:04:45+00:00"
+  },
+  {
+    "creator_id": "attacker_MF07",
+    "detail": "unsupported_or_too_few_english_words",
+    "event": "rejected",
+    "reason": "unscorable_text",
+    "status": "rejected",
+    "timestamp": "2026-11-10T07:04:45+00:00"
+  }
+]
+```
+
+### Run Log - After
+
+The five original targets stayed the same. This is the second set of three trials from `run_eval.py::main`.
+
+| Criterion | Target | Run 1 | Run 2 | Run 3 | Verdict |
+|---|---|---|---|---|---|
+| 1. false positives on 10 human samples | at most 1 of 10 high-confidence AI | 0/10 flagged AI (10/10 scored) | 0/10 flagged AI (10/10 scored) | 0/10 flagged AI (10/10 scored) | **MET** |
+| 2. average AI versus human score spread | AI mean minus human mean at least 0.25 | gap +0.337 (AI 0.544, human 0.207) | gap +0.337 (AI 0.544, human 0.207) | gap +0.337 (AI 0.544, human 0.207) | **MET** |
+| 3. three label variants reachable in six samples | all three guesses in at most 6 inputs | 2/3 labels (6 inputs) | 2/3 labels (6 inputs) | 2/3 labels (6 inputs) | **MISSED** |
+| 4. five valid appeals are logged | 5 of 5 under_review and logged | 5/5 appeals under_review and logged | 5/5 appeals under_review and logged | 5/5 appeals under_review and logged | **MET** |
+| 5. five invalid requests rejected safely | 5 of 5 rejected with 4xx, no 500 | 5/5 rejected cleanly | 5/5 rejected cleanly | 5/5 rejected cleanly | **MET** |
+
+Full responses for every trial are in `results/eval_after_2026-11-10_020458.json`. Below are actual response excerpts from trial 1 of each criterion.
+
+**Criterion 1:**
+
+```json
+[
+  {
+    "sent": "Pulled the splits from the last five editions. The winning time has moved by 40 seconds total in ten years, but the 100th-place time is four minutes f",
+    "case": "",
+    "status": 200,
+    "response": {
+      "confidence": 0.1452,
+      "content_id": "98d247fd3f364f08b682a86300f5176d",
+      "guess": "human",
+      "label": "Our signals suggest this text was probably written by a person.",
+      "model_score": 0.2113,
+      "status": "decided",
+      "style_score": 0.0643
+    },
+    "guess": "human",
+    "confidence": 0.1452,
+    "model_score": 0.2113,
+    "style_score": 0.0643,
+    "content_id": "98d247fd3f364f08b682a86300f5176d"
+  },
+  {
+    "sent": "Went back through the club results going back to 2012. Every single year the number of people who enter the spring marathon and don't start it sits be",
+    "case": "",
+    "status": 200,
+    "response": {
+      "confidence": 0.3149,
+      "content_id": "22df941d5e644c0abc8c9a952881d7e1",
+      "guess": "unsure",
+      "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+      "model_score": 0.3912,
+      "status": "decided",
+      "style_score": 0.2217
+    },
+    "guess": "unsure",
+    "confidence": 0.3149,
+    "model_score": 0.3912,
+    "style_score": 0.2217,
+    "content_id": "22df941d5e644c0abc8c9a952881d7e1"
+  }
+]
+```
+
+**Criterion 2:**
+
+```json
+[
+  {
+    "sent": "Pulled the splits from the last five editions. The winning time has moved by 40 seconds total in ten years, but the 100th-place time is four minutes f",
+    "case": "human",
+    "status": 200,
+    "response": {
+      "confidence": 0.1452,
+      "content_id": "509d4d3a3ddf44f6a0de0595daeb9487",
+      "guess": "human",
+      "label": "Our signals suggest this text was probably written by a person.",
+      "model_score": 0.2113,
+      "status": "decided",
+      "style_score": 0.0643
+    },
+    "guess": "human",
+    "confidence": 0.1452,
+    "model_score": 0.2113,
+    "style_score": 0.0643,
+    "content_id": "509d4d3a3ddf44f6a0de0595daeb9487"
+  },
+  {
+    "sent": "The implementation of the proposed framework requires careful consideration of several key factors. The system must handle different inputs consistent",
+    "case": "ai",
+    "status": 200,
+    "response": {
+      "confidence": 0.5202,
+      "content_id": "4549e8c97e564142acb3067683357e80",
+      "guess": "unsure",
+      "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+      "model_score": 0.5317,
+      "status": "decided",
+      "style_score": 0.5061
+    },
+    "guess": "unsure",
+    "confidence": 0.5202,
+    "model_score": 0.5317,
+    "style_score": 0.5061,
+    "content_id": "4549e8c97e564142acb3067683357e80"
+  }
+]
+```
+
+**Criterion 3:**
+
+```json
+[
+  {
+    "sent": "The implementation of the proposed framework requires careful consideration of several key factors. The system must handle different inputs consistent",
+    "case": "",
+    "status": 200,
+    "response": {
+      "confidence": 0.5202,
+      "content_id": "70de42fc016442bea13cbea8506f350f",
+      "guess": "unsure",
+      "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+      "model_score": 0.5317,
+      "status": "decided",
+      "style_score": 0.5061
+    },
+    "guess": "unsure",
+    "confidence": 0.5202,
+    "model_score": 0.5317,
+    "style_score": 0.5061,
+    "content_id": "70de42fc016442bea13cbea8506f350f"
+  },
+  {
+    "sent": "Quixotic lanterns flickered beneath an unseasonably violet sky. Baffled, I traced the salt-crusted hieroglyphs along the brass hinge before the bell r",
+    "case": "",
+    "status": 200,
+    "response": {
+      "confidence": 0.2648,
+      "content_id": "bc5edb1af67c4db5a66d34f3318266cd",
+      "guess": "human",
+      "label": "Our signals suggest this text was probably written by a person.",
+      "model_score": 0.3145,
+      "status": "decided",
+      "style_score": 0.2041
+    },
+    "guess": "human",
+    "confidence": 0.2648,
+    "model_score": 0.3145,
+    "style_score": 0.2041,
+    "content_id": "bc5edb1af67c4db5a66d34f3318266cd"
+  }
+]
+```
+
+**Criterion 4:**
+
+```json
+[
+  {
+    "sent": "The implementation of the proposed framework requires careful consideration of several key factors. The system must handle different inputs consistent",
+    "case": "",
+    "status": 200,
+    "response": {
+      "confidence": 0.5202,
+      "content_id": "59a5f77b556a45a4b83ac8291b84ef5f",
+      "guess": "unsure",
+      "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+      "model_score": 0.5317,
+      "status": "decided",
+      "style_score": 0.5061
+    },
+    "guess": "unsure",
+    "confidence": 0.5202,
+    "model_score": 0.5317,
+    "style_score": 0.5061,
+    "content_id": "59a5f77b556a45a4b83ac8291b84ef5f",
+    "appeal_status": 200,
+    "appeal_response": {
+      "content_id": "59a5f77b556a45a4b83ac8291b84ef5f",
+      "message": "Appeal recorded. This item is now under review.",
+      "status": "under_review"
+    },
+    "logged_under_review": true
+  }
+]
+```
+
+**Criterion 5:**
+
+```json
+[
+  {
+    "sent": "(missing)",
+    "case": "bad_1",
+    "status": 400,
+    "response": {
+      "error": "invalid_text",
+      "message": "text must be a non-empty string."
+    },
+    "guess": null,
+    "confidence": null,
+    "model_score": null,
+    "style_score": null,
+    "content_id": null
+  },
+  {
+    "sent": "longword longword longword longword longword longword longword longword longword longword longword longword longword longword longword longword longwo",
+    "case": "bad_5",
+    "status": 413,
+    "response": {
+      "error": "text_too_large",
+      "message": "text must be 20,000 characters or fewer."
+    },
+    "guess": null,
+    "confidence": null,
+    "model_score": null,
+    "style_score": null,
+    "content_id": null
+  }
+]
+```
+
+**Did it help?** Yes, in a specific way. The malformed attack family improved from 15/20 HELD to 20/20 HELD. Total attacks held rose from 42/56 to 47/56. No original criterion got worse. But the improvement did not fix AI evasion or the missed label-coverage criterion, so it is not a complete solution.
 
 ---
 
 ## What's Still Broken
 
-**Before-run findings to revisit after the improvement:** Nine of ten evasion attacks avoided a confident AI label. The six-input coverage criterion reached only two of three labels. This input guard does not directly fix either problem. I will check which attacks still succeed after the rerun, instead of claiming they were resolved by a change at a different stage.
+**Nine AI-evasion attacks remain broken.** EV01 to EV09 still avoided the high-confidence AI label. Editing, typos, quotations, unusual words, and changed sentence lengths distort the model or style signals without proving human authorship. One evasion input, EV05, was labeled `human` with score 0.2168. This is especially concerning because a reader could mistake that judgment for proof.
 
-I stopped after this one change so the two runs remain comparable. The next separate experiment would focus on whether the style signal overreacts to punctuation, quotations, and sentence-length editing. I would test that against fresh human-written samples before changing any weights or thresholds.
+**Criterion 3 is still MISSED.** All three after-run trials reached only `human` and `unsure` with the six chosen inputs. The `ai` label was reachable for EV10, so the failure is not an unreachable code branch. The original test specifically required all three labels within six deliberate samples, and that target was not met.
 
-**The trade I'd make if this ran for real:** I would rather send a piece of writing for human review than wrongly accuse its author of using AI. That means edited AI text may still get through, while writers using unsupported scripts and the people reviewing those submissions face extra work.
+**The detector is still limited.** A non-Latin text with enough embedded English words may pass the new guard. Human-authored text that is too short or in an unsupported script may instead receive a rejection. The current ten human samples are from the staff practice set, not ten original paragraphs I wrote. They give useful evidence, but they do not fully test my personal writing criterion.
+
+I stopped after one input-validation change because the assignment requires a clean before and after comparison. In a separate experiment, I would test more genuine human prose, assess AI evasion by style manipulation, and add language-aware handling before changing signal weights or thresholds.
+
+**The production trade:** I would rather ask for human review than falsely accuse someone of using AI. That protects writers from unsupported labels, but it also creates more review work and lets some edited AI text avoid confident detection.
 
 ---
 
