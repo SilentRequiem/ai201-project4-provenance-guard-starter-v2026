@@ -1,0 +1,2235 @@
+{
+  "label": "before",
+  "created_at": "2026-11-10T01:55:14.068518-05:00",
+  "trials_per_criterion": 3,
+  "service": "http://127.0.0.1:5000",
+  "scenarios": [
+    {
+      "criterion": 1,
+      "name": "false positives on 10 human samples",
+      "target": "at most 1 of 10 high-confidence AI",
+      "trials": [
+        {
+          "trial": 1,
+          "passed": true,
+          "outcome": "0/10 flagged AI (10/10 scored)",
+          "responses": [
+            {
+              "sent": "Pulled the splits from the last five editions. The winning time has moved by 40 seconds total in ten years, but the 100th-place time is four minutes f",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.1452,
+                "content_id": "d0c50baf27dd48bda6a4a096ee50b2ba",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.2113,
+                "status": "decided",
+                "style_score": 0.0643
+              },
+              "guess": "human",
+              "confidence": 0.1452,
+              "model_score": 0.2113,
+              "style_score": 0.0643,
+              "content_id": "d0c50baf27dd48bda6a4a096ee50b2ba"
+            },
+            {
+              "sent": "I tracked sleep against session quality for eleven weeks. Under seven hours the next day's intervals were 6-8 seconds per mile slower, every time bar ",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.1843,
+                "content_id": "cccc8639854746eebf4926e653855243",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.0893,
+                "status": "decided",
+                "style_score": 0.3004
+              },
+              "guess": "human",
+              "confidence": 0.1843,
+              "model_score": 0.0893,
+              "style_score": 0.3004,
+              "content_id": "cccc8639854746eebf4926e653855243"
+            },
+            {
+              "sent": "The club championship scoring changed in 2019 from top-6 to top-10. Since then our B team has finished above the A team twice. That's not depth improv",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.2798,
+                "content_id": "98f1cb17b28c4ef086dc2373e4d1bf66",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.1647,
+                "status": "decided",
+                "style_score": 0.4205
+              },
+              "guess": "human",
+              "confidence": 0.2798,
+              "model_score": 0.1647,
+              "style_score": 0.4205,
+              "content_id": "98f1cb17b28c4ef086dc2373e4d1bf66"
+            },
+            {
+              "sent": "Everyone blames the hill at 18 miles. I split the field into people who ran the first half under 1:45 and over, and the slowdown after 18 was almost i",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.1527,
+                "content_id": "d4c2d1cb731044e2a9aeaf959eeb8e21",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.1898,
+                "status": "decided",
+                "style_score": 0.1074
+              },
+              "guess": "human",
+              "confidence": 0.1527,
+              "model_score": 0.1898,
+              "style_score": 0.1074,
+              "content_id": "d4c2d1cb731044e2a9aeaf959eeb8e21"
+            },
+            {
+              "sent": "Carbon plates aren't the whole story. My times dropped 2% in the shoes and another 2% the following year in the same pair, when the only thing that ch",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.2752,
+                "content_id": "c27a43ccb804447990bd5db7e336edfc",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.3992,
+                "status": "decided",
+                "style_score": 0.1237
+              },
+              "guess": "human",
+              "confidence": 0.2752,
+              "model_score": 0.3992,
+              "style_score": 0.1237,
+              "content_id": "c27a43ccb804447990bd5db7e336edfc"
+            },
+            {
+              "sent": "Checked the entry lists. 41% of this year's field have never run the distance before, against 26% five years ago. That's why the finish-line photos lo",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.1978,
+                "content_id": "4e5ce4ae1a434336a54dea8bc1bd6d24",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.265,
+                "status": "decided",
+                "style_score": 0.1156
+              },
+              "guess": "human",
+              "confidence": 0.1978,
+              "model_score": 0.265,
+              "style_score": 0.1156,
+              "content_id": "4e5ce4ae1a434336a54dea8bc1bd6d24"
+            },
+            {
+              "sent": "Ran the same loop in 4C and in 24C within a fortnight, same effort by heart rate. 90 seconds slower in the heat over six miles. People keep saying hea",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.2424,
+                "content_id": "0f18cc7286794c4c9d6b7d7cee4732ee",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.1235,
+                "status": "decided",
+                "style_score": 0.3877
+              },
+              "guess": "human",
+              "confidence": 0.2424,
+              "model_score": 0.1235,
+              "style_score": 0.3877,
+              "content_id": "0f18cc7286794c4c9d6b7d7cee4732ee"
+            },
+            {
+              "sent": "Went back through the club results going back to 2012. Every single year the number of people who enter the spring marathon and don't start it sits be",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.3149,
+                "content_id": "14622453138a410a8d32731cf0f3b37b",
+                "guess": "unsure",
+                "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+                "model_score": 0.3912,
+                "status": "decided",
+                "style_score": 0.2217
+              },
+              "guess": "unsure",
+              "confidence": 0.3149,
+              "model_score": 0.3912,
+              "style_score": 0.2217,
+              "content_id": "14622453138a410a8d32731cf0f3b37b"
+            },
+            {
+              "sent": "The 10K route was remeasured in 2021 and came out 60 metres long. Everyone comparing PBs from before and after that is comparing two different races, ",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.2192,
+                "content_id": "331aad381808471e8a1e149e11b7c726",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.1003,
+                "status": "decided",
+                "style_score": 0.3646
+              },
+              "guess": "human",
+              "confidence": 0.2192,
+              "model_score": 0.1003,
+              "style_score": 0.3646,
+              "content_id": "331aad381808471e8a1e149e11b7c726"
+            },
+            {
+              "sent": "Three of us ran the same session on the same day, different shoes, within 10 seconds of each other over 5 miles. I'm not saying shoes do nothing, but ",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.4732,
+                "content_id": "9e81df906bf84dd3a619ad7508c641c0",
+                "guess": "unsure",
+                "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+                "model_score": 0.4789,
+                "status": "decided",
+                "style_score": 0.4662
+              },
+              "guess": "unsure",
+              "confidence": 0.4732,
+              "model_score": 0.4789,
+              "style_score": 0.4662,
+              "content_id": "9e81df906bf84dd3a619ad7508c641c0"
+            }
+          ]
+        },
+        {
+          "trial": 2,
+          "passed": true,
+          "outcome": "0/10 flagged AI (10/10 scored)",
+          "responses": [
+            {
+              "sent": "Pulled the splits from the last five editions. The winning time has moved by 40 seconds total in ten years, but the 100th-place time is four minutes f",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.1452,
+                "content_id": "43bea7bd9a1448f292f5ed82fa6f19c1",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.2113,
+                "status": "decided",
+                "style_score": 0.0643
+              },
+              "guess": "human",
+              "confidence": 0.1452,
+              "model_score": 0.2113,
+              "style_score": 0.0643,
+              "content_id": "43bea7bd9a1448f292f5ed82fa6f19c1"
+            },
+            {
+              "sent": "I tracked sleep against session quality for eleven weeks. Under seven hours the next day's intervals were 6-8 seconds per mile slower, every time bar ",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.1843,
+                "content_id": "f1b46b6630e04f0ab00ef120319afebe",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.0893,
+                "status": "decided",
+                "style_score": 0.3004
+              },
+              "guess": "human",
+              "confidence": 0.1843,
+              "model_score": 0.0893,
+              "style_score": 0.3004,
+              "content_id": "f1b46b6630e04f0ab00ef120319afebe"
+            },
+            {
+              "sent": "The club championship scoring changed in 2019 from top-6 to top-10. Since then our B team has finished above the A team twice. That's not depth improv",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.2798,
+                "content_id": "5b659c8255f244a0a40410d82cfcdff6",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.1647,
+                "status": "decided",
+                "style_score": 0.4205
+              },
+              "guess": "human",
+              "confidence": 0.2798,
+              "model_score": 0.1647,
+              "style_score": 0.4205,
+              "content_id": "5b659c8255f244a0a40410d82cfcdff6"
+            },
+            {
+              "sent": "Everyone blames the hill at 18 miles. I split the field into people who ran the first half under 1:45 and over, and the slowdown after 18 was almost i",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.1527,
+                "content_id": "883ce65a9072490dbc49555a68723d3f",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.1898,
+                "status": "decided",
+                "style_score": 0.1074
+              },
+              "guess": "human",
+              "confidence": 0.1527,
+              "model_score": 0.1898,
+              "style_score": 0.1074,
+              "content_id": "883ce65a9072490dbc49555a68723d3f"
+            },
+            {
+              "sent": "Carbon plates aren't the whole story. My times dropped 2% in the shoes and another 2% the following year in the same pair, when the only thing that ch",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.2752,
+                "content_id": "ebbed38047304e5490c915712ef36aad",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.3992,
+                "status": "decided",
+                "style_score": 0.1237
+              },
+              "guess": "human",
+              "confidence": 0.2752,
+              "model_score": 0.3992,
+              "style_score": 0.1237,
+              "content_id": "ebbed38047304e5490c915712ef36aad"
+            },
+            {
+              "sent": "Checked the entry lists. 41% of this year's field have never run the distance before, against 26% five years ago. That's why the finish-line photos lo",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.1978,
+                "content_id": "6cc13b572cd348b1816019e350901911",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.265,
+                "status": "decided",
+                "style_score": 0.1156
+              },
+              "guess": "human",
+              "confidence": 0.1978,
+              "model_score": 0.265,
+              "style_score": 0.1156,
+              "content_id": "6cc13b572cd348b1816019e350901911"
+            },
+            {
+              "sent": "Ran the same loop in 4C and in 24C within a fortnight, same effort by heart rate. 90 seconds slower in the heat over six miles. People keep saying hea",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.2424,
+                "content_id": "96b7adafaf484b7fb12ab7aeb2e90309",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.1235,
+                "status": "decided",
+                "style_score": 0.3877
+              },
+              "guess": "human",
+              "confidence": 0.2424,
+              "model_score": 0.1235,
+              "style_score": 0.3877,
+              "content_id": "96b7adafaf484b7fb12ab7aeb2e90309"
+            },
+            {
+              "sent": "Went back through the club results going back to 2012. Every single year the number of people who enter the spring marathon and don't start it sits be",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.3149,
+                "content_id": "c00079fbe54840c89433e21efe1d0fa1",
+                "guess": "unsure",
+                "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+                "model_score": 0.3912,
+                "status": "decided",
+                "style_score": 0.2217
+              },
+              "guess": "unsure",
+              "confidence": 0.3149,
+              "model_score": 0.3912,
+              "style_score": 0.2217,
+              "content_id": "c00079fbe54840c89433e21efe1d0fa1"
+            },
+            {
+              "sent": "The 10K route was remeasured in 2021 and came out 60 metres long. Everyone comparing PBs from before and after that is comparing two different races, ",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.2192,
+                "content_id": "e9768417436f42649b2ca84a3879dc7f",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.1003,
+                "status": "decided",
+                "style_score": 0.3646
+              },
+              "guess": "human",
+              "confidence": 0.2192,
+              "model_score": 0.1003,
+              "style_score": 0.3646,
+              "content_id": "e9768417436f42649b2ca84a3879dc7f"
+            },
+            {
+              "sent": "Three of us ran the same session on the same day, different shoes, within 10 seconds of each other over 5 miles. I'm not saying shoes do nothing, but ",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.4732,
+                "content_id": "63296adccc754bfb8b970dac03871aa7",
+                "guess": "unsure",
+                "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+                "model_score": 0.4789,
+                "status": "decided",
+                "style_score": 0.4662
+              },
+              "guess": "unsure",
+              "confidence": 0.4732,
+              "model_score": 0.4789,
+              "style_score": 0.4662,
+              "content_id": "63296adccc754bfb8b970dac03871aa7"
+            }
+          ]
+        },
+        {
+          "trial": 3,
+          "passed": true,
+          "outcome": "0/10 flagged AI (10/10 scored)",
+          "responses": [
+            {
+              "sent": "Pulled the splits from the last five editions. The winning time has moved by 40 seconds total in ten years, but the 100th-place time is four minutes f",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.1452,
+                "content_id": "5dd6ee9970814e5e8f3745a62fa507b8",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.2113,
+                "status": "decided",
+                "style_score": 0.0643
+              },
+              "guess": "human",
+              "confidence": 0.1452,
+              "model_score": 0.2113,
+              "style_score": 0.0643,
+              "content_id": "5dd6ee9970814e5e8f3745a62fa507b8"
+            },
+            {
+              "sent": "I tracked sleep against session quality for eleven weeks. Under seven hours the next day's intervals were 6-8 seconds per mile slower, every time bar ",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.1843,
+                "content_id": "f05b54469e1243ef98e51a8f3b1812c9",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.0893,
+                "status": "decided",
+                "style_score": 0.3004
+              },
+              "guess": "human",
+              "confidence": 0.1843,
+              "model_score": 0.0893,
+              "style_score": 0.3004,
+              "content_id": "f05b54469e1243ef98e51a8f3b1812c9"
+            },
+            {
+              "sent": "The club championship scoring changed in 2019 from top-6 to top-10. Since then our B team has finished above the A team twice. That's not depth improv",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.2798,
+                "content_id": "41cb605962b348ce91759436de137564",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.1647,
+                "status": "decided",
+                "style_score": 0.4205
+              },
+              "guess": "human",
+              "confidence": 0.2798,
+              "model_score": 0.1647,
+              "style_score": 0.4205,
+              "content_id": "41cb605962b348ce91759436de137564"
+            },
+            {
+              "sent": "Everyone blames the hill at 18 miles. I split the field into people who ran the first half under 1:45 and over, and the slowdown after 18 was almost i",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.1527,
+                "content_id": "4ce1b99d16ad450db7639555ff18519d",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.1898,
+                "status": "decided",
+                "style_score": 0.1074
+              },
+              "guess": "human",
+              "confidence": 0.1527,
+              "model_score": 0.1898,
+              "style_score": 0.1074,
+              "content_id": "4ce1b99d16ad450db7639555ff18519d"
+            },
+            {
+              "sent": "Carbon plates aren't the whole story. My times dropped 2% in the shoes and another 2% the following year in the same pair, when the only thing that ch",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.2752,
+                "content_id": "52fd2730237f434697a2d1e8f7bf57fc",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.3992,
+                "status": "decided",
+                "style_score": 0.1237
+              },
+              "guess": "human",
+              "confidence": 0.2752,
+              "model_score": 0.3992,
+              "style_score": 0.1237,
+              "content_id": "52fd2730237f434697a2d1e8f7bf57fc"
+            },
+            {
+              "sent": "Checked the entry lists. 41% of this year's field have never run the distance before, against 26% five years ago. That's why the finish-line photos lo",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.1978,
+                "content_id": "84965d9d4ab04f3c9ed74f902d21db55",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.265,
+                "status": "decided",
+                "style_score": 0.1156
+              },
+              "guess": "human",
+              "confidence": 0.1978,
+              "model_score": 0.265,
+              "style_score": 0.1156,
+              "content_id": "84965d9d4ab04f3c9ed74f902d21db55"
+            },
+            {
+              "sent": "Ran the same loop in 4C and in 24C within a fortnight, same effort by heart rate. 90 seconds slower in the heat over six miles. People keep saying hea",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.2424,
+                "content_id": "0925ef0f0f424583ad2ea740c73ad65d",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.1235,
+                "status": "decided",
+                "style_score": 0.3877
+              },
+              "guess": "human",
+              "confidence": 0.2424,
+              "model_score": 0.1235,
+              "style_score": 0.3877,
+              "content_id": "0925ef0f0f424583ad2ea740c73ad65d"
+            },
+            {
+              "sent": "Went back through the club results going back to 2012. Every single year the number of people who enter the spring marathon and don't start it sits be",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.3149,
+                "content_id": "c9c689281ff1437490d0763bf8d232f8",
+                "guess": "unsure",
+                "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+                "model_score": 0.3912,
+                "status": "decided",
+                "style_score": 0.2217
+              },
+              "guess": "unsure",
+              "confidence": 0.3149,
+              "model_score": 0.3912,
+              "style_score": 0.2217,
+              "content_id": "c9c689281ff1437490d0763bf8d232f8"
+            },
+            {
+              "sent": "The 10K route was remeasured in 2021 and came out 60 metres long. Everyone comparing PBs from before and after that is comparing two different races, ",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.2192,
+                "content_id": "1fb999ca465d4a7a8cec95282932f1e1",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.1003,
+                "status": "decided",
+                "style_score": 0.3646
+              },
+              "guess": "human",
+              "confidence": 0.2192,
+              "model_score": 0.1003,
+              "style_score": 0.3646,
+              "content_id": "1fb999ca465d4a7a8cec95282932f1e1"
+            },
+            {
+              "sent": "Three of us ran the same session on the same day, different shoes, within 10 seconds of each other over 5 miles. I'm not saying shoes do nothing, but ",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.4732,
+                "content_id": "ef12d756ac144ff6bd0f818f6305137f",
+                "guess": "unsure",
+                "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+                "model_score": 0.4789,
+                "status": "decided",
+                "style_score": 0.4662
+              },
+              "guess": "unsure",
+              "confidence": 0.4732,
+              "model_score": 0.4789,
+              "style_score": 0.4662,
+              "content_id": "ef12d756ac144ff6bd0f818f6305137f"
+            }
+          ]
+        }
+      ],
+      "verdict": "MET"
+    },
+    {
+      "criterion": 2,
+      "name": "average AI versus human score spread",
+      "target": "AI mean minus human mean at least 0.25",
+      "trials": [
+        {
+          "trial": 1,
+          "passed": true,
+          "outcome": "gap +0.337 (AI 0.544, human 0.207)",
+          "responses": [
+            {
+              "sent": "Pulled the splits from the last five editions. The winning time has moved by 40 seconds total in ten years, but the 100th-place time is four minutes f",
+              "case": "human",
+              "status": 200,
+              "response": {
+                "confidence": 0.1452,
+                "content_id": "e8c184ceff0d478fa574dad9208bf47f",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.2113,
+                "status": "decided",
+                "style_score": 0.0643
+              },
+              "guess": "human",
+              "confidence": 0.1452,
+              "model_score": 0.2113,
+              "style_score": 0.0643,
+              "content_id": "e8c184ceff0d478fa574dad9208bf47f"
+            },
+            {
+              "sent": "I tracked sleep against session quality for eleven weeks. Under seven hours the next day's intervals were 6-8 seconds per mile slower, every time bar ",
+              "case": "human",
+              "status": 200,
+              "response": {
+                "confidence": 0.1843,
+                "content_id": "ae0da0de9aab4bb0852ac1e50365c28e",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.0893,
+                "status": "decided",
+                "style_score": 0.3004
+              },
+              "guess": "human",
+              "confidence": 0.1843,
+              "model_score": 0.0893,
+              "style_score": 0.3004,
+              "content_id": "ae0da0de9aab4bb0852ac1e50365c28e"
+            },
+            {
+              "sent": "The club championship scoring changed in 2019 from top-6 to top-10. Since then our B team has finished above the A team twice. That's not depth improv",
+              "case": "human",
+              "status": 200,
+              "response": {
+                "confidence": 0.2798,
+                "content_id": "f2320dd4589e4d9db6ea6cefa101438b",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.1647,
+                "status": "decided",
+                "style_score": 0.4205
+              },
+              "guess": "human",
+              "confidence": 0.2798,
+              "model_score": 0.1647,
+              "style_score": 0.4205,
+              "content_id": "f2320dd4589e4d9db6ea6cefa101438b"
+            },
+            {
+              "sent": "Everyone blames the hill at 18 miles. I split the field into people who ran the first half under 1:45 and over, and the slowdown after 18 was almost i",
+              "case": "human",
+              "status": 200,
+              "response": {
+                "confidence": 0.1527,
+                "content_id": "efe64100e2954e2c96b2159b7640a1a8",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.1898,
+                "status": "decided",
+                "style_score": 0.1074
+              },
+              "guess": "human",
+              "confidence": 0.1527,
+              "model_score": 0.1898,
+              "style_score": 0.1074,
+              "content_id": "efe64100e2954e2c96b2159b7640a1a8"
+            },
+            {
+              "sent": "Carbon plates aren't the whole story. My times dropped 2% in the shoes and another 2% the following year in the same pair, when the only thing that ch",
+              "case": "human",
+              "status": 200,
+              "response": {
+                "confidence": 0.2752,
+                "content_id": "fa64e470bdb64ef8ac42e2445aa6cf5d",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.3992,
+                "status": "decided",
+                "style_score": 0.1237
+              },
+              "guess": "human",
+              "confidence": 0.2752,
+              "model_score": 0.3992,
+              "style_score": 0.1237,
+              "content_id": "fa64e470bdb64ef8ac42e2445aa6cf5d"
+            },
+            {
+              "sent": "The implementation of the proposed framework requires careful consideration of several key factors. The system must handle different inputs consistent",
+              "case": "ai",
+              "status": 200,
+              "response": {
+                "confidence": 0.5202,
+                "content_id": "4a66d015608b48d18f41fdf9108103a2",
+                "guess": "unsure",
+                "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+                "model_score": 0.5317,
+                "status": "decided",
+                "style_score": 0.5061
+              },
+              "guess": "unsure",
+              "confidence": 0.5202,
+              "model_score": 0.5317,
+              "style_score": 0.5061,
+              "content_id": "4a66d015608b48d18f41fdf9108103a2"
+            },
+            {
+              "sent": "In today's rapidly changing digital environment, organizations must prioritize effective communication and seamless collaboration. By adopting innovat",
+              "case": "ai",
+              "status": 200,
+              "response": {
+                "confidence": 0.5334,
+                "content_id": "0696ca1b0df54d83bb05e23a8703d52b",
+                "guess": "unsure",
+                "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+                "model_score": 0.6472,
+                "status": "decided",
+                "style_score": 0.3943
+              },
+              "guess": "unsure",
+              "confidence": 0.5334,
+              "model_score": 0.6472,
+              "style_score": 0.3943,
+              "content_id": "0696ca1b0df54d83bb05e23a8703d52b"
+            },
+            {
+              "sent": "Healthy habits are essential for maintaining overall well-being. A balanced routine should include adequate sleep, regular physical activity, and thou",
+              "case": "ai",
+              "status": 200,
+              "response": {
+                "confidence": 0.5872,
+                "content_id": "21c562102c834ffe9f1ae2a8436f861a",
+                "guess": "unsure",
+                "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+                "model_score": 0.7304,
+                "status": "decided",
+                "style_score": 0.4121
+              },
+              "guess": "unsure",
+              "confidence": 0.5872,
+              "model_score": 0.7304,
+              "style_score": 0.4121,
+              "content_id": "21c562102c834ffe9f1ae2a8436f861a"
+            },
+            {
+              "sent": "Education plays an important role in helping people achieve their potential. A supportive learning environment encourages curiosity, critical thinking",
+              "case": "ai",
+              "status": 200,
+              "response": {
+                "confidence": 0.595,
+                "content_id": "79166d5344a14c008f1d9fa5865f3ea4",
+                "guess": "unsure",
+                "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+                "model_score": 0.7342,
+                "status": "decided",
+                "style_score": 0.4249
+              },
+              "guess": "unsure",
+              "confidence": 0.595,
+              "model_score": 0.7342,
+              "style_score": 0.4249,
+              "content_id": "79166d5344a14c008f1d9fa5865f3ea4"
+            },
+            {
+              "sent": "Effective project management requires clear objectives, realistic timelines, and transparent communication. Teams should evaluate progress regularly, ",
+              "case": "ai",
+              "status": 200,
+              "response": {
+                "confidence": 0.4856,
+                "content_id": "5a2fed05d0674c49b268b01f212ab563",
+                "guess": "unsure",
+                "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+                "model_score": 0.5646,
+                "status": "decided",
+                "style_score": 0.389
+              },
+              "guess": "unsure",
+              "confidence": 0.4856,
+              "model_score": 0.5646,
+              "style_score": 0.389,
+              "content_id": "5a2fed05d0674c49b268b01f212ab563"
+            }
+          ]
+        },
+        {
+          "trial": 2,
+          "passed": true,
+          "outcome": "gap +0.337 (AI 0.544, human 0.207)",
+          "responses": [
+            {
+              "sent": "Pulled the splits from the last five editions. The winning time has moved by 40 seconds total in ten years, but the 100th-place time is four minutes f",
+              "case": "human",
+              "status": 200,
+              "response": {
+                "confidence": 0.1452,
+                "content_id": "2383dfa482864a8e9d33bcb592df2191",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.2113,
+                "status": "decided",
+                "style_score": 0.0643
+              },
+              "guess": "human",
+              "confidence": 0.1452,
+              "model_score": 0.2113,
+              "style_score": 0.0643,
+              "content_id": "2383dfa482864a8e9d33bcb592df2191"
+            },
+            {
+              "sent": "I tracked sleep against session quality for eleven weeks. Under seven hours the next day's intervals were 6-8 seconds per mile slower, every time bar ",
+              "case": "human",
+              "status": 200,
+              "response": {
+                "confidence": 0.1843,
+                "content_id": "b0f01d14f2224c8da11dc348eec22534",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.0893,
+                "status": "decided",
+                "style_score": 0.3004
+              },
+              "guess": "human",
+              "confidence": 0.1843,
+              "model_score": 0.0893,
+              "style_score": 0.3004,
+              "content_id": "b0f01d14f2224c8da11dc348eec22534"
+            },
+            {
+              "sent": "The club championship scoring changed in 2019 from top-6 to top-10. Since then our B team has finished above the A team twice. That's not depth improv",
+              "case": "human",
+              "status": 200,
+              "response": {
+                "confidence": 0.2798,
+                "content_id": "6cf846ba887e4036bfe27b58aca9694f",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.1647,
+                "status": "decided",
+                "style_score": 0.4205
+              },
+              "guess": "human",
+              "confidence": 0.2798,
+              "model_score": 0.1647,
+              "style_score": 0.4205,
+              "content_id": "6cf846ba887e4036bfe27b58aca9694f"
+            },
+            {
+              "sent": "Everyone blames the hill at 18 miles. I split the field into people who ran the first half under 1:45 and over, and the slowdown after 18 was almost i",
+              "case": "human",
+              "status": 200,
+              "response": {
+                "confidence": 0.1527,
+                "content_id": "897bb0cedf914b3fa8a7673caaa63bc0",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.1898,
+                "status": "decided",
+                "style_score": 0.1074
+              },
+              "guess": "human",
+              "confidence": 0.1527,
+              "model_score": 0.1898,
+              "style_score": 0.1074,
+              "content_id": "897bb0cedf914b3fa8a7673caaa63bc0"
+            },
+            {
+              "sent": "Carbon plates aren't the whole story. My times dropped 2% in the shoes and another 2% the following year in the same pair, when the only thing that ch",
+              "case": "human",
+              "status": 200,
+              "response": {
+                "confidence": 0.2752,
+                "content_id": "ca955762942047b59e77ebb46117f9b7",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.3992,
+                "status": "decided",
+                "style_score": 0.1237
+              },
+              "guess": "human",
+              "confidence": 0.2752,
+              "model_score": 0.3992,
+              "style_score": 0.1237,
+              "content_id": "ca955762942047b59e77ebb46117f9b7"
+            },
+            {
+              "sent": "The implementation of the proposed framework requires careful consideration of several key factors. The system must handle different inputs consistent",
+              "case": "ai",
+              "status": 200,
+              "response": {
+                "confidence": 0.5202,
+                "content_id": "c950c356fa6e4a08843ea9da94a6cb2f",
+                "guess": "unsure",
+                "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+                "model_score": 0.5317,
+                "status": "decided",
+                "style_score": 0.5061
+              },
+              "guess": "unsure",
+              "confidence": 0.5202,
+              "model_score": 0.5317,
+              "style_score": 0.5061,
+              "content_id": "c950c356fa6e4a08843ea9da94a6cb2f"
+            },
+            {
+              "sent": "In today's rapidly changing digital environment, organizations must prioritize effective communication and seamless collaboration. By adopting innovat",
+              "case": "ai",
+              "status": 200,
+              "response": {
+                "confidence": 0.5334,
+                "content_id": "e8e89b28a9d240a8a6bc84a80ef96200",
+                "guess": "unsure",
+                "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+                "model_score": 0.6472,
+                "status": "decided",
+                "style_score": 0.3943
+              },
+              "guess": "unsure",
+              "confidence": 0.5334,
+              "model_score": 0.6472,
+              "style_score": 0.3943,
+              "content_id": "e8e89b28a9d240a8a6bc84a80ef96200"
+            },
+            {
+              "sent": "Healthy habits are essential for maintaining overall well-being. A balanced routine should include adequate sleep, regular physical activity, and thou",
+              "case": "ai",
+              "status": 200,
+              "response": {
+                "confidence": 0.5872,
+                "content_id": "4dc9dfa5ded34bbf8d8c7e337810be34",
+                "guess": "unsure",
+                "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+                "model_score": 0.7304,
+                "status": "decided",
+                "style_score": 0.4121
+              },
+              "guess": "unsure",
+              "confidence": 0.5872,
+              "model_score": 0.7304,
+              "style_score": 0.4121,
+              "content_id": "4dc9dfa5ded34bbf8d8c7e337810be34"
+            },
+            {
+              "sent": "Education plays an important role in helping people achieve their potential. A supportive learning environment encourages curiosity, critical thinking",
+              "case": "ai",
+              "status": 200,
+              "response": {
+                "confidence": 0.595,
+                "content_id": "8e60154eee0b49afbdc3bfa32d99ca94",
+                "guess": "unsure",
+                "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+                "model_score": 0.7342,
+                "status": "decided",
+                "style_score": 0.4249
+              },
+              "guess": "unsure",
+              "confidence": 0.595,
+              "model_score": 0.7342,
+              "style_score": 0.4249,
+              "content_id": "8e60154eee0b49afbdc3bfa32d99ca94"
+            },
+            {
+              "sent": "Effective project management requires clear objectives, realistic timelines, and transparent communication. Teams should evaluate progress regularly, ",
+              "case": "ai",
+              "status": 200,
+              "response": {
+                "confidence": 0.4856,
+                "content_id": "27c2079c676d4dd2aca4fb424ac73e80",
+                "guess": "unsure",
+                "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+                "model_score": 0.5646,
+                "status": "decided",
+                "style_score": 0.389
+              },
+              "guess": "unsure",
+              "confidence": 0.4856,
+              "model_score": 0.5646,
+              "style_score": 0.389,
+              "content_id": "27c2079c676d4dd2aca4fb424ac73e80"
+            }
+          ]
+        },
+        {
+          "trial": 3,
+          "passed": true,
+          "outcome": "gap +0.337 (AI 0.544, human 0.207)",
+          "responses": [
+            {
+              "sent": "Pulled the splits from the last five editions. The winning time has moved by 40 seconds total in ten years, but the 100th-place time is four minutes f",
+              "case": "human",
+              "status": 200,
+              "response": {
+                "confidence": 0.1452,
+                "content_id": "f0cceef610004b2abca51b5cd8983486",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.2113,
+                "status": "decided",
+                "style_score": 0.0643
+              },
+              "guess": "human",
+              "confidence": 0.1452,
+              "model_score": 0.2113,
+              "style_score": 0.0643,
+              "content_id": "f0cceef610004b2abca51b5cd8983486"
+            },
+            {
+              "sent": "I tracked sleep against session quality for eleven weeks. Under seven hours the next day's intervals were 6-8 seconds per mile slower, every time bar ",
+              "case": "human",
+              "status": 200,
+              "response": {
+                "confidence": 0.1843,
+                "content_id": "1d119d1794854b419125facfeab1c073",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.0893,
+                "status": "decided",
+                "style_score": 0.3004
+              },
+              "guess": "human",
+              "confidence": 0.1843,
+              "model_score": 0.0893,
+              "style_score": 0.3004,
+              "content_id": "1d119d1794854b419125facfeab1c073"
+            },
+            {
+              "sent": "The club championship scoring changed in 2019 from top-6 to top-10. Since then our B team has finished above the A team twice. That's not depth improv",
+              "case": "human",
+              "status": 200,
+              "response": {
+                "confidence": 0.2798,
+                "content_id": "3c2c5803f3074c93a1bc0d3271e57fb3",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.1647,
+                "status": "decided",
+                "style_score": 0.4205
+              },
+              "guess": "human",
+              "confidence": 0.2798,
+              "model_score": 0.1647,
+              "style_score": 0.4205,
+              "content_id": "3c2c5803f3074c93a1bc0d3271e57fb3"
+            },
+            {
+              "sent": "Everyone blames the hill at 18 miles. I split the field into people who ran the first half under 1:45 and over, and the slowdown after 18 was almost i",
+              "case": "human",
+              "status": 200,
+              "response": {
+                "confidence": 0.1527,
+                "content_id": "3b5b5b46e18945a29e7a5c8df8fbf5eb",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.1898,
+                "status": "decided",
+                "style_score": 0.1074
+              },
+              "guess": "human",
+              "confidence": 0.1527,
+              "model_score": 0.1898,
+              "style_score": 0.1074,
+              "content_id": "3b5b5b46e18945a29e7a5c8df8fbf5eb"
+            },
+            {
+              "sent": "Carbon plates aren't the whole story. My times dropped 2% in the shoes and another 2% the following year in the same pair, when the only thing that ch",
+              "case": "human",
+              "status": 200,
+              "response": {
+                "confidence": 0.2752,
+                "content_id": "8669627a813c4dffb71150bb1abe9f63",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.3992,
+                "status": "decided",
+                "style_score": 0.1237
+              },
+              "guess": "human",
+              "confidence": 0.2752,
+              "model_score": 0.3992,
+              "style_score": 0.1237,
+              "content_id": "8669627a813c4dffb71150bb1abe9f63"
+            },
+            {
+              "sent": "The implementation of the proposed framework requires careful consideration of several key factors. The system must handle different inputs consistent",
+              "case": "ai",
+              "status": 200,
+              "response": {
+                "confidence": 0.5202,
+                "content_id": "97c09ee4d5bb47d9ab14783de8680c85",
+                "guess": "unsure",
+                "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+                "model_score": 0.5317,
+                "status": "decided",
+                "style_score": 0.5061
+              },
+              "guess": "unsure",
+              "confidence": 0.5202,
+              "model_score": 0.5317,
+              "style_score": 0.5061,
+              "content_id": "97c09ee4d5bb47d9ab14783de8680c85"
+            },
+            {
+              "sent": "In today's rapidly changing digital environment, organizations must prioritize effective communication and seamless collaboration. By adopting innovat",
+              "case": "ai",
+              "status": 200,
+              "response": {
+                "confidence": 0.5334,
+                "content_id": "a4be74b86c0045a989c7a82b4b0da3a2",
+                "guess": "unsure",
+                "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+                "model_score": 0.6472,
+                "status": "decided",
+                "style_score": 0.3943
+              },
+              "guess": "unsure",
+              "confidence": 0.5334,
+              "model_score": 0.6472,
+              "style_score": 0.3943,
+              "content_id": "a4be74b86c0045a989c7a82b4b0da3a2"
+            },
+            {
+              "sent": "Healthy habits are essential for maintaining overall well-being. A balanced routine should include adequate sleep, regular physical activity, and thou",
+              "case": "ai",
+              "status": 200,
+              "response": {
+                "confidence": 0.5872,
+                "content_id": "564cbdffab614e5385b3aa19f4070004",
+                "guess": "unsure",
+                "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+                "model_score": 0.7304,
+                "status": "decided",
+                "style_score": 0.4121
+              },
+              "guess": "unsure",
+              "confidence": 0.5872,
+              "model_score": 0.7304,
+              "style_score": 0.4121,
+              "content_id": "564cbdffab614e5385b3aa19f4070004"
+            },
+            {
+              "sent": "Education plays an important role in helping people achieve their potential. A supportive learning environment encourages curiosity, critical thinking",
+              "case": "ai",
+              "status": 200,
+              "response": {
+                "confidence": 0.595,
+                "content_id": "76305dbbe1714cdfac185870b88f46b3",
+                "guess": "unsure",
+                "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+                "model_score": 0.7342,
+                "status": "decided",
+                "style_score": 0.4249
+              },
+              "guess": "unsure",
+              "confidence": 0.595,
+              "model_score": 0.7342,
+              "style_score": 0.4249,
+              "content_id": "76305dbbe1714cdfac185870b88f46b3"
+            },
+            {
+              "sent": "Effective project management requires clear objectives, realistic timelines, and transparent communication. Teams should evaluate progress regularly, ",
+              "case": "ai",
+              "status": 200,
+              "response": {
+                "confidence": 0.4856,
+                "content_id": "4bcd3a7390ff4fe8b05c8e908e5e1147",
+                "guess": "unsure",
+                "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+                "model_score": 0.5646,
+                "status": "decided",
+                "style_score": 0.389
+              },
+              "guess": "unsure",
+              "confidence": 0.4856,
+              "model_score": 0.5646,
+              "style_score": 0.389,
+              "content_id": "4bcd3a7390ff4fe8b05c8e908e5e1147"
+            }
+          ]
+        }
+      ],
+      "verdict": "MET"
+    },
+    {
+      "criterion": 3,
+      "name": "three label variants reachable in six samples",
+      "target": "all three guesses in at most 6 inputs",
+      "trials": [
+        {
+          "trial": 1,
+          "passed": false,
+          "outcome": "2/3 labels (6 inputs)",
+          "responses": [
+            {
+              "sent": "The implementation of the proposed framework requires careful consideration of several key factors. The system must handle different inputs consistent",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.5202,
+                "content_id": "5775585dc9354d79a566380fff2d4597",
+                "guess": "unsure",
+                "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+                "model_score": 0.5317,
+                "status": "decided",
+                "style_score": 0.5061
+              },
+              "guess": "unsure",
+              "confidence": 0.5202,
+              "model_score": 0.5317,
+              "style_score": 0.5061,
+              "content_id": "5775585dc9354d79a566380fff2d4597"
+            },
+            {
+              "sent": "In today's rapidly changing digital environment, organizations must prioritize effective communication and seamless collaboration. By adopting innovat",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.5334,
+                "content_id": "448c42d8c2bf492c9a8e079ff60412a2",
+                "guess": "unsure",
+                "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+                "model_score": 0.6472,
+                "status": "decided",
+                "style_score": 0.3943
+              },
+              "guess": "unsure",
+              "confidence": 0.5334,
+              "model_score": 0.6472,
+              "style_score": 0.3943,
+              "content_id": "448c42d8c2bf492c9a8e079ff60412a2"
+            },
+            {
+              "sent": "I tracked sleep against session quality for eleven weeks. Under seven hours the next day's intervals were 6-8 seconds per mile slower, every time bar ",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.1843,
+                "content_id": "c15743b0beac4d1098bdc5fc2f2b19fb",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.0893,
+                "status": "decided",
+                "style_score": 0.3004
+              },
+              "guess": "human",
+              "confidence": 0.1843,
+              "model_score": 0.0893,
+              "style_score": 0.3004,
+              "content_id": "c15743b0beac4d1098bdc5fc2f2b19fb"
+            },
+            {
+              "sent": "Everyone blames the hill at 18 miles. I split the field into people who ran the first half under 1:45 and over, and the slowdown after 18 was almost i",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.1527,
+                "content_id": "0295f055ff33464f8aaf545a8f093053",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.1898,
+                "status": "decided",
+                "style_score": 0.1074
+              },
+              "guess": "human",
+              "confidence": 0.1527,
+              "model_score": 0.1898,
+              "style_score": 0.1074,
+              "content_id": "0295f055ff33464f8aaf545a8f093053"
+            },
+            {
+              "sent": "Wait. What? No. No. That wasn't the plan! I turned the corner and the dog was staring at me, soaked in rain, with one of my socks hanging from its mou",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.4573,
+                "content_id": "afe97e67ddca43cb9d5e50f246a0fd4f",
+                "guess": "unsure",
+                "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+                "model_score": 0.7368,
+                "status": "decided",
+                "style_score": 0.021
+              },
+              "guess": "unsure",
+              "confidence": 0.4573,
+              "model_score": 0.7368,
+              "style_score": 0.021,
+              "content_id": "afe97e67ddca43cb9d5e50f246a0fd4f"
+            },
+            {
+              "sent": "Quixotic lanterns flickered beneath an unseasonably violet sky. Baffled, I traced the salt-crusted hieroglyphs along the brass hinge before the bell r",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.2648,
+                "content_id": "7e351784cec141b2ba06774e8143ad44",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.3145,
+                "status": "decided",
+                "style_score": 0.2041
+              },
+              "guess": "human",
+              "confidence": 0.2648,
+              "model_score": 0.3145,
+              "style_score": 0.2041,
+              "content_id": "7e351784cec141b2ba06774e8143ad44"
+            }
+          ]
+        },
+        {
+          "trial": 2,
+          "passed": false,
+          "outcome": "2/3 labels (6 inputs)",
+          "responses": [
+            {
+              "sent": "The implementation of the proposed framework requires careful consideration of several key factors. The system must handle different inputs consistent",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.5202,
+                "content_id": "9dc9b9321d22405fa5397773060edbbb",
+                "guess": "unsure",
+                "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+                "model_score": 0.5317,
+                "status": "decided",
+                "style_score": 0.5061
+              },
+              "guess": "unsure",
+              "confidence": 0.5202,
+              "model_score": 0.5317,
+              "style_score": 0.5061,
+              "content_id": "9dc9b9321d22405fa5397773060edbbb"
+            },
+            {
+              "sent": "In today's rapidly changing digital environment, organizations must prioritize effective communication and seamless collaboration. By adopting innovat",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.5334,
+                "content_id": "cef10b8117f84eac8d7e014240af68e8",
+                "guess": "unsure",
+                "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+                "model_score": 0.6472,
+                "status": "decided",
+                "style_score": 0.3943
+              },
+              "guess": "unsure",
+              "confidence": 0.5334,
+              "model_score": 0.6472,
+              "style_score": 0.3943,
+              "content_id": "cef10b8117f84eac8d7e014240af68e8"
+            },
+            {
+              "sent": "I tracked sleep against session quality for eleven weeks. Under seven hours the next day's intervals were 6-8 seconds per mile slower, every time bar ",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.1843,
+                "content_id": "40c007305ca44428ab533de9bc139228",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.0893,
+                "status": "decided",
+                "style_score": 0.3004
+              },
+              "guess": "human",
+              "confidence": 0.1843,
+              "model_score": 0.0893,
+              "style_score": 0.3004,
+              "content_id": "40c007305ca44428ab533de9bc139228"
+            },
+            {
+              "sent": "Everyone blames the hill at 18 miles. I split the field into people who ran the first half under 1:45 and over, and the slowdown after 18 was almost i",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.1527,
+                "content_id": "5a3ec75f92334bc0807b88c137dc02fa",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.1898,
+                "status": "decided",
+                "style_score": 0.1074
+              },
+              "guess": "human",
+              "confidence": 0.1527,
+              "model_score": 0.1898,
+              "style_score": 0.1074,
+              "content_id": "5a3ec75f92334bc0807b88c137dc02fa"
+            },
+            {
+              "sent": "Wait. What? No. No. That wasn't the plan! I turned the corner and the dog was staring at me, soaked in rain, with one of my socks hanging from its mou",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.4573,
+                "content_id": "e81390aa1aed4ea2b8b89bdd51921f3d",
+                "guess": "unsure",
+                "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+                "model_score": 0.7368,
+                "status": "decided",
+                "style_score": 0.021
+              },
+              "guess": "unsure",
+              "confidence": 0.4573,
+              "model_score": 0.7368,
+              "style_score": 0.021,
+              "content_id": "e81390aa1aed4ea2b8b89bdd51921f3d"
+            },
+            {
+              "sent": "Quixotic lanterns flickered beneath an unseasonably violet sky. Baffled, I traced the salt-crusted hieroglyphs along the brass hinge before the bell r",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.2648,
+                "content_id": "78b7edbe048d463cbf671f5153edb2c1",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.3145,
+                "status": "decided",
+                "style_score": 0.2041
+              },
+              "guess": "human",
+              "confidence": 0.2648,
+              "model_score": 0.3145,
+              "style_score": 0.2041,
+              "content_id": "78b7edbe048d463cbf671f5153edb2c1"
+            }
+          ]
+        },
+        {
+          "trial": 3,
+          "passed": false,
+          "outcome": "2/3 labels (6 inputs)",
+          "responses": [
+            {
+              "sent": "The implementation of the proposed framework requires careful consideration of several key factors. The system must handle different inputs consistent",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.5202,
+                "content_id": "6a863c9c1b084343ad32671351385a47",
+                "guess": "unsure",
+                "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+                "model_score": 0.5317,
+                "status": "decided",
+                "style_score": 0.5061
+              },
+              "guess": "unsure",
+              "confidence": 0.5202,
+              "model_score": 0.5317,
+              "style_score": 0.5061,
+              "content_id": "6a863c9c1b084343ad32671351385a47"
+            },
+            {
+              "sent": "In today's rapidly changing digital environment, organizations must prioritize effective communication and seamless collaboration. By adopting innovat",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.5334,
+                "content_id": "467b04e2488f44d6b707580fbbb60430",
+                "guess": "unsure",
+                "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+                "model_score": 0.6472,
+                "status": "decided",
+                "style_score": 0.3943
+              },
+              "guess": "unsure",
+              "confidence": 0.5334,
+              "model_score": 0.6472,
+              "style_score": 0.3943,
+              "content_id": "467b04e2488f44d6b707580fbbb60430"
+            },
+            {
+              "sent": "I tracked sleep against session quality for eleven weeks. Under seven hours the next day's intervals were 6-8 seconds per mile slower, every time bar ",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.1843,
+                "content_id": "4ebafb382c69488ba613229080a149e9",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.0893,
+                "status": "decided",
+                "style_score": 0.3004
+              },
+              "guess": "human",
+              "confidence": 0.1843,
+              "model_score": 0.0893,
+              "style_score": 0.3004,
+              "content_id": "4ebafb382c69488ba613229080a149e9"
+            },
+            {
+              "sent": "Everyone blames the hill at 18 miles. I split the field into people who ran the first half under 1:45 and over, and the slowdown after 18 was almost i",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.1527,
+                "content_id": "18b3467da3d44bd0ae87d805fc6cc9c1",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.1898,
+                "status": "decided",
+                "style_score": 0.1074
+              },
+              "guess": "human",
+              "confidence": 0.1527,
+              "model_score": 0.1898,
+              "style_score": 0.1074,
+              "content_id": "18b3467da3d44bd0ae87d805fc6cc9c1"
+            },
+            {
+              "sent": "Wait. What? No. No. That wasn't the plan! I turned the corner and the dog was staring at me, soaked in rain, with one of my socks hanging from its mou",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.4573,
+                "content_id": "ed9265ca79d84c9390e73ee04956eddd",
+                "guess": "unsure",
+                "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+                "model_score": 0.7368,
+                "status": "decided",
+                "style_score": 0.021
+              },
+              "guess": "unsure",
+              "confidence": 0.4573,
+              "model_score": 0.7368,
+              "style_score": 0.021,
+              "content_id": "ed9265ca79d84c9390e73ee04956eddd"
+            },
+            {
+              "sent": "Quixotic lanterns flickered beneath an unseasonably violet sky. Baffled, I traced the salt-crusted hieroglyphs along the brass hinge before the bell r",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.2648,
+                "content_id": "3e020a623af64c029d46f0515149e0fc",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.3145,
+                "status": "decided",
+                "style_score": 0.2041
+              },
+              "guess": "human",
+              "confidence": 0.2648,
+              "model_score": 0.3145,
+              "style_score": 0.2041,
+              "content_id": "3e020a623af64c029d46f0515149e0fc"
+            }
+          ]
+        }
+      ],
+      "verdict": "MISSED"
+    },
+    {
+      "criterion": 4,
+      "name": "five valid appeals are logged",
+      "target": "5 of 5 under_review and logged",
+      "trials": [
+        {
+          "trial": 1,
+          "passed": true,
+          "outcome": "5/5 appeals under_review and logged",
+          "responses": [
+            {
+              "sent": "The implementation of the proposed framework requires careful consideration of several key factors. The system must handle different inputs consistent",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.5202,
+                "content_id": "50d4df2dac7b41b29c5db37eaaf5bb6d",
+                "guess": "unsure",
+                "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+                "model_score": 0.5317,
+                "status": "decided",
+                "style_score": 0.5061
+              },
+              "guess": "unsure",
+              "confidence": 0.5202,
+              "model_score": 0.5317,
+              "style_score": 0.5061,
+              "content_id": "50d4df2dac7b41b29c5db37eaaf5bb6d",
+              "appeal_status": 200,
+              "appeal_response": {
+                "content_id": "50d4df2dac7b41b29c5db37eaaf5bb6d",
+                "message": "Appeal recorded. This item is now under review.",
+                "status": "under_review"
+              },
+              "logged_under_review": true
+            },
+            {
+              "sent": "In today's rapidly changing digital environment, organizations must prioritize effective communication and seamless collaboration. By adopting innovat",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.5334,
+                "content_id": "7f87a163913b4d23b2b407291cb58e3c",
+                "guess": "unsure",
+                "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+                "model_score": 0.6472,
+                "status": "decided",
+                "style_score": 0.3943
+              },
+              "guess": "unsure",
+              "confidence": 0.5334,
+              "model_score": 0.6472,
+              "style_score": 0.3943,
+              "content_id": "7f87a163913b4d23b2b407291cb58e3c",
+              "appeal_status": 200,
+              "appeal_response": {
+                "content_id": "7f87a163913b4d23b2b407291cb58e3c",
+                "message": "Appeal recorded. This item is now under review.",
+                "status": "under_review"
+              },
+              "logged_under_review": true
+            },
+            {
+              "sent": "Pulled the splits from the last five editions. The winning time has moved by 40 seconds total in ten years, but the 100th-place time is four minutes f",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.1452,
+                "content_id": "2d9efb5d8de5447ba910d84738b886ba",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.2113,
+                "status": "decided",
+                "style_score": 0.0643
+              },
+              "guess": "human",
+              "confidence": 0.1452,
+              "model_score": 0.2113,
+              "style_score": 0.0643,
+              "content_id": "2d9efb5d8de5447ba910d84738b886ba",
+              "appeal_status": 200,
+              "appeal_response": {
+                "content_id": "2d9efb5d8de5447ba910d84738b886ba",
+                "message": "Appeal recorded. This item is now under review.",
+                "status": "under_review"
+              },
+              "logged_under_review": true
+            },
+            {
+              "sent": "I tracked sleep against session quality for eleven weeks. Under seven hours the next day's intervals were 6-8 seconds per mile slower, every time bar ",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.1843,
+                "content_id": "3cdbe4a858394770b03e470c55acea55",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.0893,
+                "status": "decided",
+                "style_score": 0.3004
+              },
+              "guess": "human",
+              "confidence": 0.1843,
+              "model_score": 0.0893,
+              "style_score": 0.3004,
+              "content_id": "3cdbe4a858394770b03e470c55acea55",
+              "appeal_status": 200,
+              "appeal_response": {
+                "content_id": "3cdbe4a858394770b03e470c55acea55",
+                "message": "Appeal recorded. This item is now under review.",
+                "status": "under_review"
+              },
+              "logged_under_review": true
+            },
+            {
+              "sent": "The club championship scoring changed in 2019 from top-6 to top-10. Since then our B team has finished above the A team twice. That's not depth improv",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.2798,
+                "content_id": "81090940ba3a4b28af9054ea836cadcc",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.1647,
+                "status": "decided",
+                "style_score": 0.4205
+              },
+              "guess": "human",
+              "confidence": 0.2798,
+              "model_score": 0.1647,
+              "style_score": 0.4205,
+              "content_id": "81090940ba3a4b28af9054ea836cadcc",
+              "appeal_status": 200,
+              "appeal_response": {
+                "content_id": "81090940ba3a4b28af9054ea836cadcc",
+                "message": "Appeal recorded. This item is now under review.",
+                "status": "under_review"
+              },
+              "logged_under_review": true
+            }
+          ]
+        },
+        {
+          "trial": 2,
+          "passed": true,
+          "outcome": "5/5 appeals under_review and logged",
+          "responses": [
+            {
+              "sent": "The implementation of the proposed framework requires careful consideration of several key factors. The system must handle different inputs consistent",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.5202,
+                "content_id": "5f7c74aa6e5b43de95f3c88350b266ea",
+                "guess": "unsure",
+                "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+                "model_score": 0.5317,
+                "status": "decided",
+                "style_score": 0.5061
+              },
+              "guess": "unsure",
+              "confidence": 0.5202,
+              "model_score": 0.5317,
+              "style_score": 0.5061,
+              "content_id": "5f7c74aa6e5b43de95f3c88350b266ea",
+              "appeal_status": 200,
+              "appeal_response": {
+                "content_id": "5f7c74aa6e5b43de95f3c88350b266ea",
+                "message": "Appeal recorded. This item is now under review.",
+                "status": "under_review"
+              },
+              "logged_under_review": true
+            },
+            {
+              "sent": "In today's rapidly changing digital environment, organizations must prioritize effective communication and seamless collaboration. By adopting innovat",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.5334,
+                "content_id": "440b13cc662f4c08aa4527bcb95f07c0",
+                "guess": "unsure",
+                "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+                "model_score": 0.6472,
+                "status": "decided",
+                "style_score": 0.3943
+              },
+              "guess": "unsure",
+              "confidence": 0.5334,
+              "model_score": 0.6472,
+              "style_score": 0.3943,
+              "content_id": "440b13cc662f4c08aa4527bcb95f07c0",
+              "appeal_status": 200,
+              "appeal_response": {
+                "content_id": "440b13cc662f4c08aa4527bcb95f07c0",
+                "message": "Appeal recorded. This item is now under review.",
+                "status": "under_review"
+              },
+              "logged_under_review": true
+            },
+            {
+              "sent": "Pulled the splits from the last five editions. The winning time has moved by 40 seconds total in ten years, but the 100th-place time is four minutes f",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.1452,
+                "content_id": "aa140d3d5cd74caeabe78c350a6660b7",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.2113,
+                "status": "decided",
+                "style_score": 0.0643
+              },
+              "guess": "human",
+              "confidence": 0.1452,
+              "model_score": 0.2113,
+              "style_score": 0.0643,
+              "content_id": "aa140d3d5cd74caeabe78c350a6660b7",
+              "appeal_status": 200,
+              "appeal_response": {
+                "content_id": "aa140d3d5cd74caeabe78c350a6660b7",
+                "message": "Appeal recorded. This item is now under review.",
+                "status": "under_review"
+              },
+              "logged_under_review": true
+            },
+            {
+              "sent": "I tracked sleep against session quality for eleven weeks. Under seven hours the next day's intervals were 6-8 seconds per mile slower, every time bar ",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.1843,
+                "content_id": "da5e7d274a764a18a0cde86113e210d5",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.0893,
+                "status": "decided",
+                "style_score": 0.3004
+              },
+              "guess": "human",
+              "confidence": 0.1843,
+              "model_score": 0.0893,
+              "style_score": 0.3004,
+              "content_id": "da5e7d274a764a18a0cde86113e210d5",
+              "appeal_status": 200,
+              "appeal_response": {
+                "content_id": "da5e7d274a764a18a0cde86113e210d5",
+                "message": "Appeal recorded. This item is now under review.",
+                "status": "under_review"
+              },
+              "logged_under_review": true
+            },
+            {
+              "sent": "The club championship scoring changed in 2019 from top-6 to top-10. Since then our B team has finished above the A team twice. That's not depth improv",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.2798,
+                "content_id": "f780e67089fc4dbcaeb817f531ed1879",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.1647,
+                "status": "decided",
+                "style_score": 0.4205
+              },
+              "guess": "human",
+              "confidence": 0.2798,
+              "model_score": 0.1647,
+              "style_score": 0.4205,
+              "content_id": "f780e67089fc4dbcaeb817f531ed1879",
+              "appeal_status": 200,
+              "appeal_response": {
+                "content_id": "f780e67089fc4dbcaeb817f531ed1879",
+                "message": "Appeal recorded. This item is now under review.",
+                "status": "under_review"
+              },
+              "logged_under_review": true
+            }
+          ]
+        },
+        {
+          "trial": 3,
+          "passed": true,
+          "outcome": "5/5 appeals under_review and logged",
+          "responses": [
+            {
+              "sent": "The implementation of the proposed framework requires careful consideration of several key factors. The system must handle different inputs consistent",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.5202,
+                "content_id": "0b1c6e207ec547bf9e2b0f4809423019",
+                "guess": "unsure",
+                "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+                "model_score": 0.5317,
+                "status": "decided",
+                "style_score": 0.5061
+              },
+              "guess": "unsure",
+              "confidence": 0.5202,
+              "model_score": 0.5317,
+              "style_score": 0.5061,
+              "content_id": "0b1c6e207ec547bf9e2b0f4809423019",
+              "appeal_status": 200,
+              "appeal_response": {
+                "content_id": "0b1c6e207ec547bf9e2b0f4809423019",
+                "message": "Appeal recorded. This item is now under review.",
+                "status": "under_review"
+              },
+              "logged_under_review": true
+            },
+            {
+              "sent": "In today's rapidly changing digital environment, organizations must prioritize effective communication and seamless collaboration. By adopting innovat",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.5334,
+                "content_id": "999074091877497aa42ae8a516f6c333",
+                "guess": "unsure",
+                "label": "We cannot confidently tell whether this text was written by a person or generated by AI. No accusation should be made from this result.",
+                "model_score": 0.6472,
+                "status": "decided",
+                "style_score": 0.3943
+              },
+              "guess": "unsure",
+              "confidence": 0.5334,
+              "model_score": 0.6472,
+              "style_score": 0.3943,
+              "content_id": "999074091877497aa42ae8a516f6c333",
+              "appeal_status": 200,
+              "appeal_response": {
+                "content_id": "999074091877497aa42ae8a516f6c333",
+                "message": "Appeal recorded. This item is now under review.",
+                "status": "under_review"
+              },
+              "logged_under_review": true
+            },
+            {
+              "sent": "Pulled the splits from the last five editions. The winning time has moved by 40 seconds total in ten years, but the 100th-place time is four minutes f",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.1452,
+                "content_id": "3bb136955a41421ba7de35a8172a2e87",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.2113,
+                "status": "decided",
+                "style_score": 0.0643
+              },
+              "guess": "human",
+              "confidence": 0.1452,
+              "model_score": 0.2113,
+              "style_score": 0.0643,
+              "content_id": "3bb136955a41421ba7de35a8172a2e87",
+              "appeal_status": 200,
+              "appeal_response": {
+                "content_id": "3bb136955a41421ba7de35a8172a2e87",
+                "message": "Appeal recorded. This item is now under review.",
+                "status": "under_review"
+              },
+              "logged_under_review": true
+            },
+            {
+              "sent": "I tracked sleep against session quality for eleven weeks. Under seven hours the next day's intervals were 6-8 seconds per mile slower, every time bar ",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.1843,
+                "content_id": "478aaeb378e74c8dbedffa61be1b540d",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.0893,
+                "status": "decided",
+                "style_score": 0.3004
+              },
+              "guess": "human",
+              "confidence": 0.1843,
+              "model_score": 0.0893,
+              "style_score": 0.3004,
+              "content_id": "478aaeb378e74c8dbedffa61be1b540d",
+              "appeal_status": 200,
+              "appeal_response": {
+                "content_id": "478aaeb378e74c8dbedffa61be1b540d",
+                "message": "Appeal recorded. This item is now under review.",
+                "status": "under_review"
+              },
+              "logged_under_review": true
+            },
+            {
+              "sent": "The club championship scoring changed in 2019 from top-6 to top-10. Since then our B team has finished above the A team twice. That's not depth improv",
+              "case": "",
+              "status": 200,
+              "response": {
+                "confidence": 0.2798,
+                "content_id": "34a73deef5af4fc8a9ee6a49198f9b4c",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.1647,
+                "status": "decided",
+                "style_score": 0.4205
+              },
+              "guess": "human",
+              "confidence": 0.2798,
+              "model_score": 0.1647,
+              "style_score": 0.4205,
+              "content_id": "34a73deef5af4fc8a9ee6a49198f9b4c",
+              "appeal_status": 200,
+              "appeal_response": {
+                "content_id": "34a73deef5af4fc8a9ee6a49198f9b4c",
+                "message": "Appeal recorded. This item is now under review.",
+                "status": "under_review"
+              },
+              "logged_under_review": true
+            }
+          ]
+        }
+      ],
+      "verdict": "MET"
+    },
+    {
+      "criterion": 5,
+      "name": "five invalid requests rejected safely",
+      "target": "5 of 5 rejected with 4xx, no 500",
+      "trials": [
+        {
+          "trial": 1,
+          "passed": true,
+          "outcome": "5/5 rejected cleanly",
+          "responses": [
+            {
+              "sent": "(missing)",
+              "case": "bad_1",
+              "status": 400,
+              "response": {
+                "error": "invalid_text",
+                "message": "text must be a non-empty string."
+              },
+              "guess": null,
+              "confidence": null,
+              "model_score": null,
+              "style_score": null,
+              "content_id": null
+            },
+            {
+              "sent": "",
+              "case": "bad_2",
+              "status": 400,
+              "response": {
+                "error": "invalid_text",
+                "message": "text must be a non-empty string."
+              },
+              "guess": null,
+              "confidence": null,
+              "model_score": null,
+              "style_score": null,
+              "content_id": null
+            },
+            {
+              "sent": "None",
+              "case": "bad_3",
+              "status": 400,
+              "response": {
+                "error": "invalid_text",
+                "message": "text must be a non-empty string."
+              },
+              "guess": null,
+              "confidence": null,
+              "model_score": null,
+              "style_score": null,
+              "content_id": null
+            },
+            {
+              "sent": "12345",
+              "case": "bad_4",
+              "status": 400,
+              "response": {
+                "error": "invalid_text",
+                "message": "text must be a non-empty string."
+              },
+              "guess": null,
+              "confidence": null,
+              "model_score": null,
+              "style_score": null,
+              "content_id": null
+            },
+            {
+              "sent": "longword longword longword longword longword longword longword longword longword longword longword longword longword longword longword longword longwo",
+              "case": "bad_5",
+              "status": 413,
+              "response": {
+                "error": "text_too_large",
+                "message": "text must be 20,000 characters or fewer."
+              },
+              "guess": null,
+              "confidence": null,
+              "model_score": null,
+              "style_score": null,
+              "content_id": null
+            }
+          ]
+        },
+        {
+          "trial": 2,
+          "passed": true,
+          "outcome": "5/5 rejected cleanly",
+          "responses": [
+            {
+              "sent": "(missing)",
+              "case": "bad_1",
+              "status": 400,
+              "response": {
+                "error": "invalid_text",
+                "message": "text must be a non-empty string."
+              },
+              "guess": null,
+              "confidence": null,
+              "model_score": null,
+              "style_score": null,
+              "content_id": null
+            },
+            {
+              "sent": "",
+              "case": "bad_2",
+              "status": 400,
+              "response": {
+                "error": "invalid_text",
+                "message": "text must be a non-empty string."
+              },
+              "guess": null,
+              "confidence": null,
+              "model_score": null,
+              "style_score": null,
+              "content_id": null
+            },
+            {
+              "sent": "None",
+              "case": "bad_3",
+              "status": 400,
+              "response": {
+                "error": "invalid_text",
+                "message": "text must be a non-empty string."
+              },
+              "guess": null,
+              "confidence": null,
+              "model_score": null,
+              "style_score": null,
+              "content_id": null
+            },
+            {
+              "sent": "12345",
+              "case": "bad_4",
+              "status": 400,
+              "response": {
+                "error": "invalid_text",
+                "message": "text must be a non-empty string."
+              },
+              "guess": null,
+              "confidence": null,
+              "model_score": null,
+              "style_score": null,
+              "content_id": null
+            },
+            {
+              "sent": "longword longword longword longword longword longword longword longword longword longword longword longword longword longword longword longword longwo",
+              "case": "bad_5",
+              "status": 413,
+              "response": {
+                "error": "text_too_large",
+                "message": "text must be 20,000 characters or fewer."
+              },
+              "guess": null,
+              "confidence": null,
+              "model_score": null,
+              "style_score": null,
+              "content_id": null
+            }
+          ]
+        },
+        {
+          "trial": 3,
+          "passed": true,
+          "outcome": "5/5 rejected cleanly",
+          "responses": [
+            {
+              "sent": "(missing)",
+              "case": "bad_1",
+              "status": 400,
+              "response": {
+                "error": "invalid_text",
+                "message": "text must be a non-empty string."
+              },
+              "guess": null,
+              "confidence": null,
+              "model_score": null,
+              "style_score": null,
+              "content_id": null
+            },
+            {
+              "sent": "",
+              "case": "bad_2",
+              "status": 400,
+              "response": {
+                "error": "invalid_text",
+                "message": "text must be a non-empty string."
+              },
+              "guess": null,
+              "confidence": null,
+              "model_score": null,
+              "style_score": null,
+              "content_id": null
+            },
+            {
+              "sent": "None",
+              "case": "bad_3",
+              "status": 400,
+              "response": {
+                "error": "invalid_text",
+                "message": "text must be a non-empty string."
+              },
+              "guess": null,
+              "confidence": null,
+              "model_score": null,
+              "style_score": null,
+              "content_id": null
+            },
+            {
+              "sent": "12345",
+              "case": "bad_4",
+              "status": 400,
+              "response": {
+                "error": "invalid_text",
+                "message": "text must be a non-empty string."
+              },
+              "guess": null,
+              "confidence": null,
+              "model_score": null,
+              "style_score": null,
+              "content_id": null
+            },
+            {
+              "sent": "longword longword longword longword longword longword longword longword longword longword longword longword longword longword longword longword longwo",
+              "case": "bad_5",
+              "status": 413,
+              "response": {
+                "error": "text_too_large",
+                "message": "text must be 20,000 characters or fewer."
+              },
+              "guess": null,
+              "confidence": null,
+              "model_score": null,
+              "style_score": null,
+              "content_id": null
+            }
+          ]
+        }
+      ],
+      "verdict": "MET"
+    }
+  ]
+}
