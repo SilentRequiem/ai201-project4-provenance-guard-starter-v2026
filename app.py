@@ -24,6 +24,7 @@ Routes:
     GET  /health      is the service up, and is the model loaded
 """
 
+import re
 import uuid
 
 from flask import Flask, jsonify, request
@@ -193,6 +194,29 @@ def submit():
             "error": "text_too_large",
             "message": "text must be 20,000 characters or fewer.",
         }), 413
+
+    # Unit 8's one measured improvement: refuse a confidence claim when the
+    # input has no meaningful English words or contains control characters.
+    # This GPT-2 setup cannot reliably score emoji-only or non-Latin prose.
+    if any((ord(char) < 32 and char not in "\n\r\t") or ord(char) == 127
+           for char in text):
+        unscorable_reason = "control_characters"
+    elif len(re.findall(r"[A-Za-z]+(?:'[A-Za-z]+)?", text)) < 3:
+        unscorable_reason = "unsupported_or_too_few_english_words"
+    else:
+        unscorable_reason = None
+
+    if unscorable_reason:
+        audit.log_rejection(
+            creator_id=creator,
+            reason="unscorable_text",
+            detail=unscorable_reason,
+        )
+        return jsonify({
+            "error": "unscorable_text",
+            "message": "This English-focused detector cannot score the input reliably. "
+                       "Do not infer AI authorship. Request human review instead.",
+        }), 422
 
     import detector
     import scoring
