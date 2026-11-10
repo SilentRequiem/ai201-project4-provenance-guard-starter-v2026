@@ -204,25 +204,15 @@ The invalid JSON attempt was rejected cleanly. The valid submission saved both s
 
 ## Rate Limiting
 
-**My limits:** ___ per minute, ___ per day
+**My limits:** 10 submissions per minute and 200 submissions per day for each `creator_id`.
 
-**Why those numbers and not others:**
-<!-- Think about two people: a real writer submitting their own work a few
-     times an hour, and a script sending a thousand variations to map your
-     thresholds. Your numbers have to be liveable for the first and hostile to
-     the second. -->
+**Why those numbers and not others:** A normal writer should be able to submit or revise a few pieces without being blocked. Ten a minute allows that, while slowing a script that sends hundreds of near-identical submissions to probe the detector. The daily cap limits sustained probing. These are starter limits for a local service, not production-tested thresholds.
 
-**What a caller counts as:** <!-- per address, or per creator_id? They fail
-differently — one script can look like a thousand callers, and one household
-can look like one. -->
+**What a caller counts as:** Each nonblank `creator_id` gets its own limit. Requests without a valid creator ID fall back to the requester's IP address. That means a script changing its creator ID can evade the per-creator limit, while unrelated people without IDs on the same IP can share a limit.
 
 **The run of status codes when I pushed past it:**
 
-<!-- python run_attacks.py --flood 15 -->
-
-```
-
-```
+Pending the real `python run_attacks.py --flood 15` run. I will paste the actual codes, including 429 responses, rather than predicting them.
 
 ---
 
@@ -250,40 +240,21 @@ whose work got caught by it:
 
 ## Run Log and Verdicts
 
-<!-- Your five criteria across three trials. `run_eval.py --label before`. -->
+These targets are unchanged from the `criteria.md` committed in Unit 7. Run `python run_eval.py --label before` for three trials of each criterion.
 
 | Criterion | Target | Run 1 | Run 2 | Run 3 | Verdict |
 |---|---|---|---|---|---|
-| 1.  |  |  |  |  |  |
-| 2.  |  |  |  |  |  |
-| 3.  |  |  |  |  |  |
-| 4.  |  |  |  |  |  |
-| 5.  |  |  |  |  |  |
+| 1. False positives | At most 1/10 human samples flagged AI | Pending | Pending | Pending | Pending |
+| 2. Score spread | AI average at least 0.25 higher than human average | Pending | Pending | Pending | Pending |
+| 3. Label coverage | All 3 labels within 6 inputs | Pending | Pending | Pending | Pending |
+| 4. Appeal path | 5/5 appeals recorded as under_review | Pending | Pending | Pending | Pending |
+| 5. Bad input | 5/5 invalid inputs rejected without a 500 | Pending | Pending | Pending | Pending |
 
-**Real output from one trial**, pasted as text, naming the file and function
-that produced it:
+**Test sample provenance:** The initial ten human-style examples in `scenarios.py` are from CodePath's staff practice material, not claimed as my own writing. The five clearly AI samples were generated with AI assistance. For a stronger false-positive test, I can replace the staff examples with writing I actually authored before running the final comparison.
 
-```json
+**Real output from one trial:** Pending the real JSON report from `run_eval.py::main` and `app.py::submit`.
 
-```
-
-**Diagnoses**
-
-<!-- For each miss AND each broken attack: the stage and the mechanism.
-
-     Your service has five stages: the route, signal one, signal two, the
-     combining rule, and the label mapping.
-
-     Not a diagnosis:  "The evasion attacks got through."
-     A diagnosis:      "Four evasion inputs got through. All four had typos
-                        added to AI-generated text. My second signal measures
-                        word variety, and typos raise word variety — so it read
-                        them as more human. My combining rule weights that
-                        signal at 0.6, so it dragged the whole score down."
-
-     Look for a pattern. Five failures on one signal is one problem, not five. -->
-
-
+**Diagnoses:** Pending the measured failures. Every missed criterion will identify the pipeline stage and the mechanism, not just the low score.
 
 ---
 
