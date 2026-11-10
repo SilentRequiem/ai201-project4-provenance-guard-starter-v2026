@@ -7,6 +7,8 @@ if (-not (Test-Path $python)) {
     throw "Missing .venv. Create it and install requirements.txt first."
 }
 New-Item -ItemType Directory -Path "results" -Force | Out-Null
+& $python -m py_compile app.py audit.py config.py detector.py scoring.py stylometry.py scenarios.py run_eval.py run_attacks.py
+if ($LASTEXITCODE -ne 0) { throw "Python syntax check failed." }
 
 $attackFile = Get-ChildItem -Path $PSScriptRoot -Filter "attacks.csv" -File -Recurse | Select-Object -First 1
 if (-not $attackFile) {
