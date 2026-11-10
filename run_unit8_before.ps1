@@ -67,7 +67,17 @@ try {
     $log = Invoke-RestMethod -Uri "$base/log" -TimeoutSec 10
     $log | ConvertTo-Json -Depth 10 | Set-Content -Path "results\audit_before.json" -Encoding UTF8
 
-    Write-Host "BEFORE run complete. Review results/ and logs/audit.jsonl before changing any scores or thresholds." -ForegroundColor Green
+    Write-Host "BEFORE run complete. Saving evidence to GitHub..." -ForegroundColor Green
+    & git add -- results/ logs/audit.jsonl
+    if ($LASTEXITCODE -ne 0) { throw "Git staging failed. Reports are saved locally." }
+    & git diff --cached --quiet -- results/ logs/audit.jsonl
+    if ($LASTEXITCODE -eq 1) {
+        & git commit -m "Record Unit 8 before-run evidence" -- results/ logs/audit.jsonl
+        if ($LASTEXITCODE -ne 0) { throw "Git commit failed. Reports are saved locally." }
+        & git push
+        if ($LASTEXITCODE -ne 0) { throw "Git push failed. Commit exists locally. Run git push manually." }
+    }
+    Write-Host "Evidence saved. Keep detector/scoring unchanged until the BEFORE report is reviewed." -ForegroundColor Green
 } finally {
     if ($server) { Stop-Process -Id $server.Id -Force -ErrorAction SilentlyContinue }
 }
