@@ -1297,15 +1297,24 @@ Real baseline excerpts from one of the three trials:
 
 **The Improvement**
 
-I found no failed acceptance criterion to diagnose. However, there is a concrete growth risk in `log_rotation.py::read_jsonl`: a call asking only for the newest 50 records still runs `deque(iter_jsonl(...), maxlen=50)`, so it parses **every historical entry from every retained archive**. The API returns a bounded response but performs an unbounded history scan. As archives accumulate, that creates unnecessary disk work.
+**Why I chose it:** All five baseline criteria were MET, but the 1 MiB rotation system keeps every archive. Before this change, `log_rotation.py::read_jsonl` implemented a 50-entry request using `list(deque(iter_jsonl(...), maxlen=50))`. That kept only 50 records in memory but **parsed every older record**. Because the history is retained indefinitely, a bounded API response was not a bounded disk read.
 
-The single improvement is to read the newest active log and archives **backwards**, stopping as soon as the requested number of valid entries is found. Full-history reads, archive retention, append behavior, and scoring stay unchanged. I will measure both algorithms on the same local archive fixture and re-run all five original criteria three times. Results are pending.
+**My one functional change:** Commit `b2e55a4` updated `log_rotation.py::read_jsonl` to search the current file and then older archives in reverse order. It stops as soon as the requested number of valid records is found and returns those entries in the original chronological order. Full-history reads, archive retention, logging fields, thresholds, routes and all five acceptance targets remain unchanged. A regression test covers the newest 1, 5, 20, 50 and 200 entries across archives, including a damaged JSON line.
+
+**How it will be measured:** `capstone_tail_benchmark.py` measures ten runs each of the **exact original algorithm** and the new implementation on the same 1,200-record synthetic archive fixture. It verifies that the newest 50 results match before comparing median lookup times. This controlled reference comparison is supplementary, not an invented run from the old checkout. The regular `capstone_eval.py` tests all five original criteria again three times as the actual AFTER run.
+
+**After results:** Pending the recorded AFTER run. The initial baseline results above are real; no improvement in response time or log lookup speed is claimed until the new data exists.
 
 **What's Still Broken**
 
-Pending the completed before-and-after comparison. The classifier's existing problems with AI evasion and uncertain authorship remain out of scope for this operational extension.
+No original criterion was missed in the BEFORE run. The two-second response-time target was lenient for these short, warm local requests. A future capstone could tighten it to a 0.5-second mean on the same inputs, but I did **not** change it after seeing the baseline.
+
+The change to recent-history reading does not solve the cost of full-history audit searches, nor does it cap **total disk space**. Archived files are retained as requested and will need a storage and retention policy for real usage. The service uses a single local process and an in-memory rate limiter; it is not safe to treat this as a multi-worker production deployment. GPT-2 authorship detection still has the AI-evasion limitations measured in Unit 8.
+
+I stopped at one code improvement because Unit 9 asks for one measured change. If I had another unit, I would address bounded archival search for appeals next, while keeping authors able to appeal old decisions.
 
 **How I Used AI**
 
-AI helped compare the available capstone shapes, inspect the existing service, implement rotation, and prepare the operational test runner. I wrote and committed the five acceptance criteria in `25085d33` before recording results. I will review the measured BEFORE output before making a single change.
+**Moment 1: Setting the scope.** I asked AI to compare the three capstone shapes against the Provenance Guard service from Units 7 and 8. It recommended extending the existing local service with structured logging instead of starting over. I chose Shape A, kept the original scoring system unchanged, and wrote my own five acceptance criteria, committed as `25085d33`.
 
+**Moment 2: Making logs safer to maintain.** I asked for detailed logs that rotate when they reach 1 MB without deleting the older files. AI prepared the rotation code, archive-aware readers, test scripts and run instructions. I reviewed the plan and chose to preserve every archive. When the baseline met all five criteria, the audit identified a separate read-scaling risk. I kept the original criteria and selected one bounded-log-lookup improvement to test rather than changing several things at once.
