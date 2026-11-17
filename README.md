@@ -1052,21 +1052,254 @@ The local startup command and the Python, dependency, and model requirements wil
 
 **Instrumentation**
 
-Pending the real instrumented run. Each request record will capture the time, route, a limited input summary, the response status and result, and elapsed time. The audit log also records each rejection or appeal as its own event. Both logs rotate at **1 MiB (1,048,576 bytes) per file**. Completed files become numbered archives, such as `requests.000001.jsonl` and `audit.000001.jsonl`. Old archives are preserved, and the readers include archived records when checking history. The `/log` endpoint returns a bounded number of recent entries so it does not load the entire history into the response. The log keeps only an 80-character input preview, a text length, and a SHA-256 digest, not the full submission. That preview could still contain sensitive text, so this local test uses synthetic samples only. Actual entries will be pasted here after running the service.
+`app.py::begin_telemetry` and `app.py::finish_telemetry` wrap each HTTP request. `request_telemetry.py::record_request` writes a UTC timestamp, request ID, method, route, limited input summary (length, digest and preview), response status/result, server duration, and process CPU time. `audit.py` separately records decisions, appeals and rejections. Both JSONL files rotate at 1 MiB per active file, and every archive is kept. These are local single-process files, not a production multi-worker logging system.
 
-Rotation caps each **individual file**, not total disk use. Archived logs are not automatically deleted, so disk capacity still needs to be monitored or archives moved to external storage in a real deployment.
+Ten genuine structured request entries from the FIRST capstone baseline trial, with one failed request from the same trial, copied from the saved run report:
+
+```json
+{"timestamp":"2026-11-17T06:06:09.860+00:00","request_id":"c4b64db3566a491fb9505deb35472a69","method":"POST","route":"/submit","input":{"content_type":"application/json","body_kind":"dict","creator_id":"u9_before_1_8ac25805_good_01","text_chars":207,"text_sha256":"4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125","text_preview":"I am testing request logging in a local service. The same text is submitted with"},"output":{"http_status":200,"content_id":"f43d64ce143e4f9785b1d4784ae1c676","guess":"human","status":"decided","model_score":0.1411,"style_score":0.4841,"confidence":0.2954},"duration_ms":105.75,"cpu_seconds":0.953125}
+{"timestamp":"2026-11-17T06:06:09.974+00:00","request_id":"d4d01677f0f44826bd7b683f9fabcc1e","method":"POST","route":"/submit","input":{"content_type":"application/json","body_kind":"dict","creator_id":"u9_before_1_8ac25805_good_02","text_chars":207,"text_sha256":"4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125","text_preview":"I am testing request logging in a local service. The same text is submitted with"},"output":{"http_status":200,"content_id":"bd8180d284364f5190b62db1185343f6","guess":"human","status":"decided","model_score":0.1411,"style_score":0.4841,"confidence":0.2954},"duration_ms":107.923,"cpu_seconds":0.828125}
+{"timestamp":"2026-11-17T06:06:10.207+00:00","request_id":"a317ea1ed8f44535b588a44bba2941db","method":"POST","route":"/submit","input":{"content_type":"application/json","body_kind":"dict","creator_id":"u9_before_1_8ac25805_good_03","text_chars":207,"text_sha256":"4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125","text_preview":"I am testing request logging in a local service. The same text is submitted with"},"output":{"http_status":200,"content_id":"e366280a789740f0a5cd2d9dfb0d33f7","guess":"human","status":"decided","model_score":0.1411,"style_score":0.4841,"confidence":0.2954},"duration_ms":215.281,"cpu_seconds":1.140625}
+{"timestamp":"2026-11-17T06:06:10.372+00:00","request_id":"277ed27f46cb4280921a4e22f79d4dda","method":"POST","route":"/submit","input":{"content_type":"application/json","body_kind":"dict","creator_id":"u9_before_1_8ac25805_good_04","text_chars":207,"text_sha256":"4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125","text_preview":"I am testing request logging in a local service. The same text is submitted with"},"output":{"http_status":200,"content_id":"4d2e3e0ab9ec40afb5c0bbe2beb61e34","guess":"human","status":"decided","model_score":0.1411,"style_score":0.4841,"confidence":0.2954},"duration_ms":137.471,"cpu_seconds":1.15625}
+{"timestamp":"2026-11-17T06:06:10.479+00:00","request_id":"80bd0366a31b4b3eafa9d3f15652510e","method":"POST","route":"/submit","input":{"content_type":"application/json","body_kind":"dict","creator_id":"u9_before_1_8ac25805_good_05","text_chars":207,"text_sha256":"4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125","text_preview":"I am testing request logging in a local service. The same text is submitted with"},"output":{"http_status":200,"content_id":"401265d2d30141e58cd1cca28696a87b","guess":"human","status":"decided","model_score":0.1411,"style_score":0.4841,"confidence":0.2954},"duration_ms":100.175,"cpu_seconds":1.046875}
+{"timestamp":"2026-11-17T06:06:10.609+00:00","request_id":"53e7b143d2a040b3a4da455a8a9654b2","method":"POST","route":"/submit","input":{"content_type":"application/json","body_kind":"dict","creator_id":"u9_before_1_8ac25805_good_06","text_chars":207,"text_sha256":"4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125","text_preview":"I am testing request logging in a local service. The same text is submitted with"},"output":{"http_status":200,"content_id":"9372509213e64200a3ffd07b19517451","guess":"human","status":"decided","model_score":0.1411,"style_score":0.4841,"confidence":0.2954},"duration_ms":111.787,"cpu_seconds":0.953125}
+{"timestamp":"2026-11-17T06:06:10.729+00:00","request_id":"792c7a8388d441e68cba801ce2546fc8","method":"POST","route":"/submit","input":{"content_type":"application/json","body_kind":"dict","creator_id":"u9_before_1_8ac25805_good_07","text_chars":207,"text_sha256":"4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125","text_preview":"I am testing request logging in a local service. The same text is submitted with"},"output":{"http_status":200,"content_id":"26b219bf5cc44b1ea7068a3b99a9f6fb","guess":"human","status":"decided","model_score":0.1411,"style_score":0.4841,"confidence":0.2954},"duration_ms":104.213,"cpu_seconds":0.984375}
+{"timestamp":"2026-11-17T06:06:10.850+00:00","request_id":"e99bbcab0dfd48da80268e93edebcf47","method":"POST","route":"/submit","input":{"content_type":"application/json","body_kind":"dict","creator_id":"u9_before_1_8ac25805_good_08","text_chars":207,"text_sha256":"4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125","text_preview":"I am testing request logging in a local service. The same text is submitted with"},"output":{"http_status":200,"content_id":"ed49b2e50d954e0984d6c830ee8a847a","guess":"human","status":"decided","model_score":0.1411,"style_score":0.4841,"confidence":0.2954},"duration_ms":98.268,"cpu_seconds":0.921875}
+{"timestamp":"2026-11-17T06:06:10.976+00:00","request_id":"b8d19b654a2c4719802f906f25731b5c","method":"POST","route":"/submit","input":{"content_type":"application/json","body_kind":"dict","creator_id":"u9_before_1_8ac25805_good_09","text_chars":207,"text_sha256":"4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125","text_preview":"I am testing request logging in a local service. The same text is submitted with"},"output":{"http_status":200,"content_id":"d7c69fac4d894617b3963e6a5685d781","guess":"human","status":"decided","model_score":0.1411,"style_score":0.4841,"confidence":0.2954},"duration_ms":104.117,"cpu_seconds":0.96875}
+{"timestamp":"2026-11-17T06:06:11.101+00:00","request_id":"312e639865bd4cef82ae6a61aefb0be1","method":"POST","route":"/submit","input":{"content_type":"application/json","body_kind":"dict","creator_id":"u9_before_1_8ac25805_good_10","text_chars":207,"text_sha256":"4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125","text_preview":"I am testing request logging in a local service. The same text is submitted with"},"output":{"http_status":200,"content_id":"12547534c0d345a28a07d9cdd8698af7","guess":"human","status":"decided","model_score":0.1411,"style_score":0.4841,"confidence":0.2954},"duration_ms":101.987,"cpu_seconds":0.921875}
+{"timestamp":"2026-11-17T06:06:11.293+00:00","request_id":"20e822e505cb488ab4704677fb67da1b","method":"POST","route":"/submit","input":{"content_type":"application/json","body_kind":"dict","creator_id":"u9_before_1_8ac25805_missing_text","text_chars":null,"text_sha256":null,"text_preview":null,"text_kind":"NoneType"},"output":{"http_status":400,"error":"invalid_text"},"duration_ms":3.465,"cpu_seconds":0}
+```
+
+The successful entries all have HTTP 200. The failure example has HTTP 400 and `invalid_text`. The full original records are committed in `logs/requests.jsonl` and `results/capstone_eval_before_2026-11-17_060638.json`.
 
 **What It Costs**
 
-Pending the real local run. `capstone_eval.py` measures ten warm HTTP requests in each of three trials and records mean client wait time, server time, and process CPU time. The report multiplies the measured per-request means by 100 for a daily equivalent, rather than inventing API fees.
+There is **no API charge** because the GPT-2 model runs locally. `capstone_eval.py` measured **30 successful warm submissions** across three separate trials, excluding model-loading warmups.
+
+- Mean client round trip: **0.128376 seconds**.
+- Mean server elapsed time: **0.114047 seconds**.
+- Mean recorded process CPU: **0.943229 CPU-seconds**. Process CPU can exceed wall-clock elapsed time when multiple CPU threads work concurrently.
+- At **100 requests/day**, the same measured averages imply **12.838 seconds** of sequential client waiting and **94.323 total process CPU-seconds**. The arithmetic is mean × 100. This is not a hosting price or a guaranteed throughput.
+
+The mean is for repeated short synthetic submissions on this Windows machine, not internet deployment latency.
 
 **Run Log and Verdicts**
 
-My five criteria are committed in `criteria.md` at commit `25085d33`, before any capstone measurements. They test 10/10 complete request logs, client/server timing within 200 ms, 10/10 logs surviving restart including archives, 5/5 detailed failure logs, and mean warm response time below two seconds. The three-trial results are pending the local BEFORE run.
+The five criteria were written and committed by me in `criteria.md` at `25085d33`, before any capstone results. This is the actual **BEFORE** run with three trials, all at the originally chosen targets.
+
+| Criterion | Original target | Run 1 | Run 2 | Run 3 | Verdict |
+|---|---|---|---|---|---|
+| 1. Logging completeness and 1 MiB rotation | 10/10 detailed records and safe 1 MiB rotation | 10/10 with rotation=True | 10/10 with rotation=True | 10/10 with rotation=True | **MET** |
+| 2. Timing accuracy | 10/10 client vs server gaps <= 200 ms | 10/10 gaps <= 200 ms | 10/10 gaps <= 200 ms | 10/10 gaps <= 200 ms | **MET** |
+| 3. Log persistence | 10/10 service logs survive restart including archived history | 10/10 after restart; archived probe=True | 10/10 after restart; archived probe=True | 10/10 after restart; archived probe=True | **MET** |
+| 4. Failure logging | 5/5 invalid requests have their own detailed logs | 5/5 valid rejection traces | 5/5 valid rejection traces | 5/5 valid rejection traces | **MET** |
+| 5. Average warm response time | Mean of ten warm requests < 2 seconds | 0.137 seconds | 0.119 seconds | 0.129 seconds | **MET** |
+
+Each criterion met its target. The biggest observed client/server timing discrepancy was **28.347 ms**, well below the 200 ms allowance. The slowest of the 30 warm HTTP requests took **233.694 ms**, and the trial means were 0.137, 0.119 and 0.129 seconds. The **two-second average criterion was too generous** for this exact short, warm local workload. For a later experiment I would tighten it to an average under **0.5 seconds**, without changing the original criterion after seeing these results.
+
+Real baseline excerpts from one of the three trials:
+
+**Criterion 1.** `request_telemetry.py::record_request`: one real successful request record:
+
+```json
+{
+  "timestamp": "2026-11-17T06:06:09.860+00:00",
+  "request_id": "c4b64db3566a491fb9505deb35472a69",
+  "method": "POST",
+  "route": "/submit",
+  "input": {
+    "content_type": "application/json",
+    "body_kind": "dict",
+    "creator_id": "u9_before_1_8ac25805_good_01",
+    "text_chars": 207,
+    "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+    "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+  },
+  "output": {
+    "http_status": 200,
+    "content_id": "f43d64ce143e4f9785b1d4784ae1c676",
+    "guess": "human",
+    "status": "decided",
+    "model_score": 0.1411,
+    "style_score": 0.4841,
+    "confidence": 0.2954
+  },
+  "duration_ms": 105.75,
+  "cpu_seconds": 0.953125
+}
+```
+
+**Criterion 2.** `capstone_eval.py::test_trial`: measured client/server difference for first five requests (milliseconds):
+
+```json
+{
+  "u9_before_1_8ac25805_good_01": 27.002,
+  "u9_before_1_8ac25805_good_02": 5.142,
+  "u9_before_1_8ac25805_good_03": 18.413,
+  "u9_before_1_8ac25805_good_04": 27.232,
+  "u9_before_1_8ac25805_good_05": 6.361
+}
+```
+
+**Criterion 3.** `capstone_eval.py::test_trial` and `log_rotation.py::read_jsonl`: actual isolated archive rotation and restart data:
+
+```json
+{
+  "rotated": true,
+  "files": [
+    "requests.000001.jsonl",
+    "requests.jsonl"
+  ],
+  "file_sizes_bytes": [
+    1043555,
+    249345
+  ],
+  "limit_bytes": 1048576,
+  "all_files_within_limit": true,
+  "records_recovered": 140,
+  "expected_records": 140,
+  "records_in_original_order": true,
+  "recovered_after_restart": 140,
+  "archives_survived_restart": true
+}
+```
+
+**Criterion 4.** `app.py::submit`, `request_telemetry.py::record_request` and `audit.py::log_rejection`: HTTP responses and one telemetry rejection:
+
+```json
+{
+  "requests": [
+    {
+      "case": "missing_text",
+      "creator_id": "u9_before_1_8ac25805_missing_text",
+      "status": 400,
+      "response": {
+        "error": "invalid_text",
+        "message": "text must be a non-empty string."
+      }
+    },
+    {
+      "case": "empty_text",
+      "creator_id": "u9_before_1_8ac25805_empty_text",
+      "status": 400,
+      "response": {
+        "error": "invalid_text",
+        "message": "text must be a non-empty string."
+      }
+    },
+    {
+      "case": "null_text",
+      "creator_id": "u9_before_1_8ac25805_null_text",
+      "status": 400,
+      "response": {
+        "error": "invalid_text",
+        "message": "text must be a non-empty string."
+      }
+    },
+    {
+      "case": "unsupported_text",
+      "creator_id": "u9_before_1_8ac25805_unsupported_text",
+      "status": 422,
+      "response": {
+        "error": "unscorable_text",
+        "message": "This English-focused detector cannot score the input reliably. Do not infer AI authorship. Request human review instead."
+      }
+    },
+    {
+      "case": "oversize_text",
+      "creator_id": "u9_before_1_8ac25805_oversize_text",
+      "status": 413,
+      "response": {
+        "error": "text_too_large",
+        "message": "text must be 20,000 characters or fewer."
+      }
+    }
+  ],
+  "telemetry": {
+    "timestamp": "2026-11-17T06:06:11.293+00:00",
+    "request_id": "20e822e505cb488ab4704677fb67da1b",
+    "method": "POST",
+    "route": "/submit",
+    "input": {
+      "content_type": "application/json",
+      "body_kind": "dict",
+      "creator_id": "u9_before_1_8ac25805_missing_text",
+      "text_chars": null,
+      "text_sha256": null,
+      "text_preview": null,
+      "text_kind": "NoneType"
+    },
+    "output": {
+      "http_status": 400,
+      "error": "invalid_text"
+    },
+    "duration_ms": 3.465,
+    "cpu_seconds": 0
+  },
+  "audit": [
+    {
+      "timestamp": "2026-11-17T06:06:11+00:00",
+      "creator_id": "u9_before_1_8ac25805_missing_text",
+      "event": "rejected",
+      "status": "rejected",
+      "reason": "invalid_text"
+    }
+  ]
+}
+```
+
+**Criterion 5.** `capstone_eval.py::test_trial`: ten measured warm client durations in milliseconds (mean 0.137 seconds):
+
+```json
+[
+  {
+    "trial_creator": "u9_before_1_8ac25805_good_01",
+    "client_duration_ms": 132.752
+  },
+  {
+    "trial_creator": "u9_before_1_8ac25805_good_02",
+    "client_duration_ms": 113.065
+  },
+  {
+    "trial_creator": "u9_before_1_8ac25805_good_03",
+    "client_duration_ms": 233.694
+  },
+  {
+    "trial_creator": "u9_before_1_8ac25805_good_04",
+    "client_duration_ms": 164.703
+  },
+  {
+    "trial_creator": "u9_before_1_8ac25805_good_05",
+    "client_duration_ms": 106.536
+  },
+  {
+    "trial_creator": "u9_before_1_8ac25805_good_06",
+    "client_duration_ms": 131.295
+  },
+  {
+    "trial_creator": "u9_before_1_8ac25805_good_07",
+    "client_duration_ms": 120.244
+  },
+  {
+    "trial_creator": "u9_before_1_8ac25805_good_08",
+    "client_duration_ms": 120.658
+  },
+  {
+    "trial_creator": "u9_before_1_8ac25805_good_09",
+    "client_duration_ms": 125.727
+  },
+  {
+    "trial_creator": "u9_before_1_8ac25805_good_10",
+    "client_duration_ms": 125.32
+  }
+]
+```
 
 **The Improvement**
 
-Pending the first full set of measured results. I will diagnose the misses, make one change, and rerun all five criteria three times.
+I found no failed acceptance criterion to diagnose. However, there is a concrete growth risk in `log_rotation.py::read_jsonl`: a call asking only for the newest 50 records still runs `deque(iter_jsonl(...), maxlen=50)`, so it parses **every historical entry from every retained archive**. The API returns a bounded response but performs an unbounded history scan. As archives accumulate, that creates unnecessary disk work.
+
+The single improvement is to read the newest active log and archives **backwards**, stopping as soon as the requested number of valid entries is found. Full-history reads, archive retention, append behavior, and scoring stay unchanged. I will measure both algorithms on the same local archive fixture and re-run all five original criteria three times. Results are pending.
 
 **What's Still Broken**
 
