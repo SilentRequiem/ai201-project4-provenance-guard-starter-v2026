@@ -367,6 +367,19 @@ The results are written to `results/capstone_eval_before_<timestamp>.json` and `
 
 **Stop after the BEFORE run.** Review its actual results, choose exactly one improvement justified by the findings, then run the equivalent AFTER checks. If you want just the cost sample with an already running server, `capstone_measure.py` is an optional separate tool and is not the main capstone evaluator.
 
+### Full Unit 9 AFTER measurement
+
+Only run this after the actual BEFORE results are committed and the single log-reader improvement has been applied. Close any old `python app.py` process. In Windows PowerShell from this repository, use:
+
+~~~powershell
+git pull
+powershell -NoProfile -ExecutionPolicy Bypass -File .\run_unit9_after.ps1
+~~~
+
+The script rechecks Python syntax and log rotation, then repeats **the same five criteria across three independent trials** using `capstone_eval.py --label after`. It records all HTTP responses, structured log evidence, costs, and the result table. It also runs `capstone_tail_benchmark.py --label after`, which creates temporary synthetic archives and compares the exact old and new last-50 reader algorithms ten times each using the same fixture. These synthetic lookup rows are not represented as actual HTTP service requests. The script then commits and pushes the real after-run evidence.
+
+This change optimizes the reading of recent logs. It does not change what data is logged, how long archives are kept, or what the original capstone criteria require. Do not change any other system setting before the comparison.
+
 ### What the logs contain
 
 - logs/audit.jsonl continues to record decisions, appeals, and rejections from the original project.
