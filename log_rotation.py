@@ -9,7 +9,6 @@ the next entry would take them above LOG_ROTATION_BYTES. Old archives stay.
 This is for one local process, not a multi-worker production deployment.
 """
 
-from collections import deque
 from hashlib import sha256
 import json
 from pathlib import Path
@@ -103,11 +102,33 @@ def iter_jsonl(active: Path):
 
 
 def read_jsonl(active: Path, limit: int | None = None) -> list[dict]:
-    if limit is not None:
-        if limit <= 0:
-            return []
-        return list(deque(iter_jsonl(active), maxlen=limit))
-    return list(iter_jsonl(active))
+    """Load the whole history only when requested.
+
+    For a bounded recent read, search newest files and lines first. Each
+    physical file is capped at 1 MiB by append_jsonl, so getting the latest
+    50 entries does not require parsing every older archive.
+    """
+    if limit is None:
+        return list(iter_jsonl(active))
+    if limit <= 0:
+        return []
+
+    newest = []
+    with _lock:
+        for path in reversed(all_paths(active)):
+            # Reading one capped file at a time is bounded. Reading every
+            # archived file on every /log?limit=50 call was not.
+            with path.open("r", encoding="utf-8") as handle:
+                for line in reversed(handle.readlines()):
+                    if not line.strip():
+                        continue
+                    try:
+                        newest.append(json.loads(line))
+                    except json.JSONDecodeError:
+                        continue
+                    if len(newest) == limit:
+                        return list(reversed(newest))
+    return list(reversed(newest))
 
 
 def count_jsonl(active: Path) -> int:
