@@ -1083,6 +1083,8 @@ There is **no API charge** because the GPT-2 model runs locally. `capstone_eval.
 
 The mean is for repeated short synthetic submissions on this Windows machine, not internet deployment latency.
 
+The AFTER run measured another **30 warm submissions**. Its mean client round trip was **0.130634 s**, its mean server duration was **0.113908 s**, and its mean CPU cost was **0.960938 CPU-seconds**. At 100 requests/day, those AFTER measurements correspond to **13.063 seconds** of sequential client waiting and **96.094 process CPU-seconds**. The client mean changed by **0.002258 seconds**. This small variation does not show that log lookup optimization improved model-scoring latency, because the change targets archive reads instead.
+
 **Run Log and Verdicts**
 
 The five criteria were written and committed by me in `criteria.md` at `25085d33`, before any capstone results. This is the actual **BEFORE** run with three trials, all at the originally chosen targets.
@@ -1297,13 +1299,171 @@ Real baseline excerpts from one of the three trials:
 
 **The Improvement**
 
-**Why I chose it:** All five baseline criteria were MET, but the 1 MiB rotation system keeps every archive. Before this change, `log_rotation.py::read_jsonl` implemented a 50-entry request using `list(deque(iter_jsonl(...), maxlen=50))`. That kept only 50 records in memory but **parsed every older record**. Because the history is retained indefinitely, a bounded API response was not a bounded disk read.
+**Why I chose it:** All five baseline criteria were MET, but the 1 MiB rotation system keeps every archive. The original `log_rotation.py::read_jsonl` implementation retrieved the latest 50 entries using `list(deque(iter_jsonl(...), maxlen=50))`. The result was small, but the function still parsed every archived record. As the retained history grows, that adds unnecessary disk work.
 
-**My one functional change:** Commit `b2e55a4` updated `log_rotation.py::read_jsonl` to search the current file and then older archives in reverse order. It stops as soon as the requested number of valid records is found and returns those entries in the original chronological order. Full-history reads, archive retention, logging fields, thresholds, routes and all five acceptance targets remain unchanged. A regression test covers the newest 1, 5, 20, 50 and 200 entries across archives, including a damaged JSON line.
+**Exactly one functional improvement:** Commit `b2e55a4` updated the bounded-log reader to search the current file and older archives in reverse order, stopping when it has enough valid records. The returned rows remain in chronological order. Full-history reads, model scores, logging fields, rate limits, 1 MiB archive size, and all five acceptance criteria stayed unchanged. The new regression test covers the latest 1, 5, 20, 50 and 200 records, including a damaged JSON line.
 
-**How it will be measured:** `capstone_tail_benchmark.py` measures ten runs each of the **exact original algorithm** and the new implementation on the same 1,200-record synthetic archive fixture. It verifies that the newest 50 results match before comparing median lookup times. This controlled reference comparison is supplementary, not an invented run from the old checkout. The regular `capstone_eval.py` tests all five original criteria again three times as the actual AFTER run.
+**Controlled benchmark of old and new lookup algorithms:** `capstone_tail_benchmark.py` wrote **1200 synthetic records** to a temporary rotated history spanning **11 files**. It ran the exact original lookup algorithm and the optimized lookup ten times each on that same fixture, checked the latest 50 records matched, and reported:
 
-**After results:** Pending the recorded AFTER run. The initial baseline results above are real; no improvement in response time or log lookup speed is claimed until the new data exists.
+| Measurement | Original method | Improved method |
+|---|---:|---:|
+| Median duration (10 runs) | 23.54645 ms | 2.1129 ms |
+| Returned last 50 records correctly | Yes | Yes |
+| Observed speedup | | **11.144×** |
+
+The full timing arrays are in `results/capstone_tail_benchmark_after_2026-11-17_061231.json`. This is a controlled reference comparison run after the improvement, **not** a claim that the old checkout was benchmarked during the original baseline session. The individual-file 1 MiB limit was also respected in the fixture.
+
+**The five original acceptance criteria after the change:** `capstone_eval.py --label after` tested all five three more times against real local HTTP requests. No target was changed.
+
+| Criterion | Original target | Run 1 | Run 2 | Run 3 | Verdict |
+|---|---|---|---|---|---|
+| 1. Logging completeness and 1 MiB rotation | 10/10 detailed records and safe 1 MiB rotation | 10/10 with rotation=True | 10/10 with rotation=True | 10/10 with rotation=True | **MET** |
+| 2. Timing accuracy | 10/10 client vs server gaps <= 200 ms | 10/10 gaps <= 200 ms | 10/10 gaps <= 200 ms | 10/10 gaps <= 200 ms | **MET** |
+| 3. Log persistence | 10/10 service logs survive restart including archived history | 10/10 after restart; archived probe=True | 10/10 after restart; archived probe=True | 10/10 after restart; archived probe=True | **MET** |
+| 4. Failure logging | 5/5 invalid requests have their own detailed logs | 5/5 valid rejection traces | 5/5 valid rejection traces | 5/5 valid rejection traces | **MET** |
+| 5. Average warm response time | Mean of ten warm requests < 2 seconds | 0.122 seconds | 0.154 seconds | 0.116 seconds | **MET** |
+
+### Before and after comparison
+
+| Criterion | Before verdict | After verdict | Comparison |
+|---|---|---|---|
+| 1. Logging completeness and 1 MiB rotation | MET | MET | The same target was met in all six trials |
+| 2. Timing accuracy | MET | MET | The same target was met in all six trials |
+| 3. Log persistence | MET | MET | The same target was met in all six trials |
+| 4. Failure logging | MET | MET | The same target was met in all six trials |
+| 5. Average warm response time | MET | MET | 0.137 seconds, 0.119 seconds, 0.129 seconds → 0.122 seconds, 0.154 seconds, 0.116 seconds |
+
+**Evidence from the AFTER run:** All examples below are copied from `results/capstone_eval_after_2026-11-17_061230.json`. That full report includes every response, log trace, and timing measurement for all three trials.
+
+**Criterion 1 (AFTER), real output from trial 1.** `request_telemetry.py::record_request`
+
+```json
+{
+  "timestamp": "2026-11-17T06:12:03.274+00:00",
+  "request_id": "40730c88e3b94de2a293a1d9c1274cbe",
+  "method": "POST",
+  "route": "/submit",
+  "input": {
+    "content_type": "application/json",
+    "body_kind": "dict",
+    "creator_id": "u9_after_1_f2cf4911_good_01",
+    "text_chars": 207,
+    "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+    "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+  },
+  "output": {
+    "http_status": 200,
+    "content_id": "5cb49acf20b34ee9bc8c728377ab9f08",
+    "guess": "human",
+    "status": "decided",
+    "model_score": 0.1411,
+    "style_score": 0.4841,
+    "confidence": 0.2954
+  },
+  "duration_ms": 107.304,
+  "cpu_seconds": 1.015625
+}
+```
+
+**Criterion 2 (AFTER), real output from trial 1.** `capstone_eval.py::test_trial`
+
+```json
+{
+  "u9_after_1_f2cf4911_good_01": 6.313,
+  "u9_after_1_f2cf4911_good_02": 14.858,
+  "u9_after_1_f2cf4911_good_03": 16.141,
+  "u9_after_1_f2cf4911_good_04": 21.433
+}
+```
+
+**Criterion 3 (AFTER), real output from trial 1.** `log_rotation.py::read_jsonl`
+
+```json
+{
+  "rotated": true,
+  "files": [
+    "requests.000001.jsonl",
+    "requests.jsonl"
+  ],
+  "file_sizes_bytes": [
+    1043555,
+    249345
+  ],
+  "limit_bytes": 1048576,
+  "all_files_within_limit": true,
+  "records_recovered": 140,
+  "expected_records": 140,
+  "records_in_original_order": true,
+  "recovered_after_restart": 140,
+  "archives_survived_restart": true
+}
+```
+
+**Criterion 4 (AFTER), real output from trial 1.** `app.py::submit`, `audit.py::log_rejection`, and `request_telemetry.py::record_request`
+
+```json
+{
+  "request": {
+    "case": "missing_text",
+    "creator_id": "u9_after_1_f2cf4911_missing_text",
+    "status": 400,
+    "response": {
+      "error": "invalid_text",
+      "message": "text must be a non-empty string."
+    }
+  },
+  "telemetry": {
+    "timestamp": "2026-11-17T06:12:04.562+00:00",
+    "request_id": "a77bd6d709074ee8bd62a32079ef6ac6",
+    "method": "POST",
+    "route": "/submit",
+    "input": {
+      "content_type": "application/json",
+      "body_kind": "dict",
+      "creator_id": "u9_after_1_f2cf4911_missing_text",
+      "text_chars": null,
+      "text_sha256": null,
+      "text_preview": null,
+      "text_kind": "NoneType"
+    },
+    "output": {
+      "http_status": 400,
+      "error": "invalid_text"
+    },
+    "duration_ms": 3.162,
+    "cpu_seconds": 0
+  },
+  "audit": {
+    "timestamp": "2026-11-17T06:12:04+00:00",
+    "creator_id": "u9_after_1_f2cf4911_missing_text",
+    "event": "rejected",
+    "status": "rejected",
+    "reason": "invalid_text"
+  }
+}
+```
+
+**Criterion 5 (AFTER), real output from trial 1.** `capstone_eval.py::test_trial`
+
+```json
+{
+  "mean_ms": 121.9083,
+  "client_ms": [
+    113.617,
+    110.236,
+    127.464,
+    153.273,
+    104.397,
+    132.487,
+    125.852,
+    119.844,
+    128.135,
+    103.778
+  ]
+}
+```
+
+**Did the improvement help?** Yes, for its intended purpose: the newest-50 lookup was approximately **11.144 times faster** in this local fixture, with identical returned entries. All five acceptance criteria remained MET across three trials. This does not demonstrate lower latency for AI scoring. In fact the average warm HTTP duration moved from 0.128376 s to 0.130634 s, a small difference that is not enough to attribute to this change.
 
 **What's Still Broken**
 
