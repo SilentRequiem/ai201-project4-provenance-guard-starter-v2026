@@ -93,6 +93,30 @@ class LogRotationTests(unittest.TestCase):
         self.assertGreater(record["reasoning_original_chars"], 1024 * 1024)
         self.assertLessEqual(config.AUDIT_LOG.stat().st_size, config.LOG_ROTATION_BYTES)
 
+    def test_recent_log_lookup_matches_full_history_across_archives(self):
+        for i in range(80):
+            log_rotation.append_jsonl(config.REQUEST_TELEMETRY_LOG, {
+                "request_id": f"tail-{i:03d}",
+                "input": {"creator_id": "synthetic"},
+                "padding": "a" * 90,
+            })
+        all_rows = log_rotation.read_jsonl(config.REQUEST_TELEMETRY_LOG)
+        self.assertGreater(len(log_rotation.archived_paths(config.REQUEST_TELEMETRY_LOG)), 1)
+        for limit in (1, 5, 20, 50, 200):
+            self.assertEqual(
+                log_rotation.read_jsonl(config.REQUEST_TELEMETRY_LOG, limit=limit),
+                all_rows[-limit:],
+            )
+
+        # Include an invalid final JSON line. Recent reads should ignore it
+        # and preserve the order of the most recent complete valid entries.
+        with config.REQUEST_TELEMETRY_LOG.open("a", encoding="utf-8") as handle:
+            handle.write("{broken json\\n")
+        self.assertEqual(
+            log_rotation.read_jsonl(config.REQUEST_TELEMETRY_LOG, limit=5),
+            all_rows[-5:],
+        )
+
     def test_empty_log_reads_are_clean(self):
         self.assertEqual(audit.read_entries(), [])
         self.assertEqual(audit.count_entries(), 0)
