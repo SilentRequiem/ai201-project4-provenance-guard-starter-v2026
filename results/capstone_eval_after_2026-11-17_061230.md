@@ -20,4 +20,4 @@ Mean process CPU seconds: 0.960938
 
 Complete HTTP responses, timing values, archived-log fixture results, and per-criterion traces are in the JSON file.
 This is measured local compute time, not API spend or a hosting bill.
-No after-run success is claimed until the actual AFTER script runs.
+This AFTER run completed on the local Windows service. Its results are recorded above and in the matching JSON evidence.
