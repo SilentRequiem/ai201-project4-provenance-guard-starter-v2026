@@ -1,13 +1,7 @@
 name: Unit 9 log rotation checks
 
+# Run manually only AFTER committing the user's capstone criteria.
 on:
-  push:
-    paths:
-      - log_rotation.py
-      - audit.py
-      - request_telemetry.py
-      - test_capstone_rotation.py
-      - .github/workflows/unit9-rotation.yml
   workflow_dispatch:
 
 jobs:
