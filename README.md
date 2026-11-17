@@ -1052,7 +1052,7 @@ The local startup command and the Python, dependency, and model requirements wil
 
 **Instrumentation**
 
-Pending the real instrumented run. Each new request record will capture the time, route, a limited input summary, the response status and result, and elapsed time. Raw writing will not be copied into telemetry. Actual entries will be pasted here after running the service.
+Pending the real instrumented run. Each new request record will capture the time, route, a limited input summary, the response status and result, and elapsed time. The log keeps only an 80-character input preview, a text length, and a SHA-256 digest, not the full submission. That preview could still contain sensitive text, so this local test uses synthetic samples only. Actual entries will be pasted here after running the service.
 
 **What It Costs**
 
