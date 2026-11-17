@@ -1,0 +1,4660 @@
+{
+  "label": "before",
+  "timestamp": "2026-11-17T06:06:38.406615+00:00",
+  "criteria_commit": "25085d33",
+  "method": "Three independent trials; ten real warm HTTP requests per trial for criteria 1, 2, 3 and 5; five invalid requests per trial for criterion 4; service restarted after each trial. A separate temporary 1 MiB fixture validates archive rollover without filling the committed service log with fake HTTP events.",
+  "verdicts": [
+    {
+      "criterion": 1,
+      "name": "Logging completeness and 1 MiB rotation",
+      "target": "10/10 detailed records and safe 1 MiB rotation",
+      "run_1": "10/10 with rotation=True",
+      "run_2": "10/10 with rotation=True",
+      "run_3": "10/10 with rotation=True",
+      "verdict": "MET"
+    },
+    {
+      "criterion": 2,
+      "name": "Timing accuracy",
+      "target": "10/10 client vs server gaps <= 200 ms",
+      "run_1": "10/10 gaps <= 200 ms",
+      "run_2": "10/10 gaps <= 200 ms",
+      "run_3": "10/10 gaps <= 200 ms",
+      "verdict": "MET"
+    },
+    {
+      "criterion": 3,
+      "name": "Log persistence",
+      "target": "10/10 service logs survive restart including archived history",
+      "run_1": "10/10 after restart; archived probe=True",
+      "run_2": "10/10 after restart; archived probe=True",
+      "run_3": "10/10 after restart; archived probe=True",
+      "verdict": "MET"
+    },
+    {
+      "criterion": 4,
+      "name": "Failure logging",
+      "target": "5/5 invalid requests have their own detailed logs",
+      "run_1": "5/5 valid rejection traces",
+      "run_2": "5/5 valid rejection traces",
+      "run_3": "5/5 valid rejection traces",
+      "verdict": "MET"
+    },
+    {
+      "criterion": 5,
+      "name": "Average warm response time",
+      "target": "Mean of ten warm requests < 2 seconds",
+      "run_1": "0.137 seconds",
+      "run_2": "0.119 seconds",
+      "run_3": "0.129 seconds",
+      "verdict": "MET"
+    }
+  ],
+  "cost": {
+    "basis": "30 warm local synthetic HTTP submissions across three trials",
+    "sample_count": 30,
+    "mean_client_seconds": 0.128376,
+    "mean_server_seconds": 0.114047,
+    "mean_process_cpu_seconds": 0.943229,
+    "hundred_client_seconds_at_measured_mean": 12.838,
+    "hundred_process_cpu_seconds_at_measured_mean": 94.323
+  },
+  "trials": [
+    {
+      "trial": 1,
+      "criteria": [
+        {
+          "criterion": 1,
+          "name": "Logging completeness and 1 MiB rotation",
+          "target": "10/10 detailed records and safe 1 MiB rotation",
+          "value": "10/10 with rotation=True",
+          "met": true,
+          "evidence": {
+            "requests": [
+              {
+                "creator_id": "u9_before_1_8ac25805_good_01",
+                "status": 200,
+                "client_duration_ms": 132.752,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "f43d64ce143e4f9785b1d4784ae1c676",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_1_8ac25805_good_02",
+                "status": 200,
+                "client_duration_ms": 113.065,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "bd8180d284364f5190b62db1185343f6",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_1_8ac25805_good_03",
+                "status": 200,
+                "client_duration_ms": 233.694,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "e366280a789740f0a5cd2d9dfb0d33f7",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_1_8ac25805_good_04",
+                "status": 200,
+                "client_duration_ms": 164.703,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "4d2e3e0ab9ec40afb5c0bbe2beb61e34",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_1_8ac25805_good_05",
+                "status": 200,
+                "client_duration_ms": 106.536,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "401265d2d30141e58cd1cca28696a87b",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_1_8ac25805_good_06",
+                "status": 200,
+                "client_duration_ms": 131.295,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "9372509213e64200a3ffd07b19517451",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_1_8ac25805_good_07",
+                "status": 200,
+                "client_duration_ms": 120.244,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "26b219bf5cc44b1ea7068a3b99a9f6fb",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_1_8ac25805_good_08",
+                "status": 200,
+                "client_duration_ms": 120.658,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "ed49b2e50d954e0984d6c830ee8a847a",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_1_8ac25805_good_09",
+                "status": 200,
+                "client_duration_ms": 125.727,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "d7c69fac4d894617b3963e6a5685d781",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_1_8ac25805_good_10",
+                "status": 200,
+                "client_duration_ms": 125.32,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "12547534c0d345a28a07d9cdd8698af7",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              }
+            ],
+            "telemetry": [
+              {
+                "timestamp": "2026-11-17T06:06:09.860+00:00",
+                "request_id": "c4b64db3566a491fb9505deb35472a69",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_1_8ac25805_good_01",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "f43d64ce143e4f9785b1d4784ae1c676",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 105.75,
+                "cpu_seconds": 0.953125
+              },
+              {
+                "timestamp": "2026-11-17T06:06:09.974+00:00",
+                "request_id": "d4d01677f0f44826bd7b683f9fabcc1e",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_1_8ac25805_good_02",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "bd8180d284364f5190b62db1185343f6",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 107.923,
+                "cpu_seconds": 0.828125
+              },
+              {
+                "timestamp": "2026-11-17T06:06:10.207+00:00",
+                "request_id": "a317ea1ed8f44535b588a44bba2941db",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_1_8ac25805_good_03",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "e366280a789740f0a5cd2d9dfb0d33f7",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 215.281,
+                "cpu_seconds": 1.140625
+              },
+              {
+                "timestamp": "2026-11-17T06:06:10.372+00:00",
+                "request_id": "277ed27f46cb4280921a4e22f79d4dda",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_1_8ac25805_good_04",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "4d2e3e0ab9ec40afb5c0bbe2beb61e34",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 137.471,
+                "cpu_seconds": 1.15625
+              },
+              {
+                "timestamp": "2026-11-17T06:06:10.479+00:00",
+                "request_id": "80bd0366a31b4b3eafa9d3f15652510e",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_1_8ac25805_good_05",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "401265d2d30141e58cd1cca28696a87b",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 100.175,
+                "cpu_seconds": 1.046875
+              },
+              {
+                "timestamp": "2026-11-17T06:06:10.609+00:00",
+                "request_id": "53e7b143d2a040b3a4da455a8a9654b2",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_1_8ac25805_good_06",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "9372509213e64200a3ffd07b19517451",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 111.787,
+                "cpu_seconds": 0.953125
+              },
+              {
+                "timestamp": "2026-11-17T06:06:10.729+00:00",
+                "request_id": "792c7a8388d441e68cba801ce2546fc8",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_1_8ac25805_good_07",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "26b219bf5cc44b1ea7068a3b99a9f6fb",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 104.213,
+                "cpu_seconds": 0.984375
+              },
+              {
+                "timestamp": "2026-11-17T06:06:10.850+00:00",
+                "request_id": "e99bbcab0dfd48da80268e93edebcf47",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_1_8ac25805_good_08",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "ed49b2e50d954e0984d6c830ee8a847a",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 98.268,
+                "cpu_seconds": 0.921875
+              },
+              {
+                "timestamp": "2026-11-17T06:06:10.976+00:00",
+                "request_id": "b8d19b654a2c4719802f906f25731b5c",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_1_8ac25805_good_09",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "d7c69fac4d894617b3963e6a5685d781",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 104.117,
+                "cpu_seconds": 0.96875
+              },
+              {
+                "timestamp": "2026-11-17T06:06:11.101+00:00",
+                "request_id": "312e639865bd4cef82ae6a61aefb0be1",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_1_8ac25805_good_10",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "12547534c0d345a28a07d9cdd8698af7",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 101.987,
+                "cpu_seconds": 0.921875
+              }
+            ],
+            "completeness_by_creator": {
+              "u9_before_1_8ac25805_good_01": true,
+              "u9_before_1_8ac25805_good_02": true,
+              "u9_before_1_8ac25805_good_03": true,
+              "u9_before_1_8ac25805_good_04": true,
+              "u9_before_1_8ac25805_good_05": true,
+              "u9_before_1_8ac25805_good_06": true,
+              "u9_before_1_8ac25805_good_07": true,
+              "u9_before_1_8ac25805_good_08": true,
+              "u9_before_1_8ac25805_good_09": true,
+              "u9_before_1_8ac25805_good_10": true
+            },
+            "isolated_rotation_probe": {
+              "rotated": true,
+              "files": [
+                "requests.000001.jsonl",
+                "requests.jsonl"
+              ],
+              "file_sizes_bytes": [
+                1043555,
+                249345
+              ],
+              "limit_bytes": 1048576,
+              "all_files_within_limit": true,
+              "records_recovered": 140,
+              "expected_records": 140,
+              "records_in_original_order": true,
+              "recovered_after_restart": 140,
+              "archives_survived_restart": true
+            }
+          }
+        },
+        {
+          "criterion": 2,
+          "name": "Timing accuracy",
+          "target": "10/10 client vs server gaps <= 200 ms",
+          "value": "10/10 gaps <= 200 ms",
+          "met": true,
+          "evidence": {
+            "timing_difference_ms": {
+              "u9_before_1_8ac25805_good_01": 27.002,
+              "u9_before_1_8ac25805_good_02": 5.142,
+              "u9_before_1_8ac25805_good_03": 18.413,
+              "u9_before_1_8ac25805_good_04": 27.232,
+              "u9_before_1_8ac25805_good_05": 6.361,
+              "u9_before_1_8ac25805_good_06": 19.508,
+              "u9_before_1_8ac25805_good_07": 16.031,
+              "u9_before_1_8ac25805_good_08": 22.39,
+              "u9_before_1_8ac25805_good_09": 21.61,
+              "u9_before_1_8ac25805_good_10": 23.333
+            },
+            "requests": [
+              {
+                "creator_id": "u9_before_1_8ac25805_good_01",
+                "status": 200,
+                "client_duration_ms": 132.752,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "f43d64ce143e4f9785b1d4784ae1c676",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_1_8ac25805_good_02",
+                "status": 200,
+                "client_duration_ms": 113.065,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "bd8180d284364f5190b62db1185343f6",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_1_8ac25805_good_03",
+                "status": 200,
+                "client_duration_ms": 233.694,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "e366280a789740f0a5cd2d9dfb0d33f7",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_1_8ac25805_good_04",
+                "status": 200,
+                "client_duration_ms": 164.703,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "4d2e3e0ab9ec40afb5c0bbe2beb61e34",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_1_8ac25805_good_05",
+                "status": 200,
+                "client_duration_ms": 106.536,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "401265d2d30141e58cd1cca28696a87b",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_1_8ac25805_good_06",
+                "status": 200,
+                "client_duration_ms": 131.295,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "9372509213e64200a3ffd07b19517451",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_1_8ac25805_good_07",
+                "status": 200,
+                "client_duration_ms": 120.244,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "26b219bf5cc44b1ea7068a3b99a9f6fb",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_1_8ac25805_good_08",
+                "status": 200,
+                "client_duration_ms": 120.658,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "ed49b2e50d954e0984d6c830ee8a847a",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_1_8ac25805_good_09",
+                "status": 200,
+                "client_duration_ms": 125.727,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "d7c69fac4d894617b3963e6a5685d781",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_1_8ac25805_good_10",
+                "status": 200,
+                "client_duration_ms": 125.32,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "12547534c0d345a28a07d9cdd8698af7",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              }
+            ],
+            "telemetry": [
+              {
+                "timestamp": "2026-11-17T06:06:09.860+00:00",
+                "request_id": "c4b64db3566a491fb9505deb35472a69",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_1_8ac25805_good_01",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "f43d64ce143e4f9785b1d4784ae1c676",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 105.75,
+                "cpu_seconds": 0.953125
+              },
+              {
+                "timestamp": "2026-11-17T06:06:09.974+00:00",
+                "request_id": "d4d01677f0f44826bd7b683f9fabcc1e",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_1_8ac25805_good_02",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "bd8180d284364f5190b62db1185343f6",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 107.923,
+                "cpu_seconds": 0.828125
+              },
+              {
+                "timestamp": "2026-11-17T06:06:10.207+00:00",
+                "request_id": "a317ea1ed8f44535b588a44bba2941db",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_1_8ac25805_good_03",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "e366280a789740f0a5cd2d9dfb0d33f7",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 215.281,
+                "cpu_seconds": 1.140625
+              },
+              {
+                "timestamp": "2026-11-17T06:06:10.372+00:00",
+                "request_id": "277ed27f46cb4280921a4e22f79d4dda",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_1_8ac25805_good_04",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "4d2e3e0ab9ec40afb5c0bbe2beb61e34",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 137.471,
+                "cpu_seconds": 1.15625
+              },
+              {
+                "timestamp": "2026-11-17T06:06:10.479+00:00",
+                "request_id": "80bd0366a31b4b3eafa9d3f15652510e",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_1_8ac25805_good_05",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "401265d2d30141e58cd1cca28696a87b",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 100.175,
+                "cpu_seconds": 1.046875
+              },
+              {
+                "timestamp": "2026-11-17T06:06:10.609+00:00",
+                "request_id": "53e7b143d2a040b3a4da455a8a9654b2",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_1_8ac25805_good_06",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "9372509213e64200a3ffd07b19517451",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 111.787,
+                "cpu_seconds": 0.953125
+              },
+              {
+                "timestamp": "2026-11-17T06:06:10.729+00:00",
+                "request_id": "792c7a8388d441e68cba801ce2546fc8",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_1_8ac25805_good_07",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "26b219bf5cc44b1ea7068a3b99a9f6fb",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 104.213,
+                "cpu_seconds": 0.984375
+              },
+              {
+                "timestamp": "2026-11-17T06:06:10.850+00:00",
+                "request_id": "e99bbcab0dfd48da80268e93edebcf47",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_1_8ac25805_good_08",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "ed49b2e50d954e0984d6c830ee8a847a",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 98.268,
+                "cpu_seconds": 0.921875
+              },
+              {
+                "timestamp": "2026-11-17T06:06:10.976+00:00",
+                "request_id": "b8d19b654a2c4719802f906f25731b5c",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_1_8ac25805_good_09",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "d7c69fac4d894617b3963e6a5685d781",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 104.117,
+                "cpu_seconds": 0.96875
+              },
+              {
+                "timestamp": "2026-11-17T06:06:11.101+00:00",
+                "request_id": "312e639865bd4cef82ae6a61aefb0be1",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_1_8ac25805_good_10",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "12547534c0d345a28a07d9cdd8698af7",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 101.987,
+                "cpu_seconds": 0.921875
+              }
+            ]
+          }
+        },
+        {
+          "criterion": 3,
+          "name": "Log persistence",
+          "target": "10/10 service logs survive restart including archived history",
+          "value": "10/10 after restart; archived probe=True",
+          "met": true,
+          "evidence": {
+            "telemetry_after_restart": [
+              {
+                "timestamp": "2026-11-17T06:06:09.860+00:00",
+                "request_id": "c4b64db3566a491fb9505deb35472a69",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_1_8ac25805_good_01",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "f43d64ce143e4f9785b1d4784ae1c676",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 105.75,
+                "cpu_seconds": 0.953125
+              },
+              {
+                "timestamp": "2026-11-17T06:06:09.974+00:00",
+                "request_id": "d4d01677f0f44826bd7b683f9fabcc1e",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_1_8ac25805_good_02",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "bd8180d284364f5190b62db1185343f6",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 107.923,
+                "cpu_seconds": 0.828125
+              },
+              {
+                "timestamp": "2026-11-17T06:06:10.207+00:00",
+                "request_id": "a317ea1ed8f44535b588a44bba2941db",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_1_8ac25805_good_03",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "e366280a789740f0a5cd2d9dfb0d33f7",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 215.281,
+                "cpu_seconds": 1.140625
+              },
+              {
+                "timestamp": "2026-11-17T06:06:10.372+00:00",
+                "request_id": "277ed27f46cb4280921a4e22f79d4dda",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_1_8ac25805_good_04",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "4d2e3e0ab9ec40afb5c0bbe2beb61e34",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 137.471,
+                "cpu_seconds": 1.15625
+              },
+              {
+                "timestamp": "2026-11-17T06:06:10.479+00:00",
+                "request_id": "80bd0366a31b4b3eafa9d3f15652510e",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_1_8ac25805_good_05",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "401265d2d30141e58cd1cca28696a87b",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 100.175,
+                "cpu_seconds": 1.046875
+              },
+              {
+                "timestamp": "2026-11-17T06:06:10.609+00:00",
+                "request_id": "53e7b143d2a040b3a4da455a8a9654b2",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_1_8ac25805_good_06",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "9372509213e64200a3ffd07b19517451",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 111.787,
+                "cpu_seconds": 0.953125
+              },
+              {
+                "timestamp": "2026-11-17T06:06:10.729+00:00",
+                "request_id": "792c7a8388d441e68cba801ce2546fc8",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_1_8ac25805_good_07",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "26b219bf5cc44b1ea7068a3b99a9f6fb",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 104.213,
+                "cpu_seconds": 0.984375
+              },
+              {
+                "timestamp": "2026-11-17T06:06:10.850+00:00",
+                "request_id": "e99bbcab0dfd48da80268e93edebcf47",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_1_8ac25805_good_08",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "ed49b2e50d954e0984d6c830ee8a847a",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 98.268,
+                "cpu_seconds": 0.921875
+              },
+              {
+                "timestamp": "2026-11-17T06:06:10.976+00:00",
+                "request_id": "b8d19b654a2c4719802f906f25731b5c",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_1_8ac25805_good_09",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "d7c69fac4d894617b3963e6a5685d781",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 104.117,
+                "cpu_seconds": 0.96875
+              },
+              {
+                "timestamp": "2026-11-17T06:06:11.101+00:00",
+                "request_id": "312e639865bd4cef82ae6a61aefb0be1",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_1_8ac25805_good_10",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "12547534c0d345a28a07d9cdd8698af7",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 101.987,
+                "cpu_seconds": 0.921875
+              }
+            ],
+            "isolated_archive_probe": {
+              "rotated": true,
+              "files": [
+                "requests.000001.jsonl",
+                "requests.jsonl"
+              ],
+              "file_sizes_bytes": [
+                1043555,
+                249345
+              ],
+              "limit_bytes": 1048576,
+              "all_files_within_limit": true,
+              "records_recovered": 140,
+              "expected_records": 140,
+              "records_in_original_order": true,
+              "recovered_after_restart": 140,
+              "archives_survived_restart": true
+            }
+          }
+        },
+        {
+          "criterion": 4,
+          "name": "Failure logging",
+          "target": "5/5 invalid requests have their own detailed logs",
+          "value": "5/5 valid rejection traces",
+          "met": true,
+          "evidence": {
+            "requests": [
+              {
+                "case": "missing_text",
+                "creator_id": "u9_before_1_8ac25805_missing_text",
+                "status": 400,
+                "response": {
+                  "error": "invalid_text",
+                  "message": "text must be a non-empty string."
+                }
+              },
+              {
+                "case": "empty_text",
+                "creator_id": "u9_before_1_8ac25805_empty_text",
+                "status": 400,
+                "response": {
+                  "error": "invalid_text",
+                  "message": "text must be a non-empty string."
+                }
+              },
+              {
+                "case": "null_text",
+                "creator_id": "u9_before_1_8ac25805_null_text",
+                "status": 400,
+                "response": {
+                  "error": "invalid_text",
+                  "message": "text must be a non-empty string."
+                }
+              },
+              {
+                "case": "unsupported_text",
+                "creator_id": "u9_before_1_8ac25805_unsupported_text",
+                "status": 422,
+                "response": {
+                  "error": "unscorable_text",
+                  "message": "This English-focused detector cannot score the input reliably. Do not infer AI authorship. Request human review instead."
+                }
+              },
+              {
+                "case": "oversize_text",
+                "creator_id": "u9_before_1_8ac25805_oversize_text",
+                "status": 413,
+                "response": {
+                  "error": "text_too_large",
+                  "message": "text must be 20,000 characters or fewer."
+                }
+              }
+            ],
+            "telemetry": [
+              {
+                "timestamp": "2026-11-17T06:06:11.293+00:00",
+                "request_id": "20e822e505cb488ab4704677fb67da1b",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_1_8ac25805_missing_text",
+                  "text_chars": null,
+                  "text_sha256": null,
+                  "text_preview": null,
+                  "text_kind": "NoneType"
+                },
+                "output": {
+                  "http_status": 400,
+                  "error": "invalid_text"
+                },
+                "duration_ms": 3.465,
+                "cpu_seconds": 0.0
+              },
+              {
+                "timestamp": "2026-11-17T06:06:11.320+00:00",
+                "request_id": "34131a5014494bc487bf1e2929c110f3",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_1_8ac25805_empty_text",
+                  "text_chars": 0,
+                  "text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                  "text_preview": ""
+                },
+                "output": {
+                  "http_status": 400,
+                  "error": "invalid_text"
+                },
+                "duration_ms": 2.067,
+                "cpu_seconds": 0.015625
+              },
+              {
+                "timestamp": "2026-11-17T06:06:11.326+00:00",
+                "request_id": "ea767a95cf49455480a6cac462e34a56",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_1_8ac25805_null_text",
+                  "text_chars": null,
+                  "text_sha256": null,
+                  "text_preview": null,
+                  "text_kind": "NoneType"
+                },
+                "output": {
+                  "http_status": 400,
+                  "error": "invalid_text"
+                },
+                "duration_ms": 1.422,
+                "cpu_seconds": 0.0
+              },
+              {
+                "timestamp": "2026-11-17T06:06:11.354+00:00",
+                "request_id": "472dd0f7a63e420586450e46774661d6",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_1_8ac25805_unsupported_text",
+                  "text_chars": 3,
+                  "text_sha256": "a9d446560237e678f08df9207178713f703b7c46681859d41e0fa5cb03d7711a",
+                  "text_preview": "🙂🙂🙂"
+                },
+                "output": {
+                  "http_status": 422,
+                  "error": "unscorable_text"
+                },
+                "duration_ms": 3.206,
+                "cpu_seconds": 0.015625
+              },
+              {
+                "timestamp": "2026-11-17T06:06:11.377+00:00",
+                "request_id": "e0ac526c4f144d7889a73ed6111ff6bd",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_1_8ac25805_oversize_text",
+                  "text_chars": 22500,
+                  "text_sha256": "987785075d7262390490b30642c9a34ffbc61fa2d9a8b4aea2aa7190c58b049b",
+                  "text_preview": "word word word word word word word word word word word word word word word word "
+                },
+                "output": {
+                  "http_status": 413,
+                  "error": "text_too_large"
+                },
+                "duration_ms": 2.676,
+                "cpu_seconds": 0.0
+              }
+            ],
+            "audit_entries": {
+              "u9_before_1_8ac25805_missing_text": [
+                {
+                  "timestamp": "2026-11-17T06:06:11+00:00",
+                  "creator_id": "u9_before_1_8ac25805_missing_text",
+                  "event": "rejected",
+                  "status": "rejected",
+                  "reason": "invalid_text"
+                }
+              ],
+              "u9_before_1_8ac25805_empty_text": [
+                {
+                  "timestamp": "2026-11-17T06:06:11+00:00",
+                  "creator_id": "u9_before_1_8ac25805_empty_text",
+                  "event": "rejected",
+                  "status": "rejected",
+                  "reason": "invalid_text"
+                }
+              ],
+              "u9_before_1_8ac25805_null_text": [
+                {
+                  "timestamp": "2026-11-17T06:06:11+00:00",
+                  "creator_id": "u9_before_1_8ac25805_null_text",
+                  "event": "rejected",
+                  "status": "rejected",
+                  "reason": "invalid_text"
+                }
+              ],
+              "u9_before_1_8ac25805_unsupported_text": [
+                {
+                  "timestamp": "2026-11-17T06:06:11+00:00",
+                  "creator_id": "u9_before_1_8ac25805_unsupported_text",
+                  "event": "rejected",
+                  "status": "rejected",
+                  "reason": "unscorable_text",
+                  "detail": "unsupported_or_too_few_english_words"
+                }
+              ],
+              "u9_before_1_8ac25805_oversize_text": [
+                {
+                  "timestamp": "2026-11-17T06:06:11+00:00",
+                  "creator_id": "u9_before_1_8ac25805_oversize_text",
+                  "event": "rejected",
+                  "status": "rejected",
+                  "reason": "text_too_large",
+                  "text_length": 22499
+                }
+              ]
+            },
+            "per_request_pass": {
+              "u9_before_1_8ac25805_missing_text": true,
+              "u9_before_1_8ac25805_empty_text": true,
+              "u9_before_1_8ac25805_null_text": true,
+              "u9_before_1_8ac25805_unsupported_text": true,
+              "u9_before_1_8ac25805_oversize_text": true
+            }
+          }
+        },
+        {
+          "criterion": 5,
+          "name": "Average warm response time",
+          "target": "Mean of ten warm requests < 2 seconds",
+          "value": "0.137 seconds",
+          "met": true,
+          "evidence": {
+            "requests": [
+              {
+                "creator_id": "u9_before_1_8ac25805_good_01",
+                "status": 200,
+                "client_duration_ms": 132.752,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "f43d64ce143e4f9785b1d4784ae1c676",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_1_8ac25805_good_02",
+                "status": 200,
+                "client_duration_ms": 113.065,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "bd8180d284364f5190b62db1185343f6",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_1_8ac25805_good_03",
+                "status": 200,
+                "client_duration_ms": 233.694,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "e366280a789740f0a5cd2d9dfb0d33f7",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_1_8ac25805_good_04",
+                "status": 200,
+                "client_duration_ms": 164.703,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "4d2e3e0ab9ec40afb5c0bbe2beb61e34",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_1_8ac25805_good_05",
+                "status": 200,
+                "client_duration_ms": 106.536,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "401265d2d30141e58cd1cca28696a87b",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_1_8ac25805_good_06",
+                "status": 200,
+                "client_duration_ms": 131.295,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "9372509213e64200a3ffd07b19517451",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_1_8ac25805_good_07",
+                "status": 200,
+                "client_duration_ms": 120.244,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "26b219bf5cc44b1ea7068a3b99a9f6fb",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_1_8ac25805_good_08",
+                "status": 200,
+                "client_duration_ms": 120.658,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "ed49b2e50d954e0984d6c830ee8a847a",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_1_8ac25805_good_09",
+                "status": 200,
+                "client_duration_ms": 125.727,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "d7c69fac4d894617b3963e6a5685d781",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_1_8ac25805_good_10",
+                "status": 200,
+                "client_duration_ms": 125.32,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "12547534c0d345a28a07d9cdd8698af7",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              }
+            ],
+            "mean_ms": 137.39939999999999,
+            "warmup_excluded": {
+              "creator_id": "u9_before_1_8ac25805_warmup",
+              "status": 200,
+              "client_duration_ms": 43231.802,
+              "response": {
+                "confidence": 0.2954,
+                "content_id": "5937c606101a4a238832b3b89556fe3b",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.1411,
+                "status": "decided",
+                "style_score": 0.4841
+              }
+            }
+          }
+        }
+      ],
+      "rotation_probe": {
+        "rotated": true,
+        "files": [
+          "requests.000001.jsonl",
+          "requests.jsonl"
+        ],
+        "file_sizes_bytes": [
+          1043555,
+          249345
+        ],
+        "limit_bytes": 1048576,
+        "all_files_within_limit": true,
+        "records_recovered": 140,
+        "expected_records": 140,
+        "records_in_original_order": true,
+        "recovered_after_restart": 140,
+        "archives_survived_restart": true
+      }
+    },
+    {
+      "trial": 2,
+      "criteria": [
+        {
+          "criterion": 1,
+          "name": "Logging completeness and 1 MiB rotation",
+          "target": "10/10 detailed records and safe 1 MiB rotation",
+          "value": "10/10 with rotation=True",
+          "met": true,
+          "evidence": {
+            "requests": [
+              {
+                "creator_id": "u9_before_2_b747e6a9_good_01",
+                "status": 200,
+                "client_duration_ms": 120.974,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "efbd8eb2ca5c411494a409af385aaaac",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_2_b747e6a9_good_02",
+                "status": 200,
+                "client_duration_ms": 125.461,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "c796d0159dcd4b6180892ffb18e583ec",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_2_b747e6a9_good_03",
+                "status": 200,
+                "client_duration_ms": 130.345,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "14eb75c0eb7647ca9182608795aceffb",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_2_b747e6a9_good_04",
+                "status": 200,
+                "client_duration_ms": 104.366,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "0fcf4d8a32f14b6a94e2060441d64c68",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_2_b747e6a9_good_05",
+                "status": 200,
+                "client_duration_ms": 119.98,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "3a1ef8b939ad4de489ba50571c0e136b",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_2_b747e6a9_good_06",
+                "status": 200,
+                "client_duration_ms": 127.157,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "af1332946f7d4494ae8995aefcb4056e",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_2_b747e6a9_good_07",
+                "status": 200,
+                "client_duration_ms": 114.651,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "c2a67d58cb2e4422bdf03fba50c5d3e2",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_2_b747e6a9_good_08",
+                "status": 200,
+                "client_duration_ms": 108.413,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "9f1450b879384d5e82da6f7bb8449fea",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_2_b747e6a9_good_09",
+                "status": 200,
+                "client_duration_ms": 114.759,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "081249bb58974f3396f7a04bd9357245",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_2_b747e6a9_good_10",
+                "status": 200,
+                "client_duration_ms": 121.487,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "863278a6704d41418d84ff7ab54c3e27",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              }
+            ],
+            "telemetry": [
+              {
+                "timestamp": "2026-11-17T06:06:22.518+00:00",
+                "request_id": "b458168a696046c293ef0ed34d96399a",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_2_b747e6a9_good_01",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "efbd8eb2ca5c411494a409af385aaaac",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 100.746,
+                "cpu_seconds": 0.875
+              },
+              {
+                "timestamp": "2026-11-17T06:06:22.643+00:00",
+                "request_id": "2ab0a036d5c44b13b5aafce82fedb52f",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_2_b747e6a9_good_02",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "c796d0159dcd4b6180892ffb18e583ec",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 121.491,
+                "cpu_seconds": 1.046875
+              },
+              {
+                "timestamp": "2026-11-17T06:06:22.774+00:00",
+                "request_id": "fa88da13cc924bcfa9b07ae203074bfb",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_2_b747e6a9_good_03",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "14eb75c0eb7647ca9182608795aceffb",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 124.588,
+                "cpu_seconds": 1.0
+              },
+              {
+                "timestamp": "2026-11-17T06:06:22.878+00:00",
+                "request_id": "2e64b04ac53243c8b9e0c3229438d992",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_2_b747e6a9_good_04",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "0fcf4d8a32f14b6a94e2060441d64c68",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 100.294,
+                "cpu_seconds": 0.75
+              },
+              {
+                "timestamp": "2026-11-17T06:06:22.997+00:00",
+                "request_id": "ef529f842d7f4ca3b1548481aa8a1cf0",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_2_b747e6a9_good_05",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "3a1ef8b939ad4de489ba50571c0e136b",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 112.766,
+                "cpu_seconds": 1.0
+              },
+              {
+                "timestamp": "2026-11-17T06:06:23.124+00:00",
+                "request_id": "609257aa335145d7b950c050499e96c4",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_2_b747e6a9_good_06",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "af1332946f7d4494ae8995aefcb4056e",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 100.108,
+                "cpu_seconds": 0.75
+              },
+              {
+                "timestamp": "2026-11-17T06:06:23.239+00:00",
+                "request_id": "b6956b11b0954bf2845f1de8a433def6",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_2_b747e6a9_good_07",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "c2a67d58cb2e4422bdf03fba50c5d3e2",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 108.841,
+                "cpu_seconds": 1.0
+              },
+              {
+                "timestamp": "2026-11-17T06:06:23.347+00:00",
+                "request_id": "c63ef2ae228b49b4b6880e84114f941e",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_2_b747e6a9_good_08",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "9f1450b879384d5e82da6f7bb8449fea",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 102.509,
+                "cpu_seconds": 0.765625
+              },
+              {
+                "timestamp": "2026-11-17T06:06:23.462+00:00",
+                "request_id": "7feafa1118664cd3a237d576893822c3",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_2_b747e6a9_good_09",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "081249bb58974f3396f7a04bd9357245",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 108.972,
+                "cpu_seconds": 0.9375
+              },
+              {
+                "timestamp": "2026-11-17T06:06:23.584+00:00",
+                "request_id": "ad655bf4beb442e0b95cc94f9efd8e97",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_2_b747e6a9_good_10",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "863278a6704d41418d84ff7ab54c3e27",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 115.458,
+                "cpu_seconds": 0.8125
+              }
+            ],
+            "completeness_by_creator": {
+              "u9_before_2_b747e6a9_good_01": true,
+              "u9_before_2_b747e6a9_good_02": true,
+              "u9_before_2_b747e6a9_good_03": true,
+              "u9_before_2_b747e6a9_good_04": true,
+              "u9_before_2_b747e6a9_good_05": true,
+              "u9_before_2_b747e6a9_good_06": true,
+              "u9_before_2_b747e6a9_good_07": true,
+              "u9_before_2_b747e6a9_good_08": true,
+              "u9_before_2_b747e6a9_good_09": true,
+              "u9_before_2_b747e6a9_good_10": true
+            },
+            "isolated_rotation_probe": {
+              "rotated": true,
+              "files": [
+                "requests.000001.jsonl",
+                "requests.jsonl"
+              ],
+              "file_sizes_bytes": [
+                1043555,
+                249345
+              ],
+              "limit_bytes": 1048576,
+              "all_files_within_limit": true,
+              "records_recovered": 140,
+              "expected_records": 140,
+              "records_in_original_order": true,
+              "recovered_after_restart": 140,
+              "archives_survived_restart": true
+            }
+          }
+        },
+        {
+          "criterion": 2,
+          "name": "Timing accuracy",
+          "target": "10/10 client vs server gaps <= 200 ms",
+          "value": "10/10 gaps <= 200 ms",
+          "met": true,
+          "evidence": {
+            "timing_difference_ms": {
+              "u9_before_2_b747e6a9_good_01": 20.228,
+              "u9_before_2_b747e6a9_good_02": 3.97,
+              "u9_before_2_b747e6a9_good_03": 5.757,
+              "u9_before_2_b747e6a9_good_04": 4.072,
+              "u9_before_2_b747e6a9_good_05": 7.214,
+              "u9_before_2_b747e6a9_good_06": 27.049,
+              "u9_before_2_b747e6a9_good_07": 5.81,
+              "u9_before_2_b747e6a9_good_08": 5.904,
+              "u9_before_2_b747e6a9_good_09": 5.787,
+              "u9_before_2_b747e6a9_good_10": 6.029
+            },
+            "requests": [
+              {
+                "creator_id": "u9_before_2_b747e6a9_good_01",
+                "status": 200,
+                "client_duration_ms": 120.974,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "efbd8eb2ca5c411494a409af385aaaac",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_2_b747e6a9_good_02",
+                "status": 200,
+                "client_duration_ms": 125.461,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "c796d0159dcd4b6180892ffb18e583ec",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_2_b747e6a9_good_03",
+                "status": 200,
+                "client_duration_ms": 130.345,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "14eb75c0eb7647ca9182608795aceffb",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_2_b747e6a9_good_04",
+                "status": 200,
+                "client_duration_ms": 104.366,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "0fcf4d8a32f14b6a94e2060441d64c68",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_2_b747e6a9_good_05",
+                "status": 200,
+                "client_duration_ms": 119.98,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "3a1ef8b939ad4de489ba50571c0e136b",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_2_b747e6a9_good_06",
+                "status": 200,
+                "client_duration_ms": 127.157,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "af1332946f7d4494ae8995aefcb4056e",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_2_b747e6a9_good_07",
+                "status": 200,
+                "client_duration_ms": 114.651,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "c2a67d58cb2e4422bdf03fba50c5d3e2",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_2_b747e6a9_good_08",
+                "status": 200,
+                "client_duration_ms": 108.413,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "9f1450b879384d5e82da6f7bb8449fea",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_2_b747e6a9_good_09",
+                "status": 200,
+                "client_duration_ms": 114.759,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "081249bb58974f3396f7a04bd9357245",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_2_b747e6a9_good_10",
+                "status": 200,
+                "client_duration_ms": 121.487,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "863278a6704d41418d84ff7ab54c3e27",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              }
+            ],
+            "telemetry": [
+              {
+                "timestamp": "2026-11-17T06:06:22.518+00:00",
+                "request_id": "b458168a696046c293ef0ed34d96399a",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_2_b747e6a9_good_01",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "efbd8eb2ca5c411494a409af385aaaac",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 100.746,
+                "cpu_seconds": 0.875
+              },
+              {
+                "timestamp": "2026-11-17T06:06:22.643+00:00",
+                "request_id": "2ab0a036d5c44b13b5aafce82fedb52f",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_2_b747e6a9_good_02",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "c796d0159dcd4b6180892ffb18e583ec",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 121.491,
+                "cpu_seconds": 1.046875
+              },
+              {
+                "timestamp": "2026-11-17T06:06:22.774+00:00",
+                "request_id": "fa88da13cc924bcfa9b07ae203074bfb",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_2_b747e6a9_good_03",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "14eb75c0eb7647ca9182608795aceffb",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 124.588,
+                "cpu_seconds": 1.0
+              },
+              {
+                "timestamp": "2026-11-17T06:06:22.878+00:00",
+                "request_id": "2e64b04ac53243c8b9e0c3229438d992",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_2_b747e6a9_good_04",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "0fcf4d8a32f14b6a94e2060441d64c68",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 100.294,
+                "cpu_seconds": 0.75
+              },
+              {
+                "timestamp": "2026-11-17T06:06:22.997+00:00",
+                "request_id": "ef529f842d7f4ca3b1548481aa8a1cf0",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_2_b747e6a9_good_05",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "3a1ef8b939ad4de489ba50571c0e136b",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 112.766,
+                "cpu_seconds": 1.0
+              },
+              {
+                "timestamp": "2026-11-17T06:06:23.124+00:00",
+                "request_id": "609257aa335145d7b950c050499e96c4",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_2_b747e6a9_good_06",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "af1332946f7d4494ae8995aefcb4056e",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 100.108,
+                "cpu_seconds": 0.75
+              },
+              {
+                "timestamp": "2026-11-17T06:06:23.239+00:00",
+                "request_id": "b6956b11b0954bf2845f1de8a433def6",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_2_b747e6a9_good_07",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "c2a67d58cb2e4422bdf03fba50c5d3e2",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 108.841,
+                "cpu_seconds": 1.0
+              },
+              {
+                "timestamp": "2026-11-17T06:06:23.347+00:00",
+                "request_id": "c63ef2ae228b49b4b6880e84114f941e",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_2_b747e6a9_good_08",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "9f1450b879384d5e82da6f7bb8449fea",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 102.509,
+                "cpu_seconds": 0.765625
+              },
+              {
+                "timestamp": "2026-11-17T06:06:23.462+00:00",
+                "request_id": "7feafa1118664cd3a237d576893822c3",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_2_b747e6a9_good_09",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "081249bb58974f3396f7a04bd9357245",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 108.972,
+                "cpu_seconds": 0.9375
+              },
+              {
+                "timestamp": "2026-11-17T06:06:23.584+00:00",
+                "request_id": "ad655bf4beb442e0b95cc94f9efd8e97",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_2_b747e6a9_good_10",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "863278a6704d41418d84ff7ab54c3e27",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 115.458,
+                "cpu_seconds": 0.8125
+              }
+            ]
+          }
+        },
+        {
+          "criterion": 3,
+          "name": "Log persistence",
+          "target": "10/10 service logs survive restart including archived history",
+          "value": "10/10 after restart; archived probe=True",
+          "met": true,
+          "evidence": {
+            "telemetry_after_restart": [
+              {
+                "timestamp": "2026-11-17T06:06:22.518+00:00",
+                "request_id": "b458168a696046c293ef0ed34d96399a",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_2_b747e6a9_good_01",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "efbd8eb2ca5c411494a409af385aaaac",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 100.746,
+                "cpu_seconds": 0.875
+              },
+              {
+                "timestamp": "2026-11-17T06:06:22.643+00:00",
+                "request_id": "2ab0a036d5c44b13b5aafce82fedb52f",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_2_b747e6a9_good_02",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "c796d0159dcd4b6180892ffb18e583ec",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 121.491,
+                "cpu_seconds": 1.046875
+              },
+              {
+                "timestamp": "2026-11-17T06:06:22.774+00:00",
+                "request_id": "fa88da13cc924bcfa9b07ae203074bfb",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_2_b747e6a9_good_03",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "14eb75c0eb7647ca9182608795aceffb",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 124.588,
+                "cpu_seconds": 1.0
+              },
+              {
+                "timestamp": "2026-11-17T06:06:22.878+00:00",
+                "request_id": "2e64b04ac53243c8b9e0c3229438d992",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_2_b747e6a9_good_04",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "0fcf4d8a32f14b6a94e2060441d64c68",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 100.294,
+                "cpu_seconds": 0.75
+              },
+              {
+                "timestamp": "2026-11-17T06:06:22.997+00:00",
+                "request_id": "ef529f842d7f4ca3b1548481aa8a1cf0",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_2_b747e6a9_good_05",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "3a1ef8b939ad4de489ba50571c0e136b",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 112.766,
+                "cpu_seconds": 1.0
+              },
+              {
+                "timestamp": "2026-11-17T06:06:23.124+00:00",
+                "request_id": "609257aa335145d7b950c050499e96c4",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_2_b747e6a9_good_06",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "af1332946f7d4494ae8995aefcb4056e",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 100.108,
+                "cpu_seconds": 0.75
+              },
+              {
+                "timestamp": "2026-11-17T06:06:23.239+00:00",
+                "request_id": "b6956b11b0954bf2845f1de8a433def6",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_2_b747e6a9_good_07",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "c2a67d58cb2e4422bdf03fba50c5d3e2",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 108.841,
+                "cpu_seconds": 1.0
+              },
+              {
+                "timestamp": "2026-11-17T06:06:23.347+00:00",
+                "request_id": "c63ef2ae228b49b4b6880e84114f941e",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_2_b747e6a9_good_08",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "9f1450b879384d5e82da6f7bb8449fea",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 102.509,
+                "cpu_seconds": 0.765625
+              },
+              {
+                "timestamp": "2026-11-17T06:06:23.462+00:00",
+                "request_id": "7feafa1118664cd3a237d576893822c3",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_2_b747e6a9_good_09",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "081249bb58974f3396f7a04bd9357245",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 108.972,
+                "cpu_seconds": 0.9375
+              },
+              {
+                "timestamp": "2026-11-17T06:06:23.584+00:00",
+                "request_id": "ad655bf4beb442e0b95cc94f9efd8e97",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_2_b747e6a9_good_10",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "863278a6704d41418d84ff7ab54c3e27",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 115.458,
+                "cpu_seconds": 0.8125
+              }
+            ],
+            "isolated_archive_probe": {
+              "rotated": true,
+              "files": [
+                "requests.000001.jsonl",
+                "requests.jsonl"
+              ],
+              "file_sizes_bytes": [
+                1043555,
+                249345
+              ],
+              "limit_bytes": 1048576,
+              "all_files_within_limit": true,
+              "records_recovered": 140,
+              "expected_records": 140,
+              "records_in_original_order": true,
+              "recovered_after_restart": 140,
+              "archives_survived_restart": true
+            }
+          }
+        },
+        {
+          "criterion": 4,
+          "name": "Failure logging",
+          "target": "5/5 invalid requests have their own detailed logs",
+          "value": "5/5 valid rejection traces",
+          "met": true,
+          "evidence": {
+            "requests": [
+              {
+                "case": "missing_text",
+                "creator_id": "u9_before_2_b747e6a9_missing_text",
+                "status": 400,
+                "response": {
+                  "error": "invalid_text",
+                  "message": "text must be a non-empty string."
+                }
+              },
+              {
+                "case": "empty_text",
+                "creator_id": "u9_before_2_b747e6a9_empty_text",
+                "status": 400,
+                "response": {
+                  "error": "invalid_text",
+                  "message": "text must be a non-empty string."
+                }
+              },
+              {
+                "case": "null_text",
+                "creator_id": "u9_before_2_b747e6a9_null_text",
+                "status": 400,
+                "response": {
+                  "error": "invalid_text",
+                  "message": "text must be a non-empty string."
+                }
+              },
+              {
+                "case": "unsupported_text",
+                "creator_id": "u9_before_2_b747e6a9_unsupported_text",
+                "status": 422,
+                "response": {
+                  "error": "unscorable_text",
+                  "message": "This English-focused detector cannot score the input reliably. Do not infer AI authorship. Request human review instead."
+                }
+              },
+              {
+                "case": "oversize_text",
+                "creator_id": "u9_before_2_b747e6a9_oversize_text",
+                "status": 413,
+                "response": {
+                  "error": "text_too_large",
+                  "message": "text must be 20,000 characters or fewer."
+                }
+              }
+            ],
+            "telemetry": [
+              {
+                "timestamp": "2026-11-17T06:06:23.792+00:00",
+                "request_id": "557decbaf5c84e79b686abfc50217207",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_2_b747e6a9_missing_text",
+                  "text_chars": null,
+                  "text_sha256": null,
+                  "text_preview": null,
+                  "text_kind": "NoneType"
+                },
+                "output": {
+                  "http_status": 400,
+                  "error": "invalid_text"
+                },
+                "duration_ms": 2.076,
+                "cpu_seconds": 0.0
+              },
+              {
+                "timestamp": "2026-11-17T06:06:23.800+00:00",
+                "request_id": "97baa901da42488183fd748ab1e1c1b4",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_2_b747e6a9_empty_text",
+                  "text_chars": 0,
+                  "text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                  "text_preview": ""
+                },
+                "output": {
+                  "http_status": 400,
+                  "error": "invalid_text"
+                },
+                "duration_ms": 2.672,
+                "cpu_seconds": 0.0
+              },
+              {
+                "timestamp": "2026-11-17T06:06:23.819+00:00",
+                "request_id": "75c10789fe50441390be99ad82c44b33",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_2_b747e6a9_null_text",
+                  "text_chars": null,
+                  "text_sha256": null,
+                  "text_preview": null,
+                  "text_kind": "NoneType"
+                },
+                "output": {
+                  "http_status": 400,
+                  "error": "invalid_text"
+                },
+                "duration_ms": 2.234,
+                "cpu_seconds": 0.015625
+              },
+              {
+                "timestamp": "2026-11-17T06:06:23.844+00:00",
+                "request_id": "2c540c0a9280408b8e8118b2300a54f2",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_2_b747e6a9_unsupported_text",
+                  "text_chars": 3,
+                  "text_sha256": "a9d446560237e678f08df9207178713f703b7c46681859d41e0fa5cb03d7711a",
+                  "text_preview": "🙂🙂🙂"
+                },
+                "output": {
+                  "http_status": 422,
+                  "error": "unscorable_text"
+                },
+                "duration_ms": 2.429,
+                "cpu_seconds": 0.0
+              },
+              {
+                "timestamp": "2026-11-17T06:06:23.877+00:00",
+                "request_id": "53f24fff26f54e25acd7b11b360d940a",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_2_b747e6a9_oversize_text",
+                  "text_chars": 22500,
+                  "text_sha256": "987785075d7262390490b30642c9a34ffbc61fa2d9a8b4aea2aa7190c58b049b",
+                  "text_preview": "word word word word word word word word word word word word word word word word "
+                },
+                "output": {
+                  "http_status": 413,
+                  "error": "text_too_large"
+                },
+                "duration_ms": 3.043,
+                "cpu_seconds": 0.0
+              }
+            ],
+            "audit_entries": {
+              "u9_before_2_b747e6a9_missing_text": [
+                {
+                  "timestamp": "2026-11-17T06:06:23+00:00",
+                  "creator_id": "u9_before_2_b747e6a9_missing_text",
+                  "event": "rejected",
+                  "status": "rejected",
+                  "reason": "invalid_text"
+                }
+              ],
+              "u9_before_2_b747e6a9_empty_text": [
+                {
+                  "timestamp": "2026-11-17T06:06:23+00:00",
+                  "creator_id": "u9_before_2_b747e6a9_empty_text",
+                  "event": "rejected",
+                  "status": "rejected",
+                  "reason": "invalid_text"
+                }
+              ],
+              "u9_before_2_b747e6a9_null_text": [
+                {
+                  "timestamp": "2026-11-17T06:06:23+00:00",
+                  "creator_id": "u9_before_2_b747e6a9_null_text",
+                  "event": "rejected",
+                  "status": "rejected",
+                  "reason": "invalid_text"
+                }
+              ],
+              "u9_before_2_b747e6a9_unsupported_text": [
+                {
+                  "timestamp": "2026-11-17T06:06:23+00:00",
+                  "creator_id": "u9_before_2_b747e6a9_unsupported_text",
+                  "event": "rejected",
+                  "status": "rejected",
+                  "reason": "unscorable_text",
+                  "detail": "unsupported_or_too_few_english_words"
+                }
+              ],
+              "u9_before_2_b747e6a9_oversize_text": [
+                {
+                  "timestamp": "2026-11-17T06:06:23+00:00",
+                  "creator_id": "u9_before_2_b747e6a9_oversize_text",
+                  "event": "rejected",
+                  "status": "rejected",
+                  "reason": "text_too_large",
+                  "text_length": 22499
+                }
+              ]
+            },
+            "per_request_pass": {
+              "u9_before_2_b747e6a9_missing_text": true,
+              "u9_before_2_b747e6a9_empty_text": true,
+              "u9_before_2_b747e6a9_null_text": true,
+              "u9_before_2_b747e6a9_unsupported_text": true,
+              "u9_before_2_b747e6a9_oversize_text": true
+            }
+          }
+        },
+        {
+          "criterion": 5,
+          "name": "Average warm response time",
+          "target": "Mean of ten warm requests < 2 seconds",
+          "value": "0.119 seconds",
+          "met": true,
+          "evidence": {
+            "requests": [
+              {
+                "creator_id": "u9_before_2_b747e6a9_good_01",
+                "status": 200,
+                "client_duration_ms": 120.974,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "efbd8eb2ca5c411494a409af385aaaac",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_2_b747e6a9_good_02",
+                "status": 200,
+                "client_duration_ms": 125.461,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "c796d0159dcd4b6180892ffb18e583ec",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_2_b747e6a9_good_03",
+                "status": 200,
+                "client_duration_ms": 130.345,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "14eb75c0eb7647ca9182608795aceffb",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_2_b747e6a9_good_04",
+                "status": 200,
+                "client_duration_ms": 104.366,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "0fcf4d8a32f14b6a94e2060441d64c68",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_2_b747e6a9_good_05",
+                "status": 200,
+                "client_duration_ms": 119.98,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "3a1ef8b939ad4de489ba50571c0e136b",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_2_b747e6a9_good_06",
+                "status": 200,
+                "client_duration_ms": 127.157,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "af1332946f7d4494ae8995aefcb4056e",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_2_b747e6a9_good_07",
+                "status": 200,
+                "client_duration_ms": 114.651,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "c2a67d58cb2e4422bdf03fba50c5d3e2",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_2_b747e6a9_good_08",
+                "status": 200,
+                "client_duration_ms": 108.413,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "9f1450b879384d5e82da6f7bb8449fea",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_2_b747e6a9_good_09",
+                "status": 200,
+                "client_duration_ms": 114.759,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "081249bb58974f3396f7a04bd9357245",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_2_b747e6a9_good_10",
+                "status": 200,
+                "client_duration_ms": 121.487,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "863278a6704d41418d84ff7ab54c3e27",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              }
+            ],
+            "mean_ms": 118.7593,
+            "warmup_excluded": {
+              "creator_id": "u9_before_2_b747e6a9_warmup",
+              "status": 200,
+              "client_duration_ms": 9310.65,
+              "response": {
+                "confidence": 0.2954,
+                "content_id": "ecd6798ee56e4328b98de93218c4822b",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.1411,
+                "status": "decided",
+                "style_score": 0.4841
+              }
+            }
+          }
+        }
+      ],
+      "rotation_probe": {
+        "rotated": true,
+        "files": [
+          "requests.000001.jsonl",
+          "requests.jsonl"
+        ],
+        "file_sizes_bytes": [
+          1043555,
+          249345
+        ],
+        "limit_bytes": 1048576,
+        "all_files_within_limit": true,
+        "records_recovered": 140,
+        "expected_records": 140,
+        "records_in_original_order": true,
+        "recovered_after_restart": 140,
+        "archives_survived_restart": true
+      }
+    },
+    {
+      "trial": 3,
+      "criteria": [
+        {
+          "criterion": 1,
+          "name": "Logging completeness and 1 MiB rotation",
+          "target": "10/10 detailed records and safe 1 MiB rotation",
+          "value": "10/10 with rotation=True",
+          "met": true,
+          "evidence": {
+            "requests": [
+              {
+                "creator_id": "u9_before_3_41a85311_good_01",
+                "status": 200,
+                "client_duration_ms": 148.003,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "c99bfe125c53409cbf432f3c4584005b",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_3_41a85311_good_02",
+                "status": 200,
+                "client_duration_ms": 133.671,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "5ebfef3aa18f453781a8c76d7b4e0d10",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_3_41a85311_good_03",
+                "status": 200,
+                "client_duration_ms": 140.76,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "228e64315d404f808f543aa55da650e2",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_3_41a85311_good_04",
+                "status": 200,
+                "client_duration_ms": 130.424,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "f10a3544b0ca4a2491105de2055137fd",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_3_41a85311_good_05",
+                "status": 200,
+                "client_duration_ms": 112.412,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "138978d7bf384cdc8a1701495e279a82",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_3_41a85311_good_06",
+                "status": 200,
+                "client_duration_ms": 121.099,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "b92dcfad7d684620a2a6398607055da9",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_3_41a85311_good_07",
+                "status": 200,
+                "client_duration_ms": 129.681,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "92cf86ad7b9b4e80b2fa82df91c1b177",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_3_41a85311_good_08",
+                "status": 200,
+                "client_duration_ms": 134.1,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "c47798d12ecc4fef8a2f876d4a93d77e",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_3_41a85311_good_09",
+                "status": 200,
+                "client_duration_ms": 126.366,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "9e358d46e0ca4f9cbbc2b3e67cf2f74b",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_3_41a85311_good_10",
+                "status": 200,
+                "client_duration_ms": 113.172,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "b503fb9eb49448d6994ad6b5d237eef3",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              }
+            ],
+            "telemetry": [
+              {
+                "timestamp": "2026-11-17T06:06:34.676+00:00",
+                "request_id": "a1c67955f53d4469aa68b1928b4c8859",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_3_41a85311_good_01",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "c99bfe125c53409cbf432f3c4584005b",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 120.017,
+                "cpu_seconds": 0.984375
+              },
+              {
+                "timestamp": "2026-11-17T06:06:34.811+00:00",
+                "request_id": "a12afa09707b4b1395384b378e1ccf1f",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_3_41a85311_good_02",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "5ebfef3aa18f453781a8c76d7b4e0d10",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 112.564,
+                "cpu_seconds": 0.953125
+              },
+              {
+                "timestamp": "2026-11-17T06:06:34.951+00:00",
+                "request_id": "aea67eb0a59d48dea24c80322cf07af3",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_3_41a85311_good_03",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "228e64315d404f808f543aa55da650e2",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 126.052,
+                "cpu_seconds": 1.125
+              },
+              {
+                "timestamp": "2026-11-17T06:06:35.082+00:00",
+                "request_id": "103fb4683e094ecca7a5dee9e37d56eb",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_3_41a85311_good_04",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "f10a3544b0ca4a2491105de2055137fd",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 126.152,
+                "cpu_seconds": 1.125
+              },
+              {
+                "timestamp": "2026-11-17T06:06:35.195+00:00",
+                "request_id": "8902c68fb9da4353897c38ee633dfca3",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_3_41a85311_good_05",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "138978d7bf384cdc8a1701495e279a82",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 106.419,
+                "cpu_seconds": 0.921875
+              },
+              {
+                "timestamp": "2026-11-17T06:06:35.315+00:00",
+                "request_id": "5b224c2b7dc942799232abd6c815f42d",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_3_41a85311_good_06",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "b92dcfad7d684620a2a6398607055da9",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 115.742,
+                "cpu_seconds": 0.921875
+              },
+              {
+                "timestamp": "2026-11-17T06:06:35.444+00:00",
+                "request_id": "e4cb819232254beaa5344db41447073b",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_3_41a85311_good_07",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "92cf86ad7b9b4e80b2fa82df91c1b177",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 111.366,
+                "cpu_seconds": 0.84375
+              },
+              {
+                "timestamp": "2026-11-17T06:06:35.579+00:00",
+                "request_id": "17426cc895264369b485033464df51ca",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_3_41a85311_good_08",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "c47798d12ecc4fef8a2f876d4a93d77e",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 105.753,
+                "cpu_seconds": 0.859375
+              },
+              {
+                "timestamp": "2026-11-17T06:06:35.705+00:00",
+                "request_id": "b35e4aafd3fc4a28af80228f8e64ceac",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_3_41a85311_good_09",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "9e358d46e0ca4f9cbbc2b3e67cf2f74b",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 107.324,
+                "cpu_seconds": 0.859375
+              },
+              {
+                "timestamp": "2026-11-17T06:06:35.818+00:00",
+                "request_id": "12d5239c1f2645cdb32e3b09882a9d31",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_3_41a85311_good_10",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "b503fb9eb49448d6994ad6b5d237eef3",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 107.282,
+                "cpu_seconds": 0.890625
+              }
+            ],
+            "completeness_by_creator": {
+              "u9_before_3_41a85311_good_01": true,
+              "u9_before_3_41a85311_good_02": true,
+              "u9_before_3_41a85311_good_03": true,
+              "u9_before_3_41a85311_good_04": true,
+              "u9_before_3_41a85311_good_05": true,
+              "u9_before_3_41a85311_good_06": true,
+              "u9_before_3_41a85311_good_07": true,
+              "u9_before_3_41a85311_good_08": true,
+              "u9_before_3_41a85311_good_09": true,
+              "u9_before_3_41a85311_good_10": true
+            },
+            "isolated_rotation_probe": {
+              "rotated": true,
+              "files": [
+                "requests.000001.jsonl",
+                "requests.jsonl"
+              ],
+              "file_sizes_bytes": [
+                1043555,
+                249345
+              ],
+              "limit_bytes": 1048576,
+              "all_files_within_limit": true,
+              "records_recovered": 140,
+              "expected_records": 140,
+              "records_in_original_order": true,
+              "recovered_after_restart": 140,
+              "archives_survived_restart": true
+            }
+          }
+        },
+        {
+          "criterion": 2,
+          "name": "Timing accuracy",
+          "target": "10/10 client vs server gaps <= 200 ms",
+          "value": "10/10 gaps <= 200 ms",
+          "met": true,
+          "evidence": {
+            "timing_difference_ms": {
+              "u9_before_3_41a85311_good_01": 27.986,
+              "u9_before_3_41a85311_good_02": 21.107,
+              "u9_before_3_41a85311_good_03": 14.708,
+              "u9_before_3_41a85311_good_04": 4.272,
+              "u9_before_3_41a85311_good_05": 5.993,
+              "u9_before_3_41a85311_good_06": 5.357,
+              "u9_before_3_41a85311_good_07": 18.315,
+              "u9_before_3_41a85311_good_08": 28.347,
+              "u9_before_3_41a85311_good_09": 19.042,
+              "u9_before_3_41a85311_good_10": 5.89
+            },
+            "requests": [
+              {
+                "creator_id": "u9_before_3_41a85311_good_01",
+                "status": 200,
+                "client_duration_ms": 148.003,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "c99bfe125c53409cbf432f3c4584005b",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_3_41a85311_good_02",
+                "status": 200,
+                "client_duration_ms": 133.671,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "5ebfef3aa18f453781a8c76d7b4e0d10",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_3_41a85311_good_03",
+                "status": 200,
+                "client_duration_ms": 140.76,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "228e64315d404f808f543aa55da650e2",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_3_41a85311_good_04",
+                "status": 200,
+                "client_duration_ms": 130.424,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "f10a3544b0ca4a2491105de2055137fd",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_3_41a85311_good_05",
+                "status": 200,
+                "client_duration_ms": 112.412,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "138978d7bf384cdc8a1701495e279a82",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_3_41a85311_good_06",
+                "status": 200,
+                "client_duration_ms": 121.099,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "b92dcfad7d684620a2a6398607055da9",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_3_41a85311_good_07",
+                "status": 200,
+                "client_duration_ms": 129.681,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "92cf86ad7b9b4e80b2fa82df91c1b177",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_3_41a85311_good_08",
+                "status": 200,
+                "client_duration_ms": 134.1,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "c47798d12ecc4fef8a2f876d4a93d77e",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_3_41a85311_good_09",
+                "status": 200,
+                "client_duration_ms": 126.366,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "9e358d46e0ca4f9cbbc2b3e67cf2f74b",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_3_41a85311_good_10",
+                "status": 200,
+                "client_duration_ms": 113.172,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "b503fb9eb49448d6994ad6b5d237eef3",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              }
+            ],
+            "telemetry": [
+              {
+                "timestamp": "2026-11-17T06:06:34.676+00:00",
+                "request_id": "a1c67955f53d4469aa68b1928b4c8859",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_3_41a85311_good_01",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "c99bfe125c53409cbf432f3c4584005b",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 120.017,
+                "cpu_seconds": 0.984375
+              },
+              {
+                "timestamp": "2026-11-17T06:06:34.811+00:00",
+                "request_id": "a12afa09707b4b1395384b378e1ccf1f",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_3_41a85311_good_02",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "5ebfef3aa18f453781a8c76d7b4e0d10",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 112.564,
+                "cpu_seconds": 0.953125
+              },
+              {
+                "timestamp": "2026-11-17T06:06:34.951+00:00",
+                "request_id": "aea67eb0a59d48dea24c80322cf07af3",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_3_41a85311_good_03",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "228e64315d404f808f543aa55da650e2",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 126.052,
+                "cpu_seconds": 1.125
+              },
+              {
+                "timestamp": "2026-11-17T06:06:35.082+00:00",
+                "request_id": "103fb4683e094ecca7a5dee9e37d56eb",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_3_41a85311_good_04",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "f10a3544b0ca4a2491105de2055137fd",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 126.152,
+                "cpu_seconds": 1.125
+              },
+              {
+                "timestamp": "2026-11-17T06:06:35.195+00:00",
+                "request_id": "8902c68fb9da4353897c38ee633dfca3",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_3_41a85311_good_05",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "138978d7bf384cdc8a1701495e279a82",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 106.419,
+                "cpu_seconds": 0.921875
+              },
+              {
+                "timestamp": "2026-11-17T06:06:35.315+00:00",
+                "request_id": "5b224c2b7dc942799232abd6c815f42d",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_3_41a85311_good_06",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "b92dcfad7d684620a2a6398607055da9",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 115.742,
+                "cpu_seconds": 0.921875
+              },
+              {
+                "timestamp": "2026-11-17T06:06:35.444+00:00",
+                "request_id": "e4cb819232254beaa5344db41447073b",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_3_41a85311_good_07",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "92cf86ad7b9b4e80b2fa82df91c1b177",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 111.366,
+                "cpu_seconds": 0.84375
+              },
+              {
+                "timestamp": "2026-11-17T06:06:35.579+00:00",
+                "request_id": "17426cc895264369b485033464df51ca",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_3_41a85311_good_08",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "c47798d12ecc4fef8a2f876d4a93d77e",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 105.753,
+                "cpu_seconds": 0.859375
+              },
+              {
+                "timestamp": "2026-11-17T06:06:35.705+00:00",
+                "request_id": "b35e4aafd3fc4a28af80228f8e64ceac",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_3_41a85311_good_09",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "9e358d46e0ca4f9cbbc2b3e67cf2f74b",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 107.324,
+                "cpu_seconds": 0.859375
+              },
+              {
+                "timestamp": "2026-11-17T06:06:35.818+00:00",
+                "request_id": "12d5239c1f2645cdb32e3b09882a9d31",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_3_41a85311_good_10",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "b503fb9eb49448d6994ad6b5d237eef3",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 107.282,
+                "cpu_seconds": 0.890625
+              }
+            ]
+          }
+        },
+        {
+          "criterion": 3,
+          "name": "Log persistence",
+          "target": "10/10 service logs survive restart including archived history",
+          "value": "10/10 after restart; archived probe=True",
+          "met": true,
+          "evidence": {
+            "telemetry_after_restart": [
+              {
+                "timestamp": "2026-11-17T06:06:34.676+00:00",
+                "request_id": "a1c67955f53d4469aa68b1928b4c8859",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_3_41a85311_good_01",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "c99bfe125c53409cbf432f3c4584005b",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 120.017,
+                "cpu_seconds": 0.984375
+              },
+              {
+                "timestamp": "2026-11-17T06:06:34.811+00:00",
+                "request_id": "a12afa09707b4b1395384b378e1ccf1f",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_3_41a85311_good_02",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "5ebfef3aa18f453781a8c76d7b4e0d10",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 112.564,
+                "cpu_seconds": 0.953125
+              },
+              {
+                "timestamp": "2026-11-17T06:06:34.951+00:00",
+                "request_id": "aea67eb0a59d48dea24c80322cf07af3",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_3_41a85311_good_03",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "228e64315d404f808f543aa55da650e2",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 126.052,
+                "cpu_seconds": 1.125
+              },
+              {
+                "timestamp": "2026-11-17T06:06:35.082+00:00",
+                "request_id": "103fb4683e094ecca7a5dee9e37d56eb",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_3_41a85311_good_04",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "f10a3544b0ca4a2491105de2055137fd",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 126.152,
+                "cpu_seconds": 1.125
+              },
+              {
+                "timestamp": "2026-11-17T06:06:35.195+00:00",
+                "request_id": "8902c68fb9da4353897c38ee633dfca3",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_3_41a85311_good_05",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "138978d7bf384cdc8a1701495e279a82",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 106.419,
+                "cpu_seconds": 0.921875
+              },
+              {
+                "timestamp": "2026-11-17T06:06:35.315+00:00",
+                "request_id": "5b224c2b7dc942799232abd6c815f42d",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_3_41a85311_good_06",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "b92dcfad7d684620a2a6398607055da9",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 115.742,
+                "cpu_seconds": 0.921875
+              },
+              {
+                "timestamp": "2026-11-17T06:06:35.444+00:00",
+                "request_id": "e4cb819232254beaa5344db41447073b",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_3_41a85311_good_07",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "92cf86ad7b9b4e80b2fa82df91c1b177",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 111.366,
+                "cpu_seconds": 0.84375
+              },
+              {
+                "timestamp": "2026-11-17T06:06:35.579+00:00",
+                "request_id": "17426cc895264369b485033464df51ca",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_3_41a85311_good_08",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "c47798d12ecc4fef8a2f876d4a93d77e",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 105.753,
+                "cpu_seconds": 0.859375
+              },
+              {
+                "timestamp": "2026-11-17T06:06:35.705+00:00",
+                "request_id": "b35e4aafd3fc4a28af80228f8e64ceac",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_3_41a85311_good_09",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "9e358d46e0ca4f9cbbc2b3e67cf2f74b",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 107.324,
+                "cpu_seconds": 0.859375
+              },
+              {
+                "timestamp": "2026-11-17T06:06:35.818+00:00",
+                "request_id": "12d5239c1f2645cdb32e3b09882a9d31",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_3_41a85311_good_10",
+                  "text_chars": 207,
+                  "text_sha256": "4c1fe0ff61ff1f492d8e568fac682bf1ce2b2bcc4d9eac63c8b1963bf6c9d125",
+                  "text_preview": "I am testing request logging in a local service. The same text is submitted with"
+                },
+                "output": {
+                  "http_status": 200,
+                  "content_id": "b503fb9eb49448d6994ad6b5d237eef3",
+                  "guess": "human",
+                  "status": "decided",
+                  "model_score": 0.1411,
+                  "style_score": 0.4841,
+                  "confidence": 0.2954
+                },
+                "duration_ms": 107.282,
+                "cpu_seconds": 0.890625
+              }
+            ],
+            "isolated_archive_probe": {
+              "rotated": true,
+              "files": [
+                "requests.000001.jsonl",
+                "requests.jsonl"
+              ],
+              "file_sizes_bytes": [
+                1043555,
+                249345
+              ],
+              "limit_bytes": 1048576,
+              "all_files_within_limit": true,
+              "records_recovered": 140,
+              "expected_records": 140,
+              "records_in_original_order": true,
+              "recovered_after_restart": 140,
+              "archives_survived_restart": true
+            }
+          }
+        },
+        {
+          "criterion": 4,
+          "name": "Failure logging",
+          "target": "5/5 invalid requests have their own detailed logs",
+          "value": "5/5 valid rejection traces",
+          "met": true,
+          "evidence": {
+            "requests": [
+              {
+                "case": "missing_text",
+                "creator_id": "u9_before_3_41a85311_missing_text",
+                "status": 400,
+                "response": {
+                  "error": "invalid_text",
+                  "message": "text must be a non-empty string."
+                }
+              },
+              {
+                "case": "empty_text",
+                "creator_id": "u9_before_3_41a85311_empty_text",
+                "status": 400,
+                "response": {
+                  "error": "invalid_text",
+                  "message": "text must be a non-empty string."
+                }
+              },
+              {
+                "case": "null_text",
+                "creator_id": "u9_before_3_41a85311_null_text",
+                "status": 400,
+                "response": {
+                  "error": "invalid_text",
+                  "message": "text must be a non-empty string."
+                }
+              },
+              {
+                "case": "unsupported_text",
+                "creator_id": "u9_before_3_41a85311_unsupported_text",
+                "status": 422,
+                "response": {
+                  "error": "unscorable_text",
+                  "message": "This English-focused detector cannot score the input reliably. Do not infer AI authorship. Request human review instead."
+                }
+              },
+              {
+                "case": "oversize_text",
+                "creator_id": "u9_before_3_41a85311_oversize_text",
+                "status": 413,
+                "response": {
+                  "error": "text_too_large",
+                  "message": "text must be 20,000 characters or fewer."
+                }
+              }
+            ],
+            "telemetry": [
+              {
+                "timestamp": "2026-11-17T06:06:35.999+00:00",
+                "request_id": "483036f7f764416f8e3ddb81cebcac00",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_3_41a85311_missing_text",
+                  "text_chars": null,
+                  "text_sha256": null,
+                  "text_preview": null,
+                  "text_kind": "NoneType"
+                },
+                "output": {
+                  "http_status": 400,
+                  "error": "invalid_text"
+                },
+                "duration_ms": 2.845,
+                "cpu_seconds": 0.0
+              },
+              {
+                "timestamp": "2026-11-17T06:06:36.020+00:00",
+                "request_id": "60d698d757c845749d9bf0850e3ff0c5",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_3_41a85311_empty_text",
+                  "text_chars": 0,
+                  "text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                  "text_preview": ""
+                },
+                "output": {
+                  "http_status": 400,
+                  "error": "invalid_text"
+                },
+                "duration_ms": 2.091,
+                "cpu_seconds": 0.0
+              },
+              {
+                "timestamp": "2026-11-17T06:06:36.036+00:00",
+                "request_id": "aa263c02013f45d2b712ec81035b6ad9",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_3_41a85311_null_text",
+                  "text_chars": null,
+                  "text_sha256": null,
+                  "text_preview": null,
+                  "text_kind": "NoneType"
+                },
+                "output": {
+                  "http_status": 400,
+                  "error": "invalid_text"
+                },
+                "duration_ms": 1.812,
+                "cpu_seconds": 0.0
+              },
+              {
+                "timestamp": "2026-11-17T06:06:36.053+00:00",
+                "request_id": "6d95b0df4f274073a59f5453006c1d99",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_3_41a85311_unsupported_text",
+                  "text_chars": 3,
+                  "text_sha256": "a9d446560237e678f08df9207178713f703b7c46681859d41e0fa5cb03d7711a",
+                  "text_preview": "🙂🙂🙂"
+                },
+                "output": {
+                  "http_status": 422,
+                  "error": "unscorable_text"
+                },
+                "duration_ms": 2.111,
+                "cpu_seconds": 0.0
+              },
+              {
+                "timestamp": "2026-11-17T06:06:36.069+00:00",
+                "request_id": "2f842a6950d74913b15e9c374e143f90",
+                "method": "POST",
+                "route": "/submit",
+                "input": {
+                  "content_type": "application/json",
+                  "body_kind": "dict",
+                  "creator_id": "u9_before_3_41a85311_oversize_text",
+                  "text_chars": 22500,
+                  "text_sha256": "987785075d7262390490b30642c9a34ffbc61fa2d9a8b4aea2aa7190c58b049b",
+                  "text_preview": "word word word word word word word word word word word word word word word word "
+                },
+                "output": {
+                  "http_status": 413,
+                  "error": "text_too_large"
+                },
+                "duration_ms": 1.866,
+                "cpu_seconds": 0.0
+              }
+            ],
+            "audit_entries": {
+              "u9_before_3_41a85311_missing_text": [
+                {
+                  "timestamp": "2026-11-17T06:06:35+00:00",
+                  "creator_id": "u9_before_3_41a85311_missing_text",
+                  "event": "rejected",
+                  "status": "rejected",
+                  "reason": "invalid_text"
+                }
+              ],
+              "u9_before_3_41a85311_empty_text": [
+                {
+                  "timestamp": "2026-11-17T06:06:36+00:00",
+                  "creator_id": "u9_before_3_41a85311_empty_text",
+                  "event": "rejected",
+                  "status": "rejected",
+                  "reason": "invalid_text"
+                }
+              ],
+              "u9_before_3_41a85311_null_text": [
+                {
+                  "timestamp": "2026-11-17T06:06:36+00:00",
+                  "creator_id": "u9_before_3_41a85311_null_text",
+                  "event": "rejected",
+                  "status": "rejected",
+                  "reason": "invalid_text"
+                }
+              ],
+              "u9_before_3_41a85311_unsupported_text": [
+                {
+                  "timestamp": "2026-11-17T06:06:36+00:00",
+                  "creator_id": "u9_before_3_41a85311_unsupported_text",
+                  "event": "rejected",
+                  "status": "rejected",
+                  "reason": "unscorable_text",
+                  "detail": "unsupported_or_too_few_english_words"
+                }
+              ],
+              "u9_before_3_41a85311_oversize_text": [
+                {
+                  "timestamp": "2026-11-17T06:06:36+00:00",
+                  "creator_id": "u9_before_3_41a85311_oversize_text",
+                  "event": "rejected",
+                  "status": "rejected",
+                  "reason": "text_too_large",
+                  "text_length": 22499
+                }
+              ]
+            },
+            "per_request_pass": {
+              "u9_before_3_41a85311_missing_text": true,
+              "u9_before_3_41a85311_empty_text": true,
+              "u9_before_3_41a85311_null_text": true,
+              "u9_before_3_41a85311_unsupported_text": true,
+              "u9_before_3_41a85311_oversize_text": true
+            }
+          }
+        },
+        {
+          "criterion": 5,
+          "name": "Average warm response time",
+          "target": "Mean of ten warm requests < 2 seconds",
+          "value": "0.129 seconds",
+          "met": true,
+          "evidence": {
+            "requests": [
+              {
+                "creator_id": "u9_before_3_41a85311_good_01",
+                "status": 200,
+                "client_duration_ms": 148.003,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "c99bfe125c53409cbf432f3c4584005b",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_3_41a85311_good_02",
+                "status": 200,
+                "client_duration_ms": 133.671,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "5ebfef3aa18f453781a8c76d7b4e0d10",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_3_41a85311_good_03",
+                "status": 200,
+                "client_duration_ms": 140.76,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "228e64315d404f808f543aa55da650e2",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_3_41a85311_good_04",
+                "status": 200,
+                "client_duration_ms": 130.424,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "f10a3544b0ca4a2491105de2055137fd",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_3_41a85311_good_05",
+                "status": 200,
+                "client_duration_ms": 112.412,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "138978d7bf384cdc8a1701495e279a82",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_3_41a85311_good_06",
+                "status": 200,
+                "client_duration_ms": 121.099,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "b92dcfad7d684620a2a6398607055da9",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_3_41a85311_good_07",
+                "status": 200,
+                "client_duration_ms": 129.681,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "92cf86ad7b9b4e80b2fa82df91c1b177",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_3_41a85311_good_08",
+                "status": 200,
+                "client_duration_ms": 134.1,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "c47798d12ecc4fef8a2f876d4a93d77e",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_3_41a85311_good_09",
+                "status": 200,
+                "client_duration_ms": 126.366,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "9e358d46e0ca4f9cbbc2b3e67cf2f74b",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              },
+              {
+                "creator_id": "u9_before_3_41a85311_good_10",
+                "status": 200,
+                "client_duration_ms": 113.172,
+                "response": {
+                  "confidence": 0.2954,
+                  "content_id": "b503fb9eb49448d6994ad6b5d237eef3",
+                  "guess": "human",
+                  "label": "Our signals suggest this text was probably written by a person.",
+                  "model_score": 0.1411,
+                  "status": "decided",
+                  "style_score": 0.4841
+                }
+              }
+            ],
+            "mean_ms": 128.9688,
+            "warmup_excluded": {
+              "creator_id": "u9_before_3_41a85311_warmup",
+              "status": 200,
+              "client_duration_ms": 8924.474,
+              "response": {
+                "confidence": 0.2954,
+                "content_id": "6be13aaea96a4c6f8a718ff43a594a4f",
+                "guess": "human",
+                "label": "Our signals suggest this text was probably written by a person.",
+                "model_score": 0.1411,
+                "status": "decided",
+                "style_score": 0.4841
+              }
+            }
+          }
+        }
+      ],
+      "rotation_probe": {
+        "rotated": true,
+        "files": [
+          "requests.000001.jsonl",
+          "requests.jsonl"
+        ],
+        "file_sizes_bytes": [
+          1043555,
+          249345
+        ],
+        "limit_bytes": 1048576,
+        "all_files_within_limit": true,
+        "records_recovered": 140,
+        "expected_records": 140,
+        "records_in_original_order": true,
+        "recovered_after_restart": 140,
+        "archives_survived_restart": true
+      }
+    }
+  ]
+}
