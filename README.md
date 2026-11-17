@@ -1033,3 +1033,44 @@ I stopped after one input-validation change because the assignment requires a cl
 ---
 
 📖 **How to run this project: [RUNNING.md](RUNNING.md)**
+
+---
+
+## Capstone
+
+**What This Extends**
+
+I'm extending Provenance Guard, the local writing-classification service from Units 7 and 8. It already accepts submissions, returns a cautious authorship estimate, records decisions and appeals, and rejects invalid input. This capstone adds request-level observability. I want to know what reached the service, what it returned, and how long the request took. The extension does not change the classifier's verdict.
+
+**The Shape**
+
+I chose **A: Deploy and instrument** with **Path B: local with logs**. The service loads a local GPT-2 model, so I am keeping the working local run path instead of trying to fit it into a small free hosting instance. The new part is structured request telemetry and a reproducible way to measure execution time. I am not retraining the model, changing the thresholds, adding a new detection signal, or building a new interface.
+
+**Running It**
+
+The local startup command and the Python, dependency, and model requirements will be documented in [RUNNING.md](RUNNING.md). This is the same repository as the original service.
+
+**Instrumentation**
+
+Pending the real instrumented run. Each new request record will capture the time, route, a limited input summary, the response status and result, and elapsed time. Raw writing will not be copied into telemetry. Actual entries will be pasted here after running the service.
+
+**What It Costs**
+
+Pending measurement. I will measure ten real requests and report the mean execution time in seconds, plus the equivalent time for 100 requests a day.
+
+**Run Log and Verdicts**
+
+Pending my five capstone acceptance criteria and three real trials per criterion. These will be committed only after I write the criteria myself.
+
+**The Improvement**
+
+Pending the first full set of measured results. I will diagnose the misses, make one change, and rerun all five criteria three times.
+
+**What's Still Broken**
+
+Pending the completed before-and-after comparison. The classifier's existing problems with AI evasion and uncertain authorship remain out of scope for this operational extension.
+
+**How I Used AI**
+
+AI helped compare the available capstone shapes, inspect the existing service, and prepare the operational extension. I will write the five acceptance criteria myself, then review the measured results before making a single change.
+
