@@ -1,5 +1,5 @@
 # Unit 9 capstone AFTER run.
-# Run from this repository after committing your five Unit 9 criteria.
+# Run after reviewing the committed BEFORE evidence and the single log-reader improvement.
 # Close any previously running python app.py process first.
 $ErrorActionPreference = "Stop"
 Set-Location $PSScriptRoot
@@ -9,7 +9,7 @@ if (-not (Test-Path $python)) {
     throw "Missing .venv. Install dependencies from requirements.txt first."
 }
 if (-not (Test-Path "criteria.md")) {
-    throw "Missing criteria.md. Write and commit your own Unit 9 criteria after testing."
+    throw "Missing criteria.md. Keep the user-authored criteria unchanged from BEFORE."
 }
 $expected = "## 1. Logging completeness"
 if (-not (Select-String -LiteralPath "criteria.md" -Pattern $expected -SimpleMatch -Quiet)) {
@@ -23,7 +23,7 @@ if ($LASTEXITCODE -ne 0) { throw "Python syntax check failed." }
 
 Write-Host "Checking 1 MiB rotation with isolated regression tests..." -ForegroundColor Cyan
 & $python -m unittest -v test_capstone_rotation.py
-if ($LASTEXITCODE -ne 0) { throw "Rotation tests failed. Do not record baseline evidence as successful." }
+if ($LASTEXITCODE -ne 0) { throw "Rotation tests failed. Do not record AFTER evidence as successful." }
 
 Write-Host "Running the five capstone criteria three times (AFTER)..." -ForegroundColor Cyan
 & $python capstone_eval.py --label after
@@ -52,4 +52,4 @@ if ($LASTEXITCODE -eq 1) {
     throw "Could not check staged evidence."
 }
 
-Write-Host "AFTER complete. Stop here. Review the results after making exactly one improvement." -ForegroundColor Green
+Write-Host "AFTER complete. Both runs are ready for final review. Do not make another improvement." -ForegroundColor Green
