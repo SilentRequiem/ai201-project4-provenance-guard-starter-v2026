@@ -19,13 +19,10 @@ and the one you most want to compare is the one from before the change.
     entries = read_entries(limit=50)
 """
 
-import json
-import threading
 from datetime import datetime, timezone
 
 import config
-
-_lock = threading.Lock()
+import log_rotation
 
 
 def _now() -> str:
@@ -113,45 +110,29 @@ def log_rejection(creator_id: str, reason: str, **extra) -> dict:
 
 
 def _append(entry: dict) -> dict:
-    config.LOG_DIR.mkdir(parents=True, exist_ok=True)
-    line = json.dumps(entry, ensure_ascii=False)
-    with _lock:
-        with config.AUDIT_LOG.open("a", encoding="utf-8") as f:
-            f.write(line + "\n")
+    log_rotation.append_jsonl(config.AUDIT_LOG, entry)
     return entry
 
 
 def read_entries(limit: int | None = None) -> list[dict]:
-    """
-    Read the log back, oldest first. `limit` keeps the most recent N.
+    """Read oldest to newest, including all rotated archives."""
+    return log_rotation.read_jsonl(config.AUDIT_LOG, limit=limit)
 
-    A malformed line is skipped rather than raising — a log that can't be read
-    because of one bad row is worse than a log with a gap.
-    """
-    if not config.AUDIT_LOG.exists():
-        return []
 
-    entries = []
-    for line in config.AUDIT_LOG.read_text(encoding="utf-8").splitlines():
-        line = line.strip()
-        if not line:
-            continue
-        try:
-            entries.append(json.loads(line))
-        except json.JSONDecodeError:
-            continue
-
-    return entries[-limit:] if limit else entries
+def count_entries() -> int:
+    """Count entries without loading the entire audit into memory."""
+    return log_rotation.count_jsonl(config.AUDIT_LOG)
 
 
 def clear() -> int:
-    """Wipe the log. Handy between attack runs; returns how many went."""
-    count = len(read_entries())
+    """Clear only the active audit file. Archive history is preserved."""
+    count = len(log_rotation.read_jsonl(config.AUDIT_LOG))
     if config.AUDIT_LOG.exists():
         config.AUDIT_LOG.unlink()
     return count
 
 
 def entries_for(content_id: str) -> list[dict]:
-    """Every entry touching one content id, in order."""
-    return [e for e in read_entries() if e.get("content_id") == content_id]
+    """Find decisions and appeals across all existing log archives."""
+    return [e for e in log_rotation.iter_jsonl(config.AUDIT_LOG)
+            if e.get("content_id") == content_id]
