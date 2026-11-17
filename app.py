@@ -173,7 +173,7 @@ def health():
         "detector_model": config.DETECTOR_MODEL,
         "detector_loaded": loaded,
         "rate_limiting": config.RATE_LIMITING_ENABLED,
-        "log_entries": len(audit.read_entries()),
+        "log_entries": audit.count_entries(),
     })
 
 
@@ -356,7 +356,9 @@ def get_log():
     You need this in unit 8 to paste entries into your README, and you need it
     now to see whether your logging is actually working.
     """
-    limit = request.args.get("limit", type=int)
+    # Bound memory use as the retained archives grow over time.
+    limit = request.args.get("limit", default=50, type=int)
+    limit = max(1, min(limit, 1000))
     entries = audit.read_entries(limit=limit)
     return jsonify({"count": len(entries), "entries": entries})
 
