@@ -8,14 +8,11 @@ The original decision audit log remains untouched.
 
 from datetime import datetime, timezone
 from hashlib import sha256
-import json
-import threading
 import time
 import uuid
 
 import config
-
-_lock = threading.Lock()
+import log_rotation
 
 
 def new_request_id() -> str:
@@ -76,21 +73,10 @@ def record_request(request, response, request_id: str,
         "cpu_seconds": round(cpu_seconds, 6),
     }
 
-    config.LOG_DIR.mkdir(parents=True, exist_ok=True)
-    with _lock:
-        with config.REQUEST_TELEMETRY_LOG.open("a", encoding="utf-8") as handle:
-            handle.write(json.dumps(entry, ensure_ascii=False) + "\n")
+    log_rotation.append_jsonl(config.REQUEST_TELEMETRY_LOG, entry)
     return entry
 
 
 def read_requests(limit: int | None = None) -> list[dict]:
-    if not config.REQUEST_TELEMETRY_LOG.exists():
-        return []
-    items = []
-    for line in config.REQUEST_TELEMETRY_LOG.read_text(encoding="utf-8").splitlines():
-        try:
-            if line.strip():
-                items.append(json.loads(line))
-        except json.JSONDecodeError:
-            continue
-    return items[-limit:] if limit else items
+    """Include both archived request logs and the current file."""
+    return log_rotation.read_jsonl(config.REQUEST_TELEMETRY_LOG, limit=limit)
