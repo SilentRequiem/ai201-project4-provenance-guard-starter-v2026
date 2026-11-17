@@ -388,4 +388,4 @@ This change optimizes the reading of recent logs. It does not change what data i
 
 The model-load warmup is excluded from the warm cost average. The 100-requests/day estimate is the measured time per request times 100, assuming sequential requests. It is not a hosting bill or a prediction of parallel throughput.
 
-Commit the real request log, result JSON and exact dependency lockfile. Paste at least ten actual structured log entries as text into the Capstone section of README.md. You still need three separate trials of each of your five Unit 9 criteria, before and after one measured improvement.
+The real request logs, the before and after evaluation JSON files, the lookup benchmark, and the dependency lockfile are now committed. The Capstone README includes 11 baseline request entries, all five criteria across three trials before and after, and the measured cost. The existing instructions remain available for reproducing the tests on another machine.
