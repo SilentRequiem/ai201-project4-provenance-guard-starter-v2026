@@ -350,32 +350,22 @@ $env:AI201_DEBUG = "0"
 python app.py
 ~~~
 
-### Real measurement (second PowerShell window)
+### Full Unit 9 BEFORE measurement (one PowerShell command)
 
-Activate the same environment in the second window. **Write and commit your own five Unit 9 criteria before generating evidence.** Then run:
+The five Unit 9 criteria were written and committed in `criteria.md` at commit `25085d33` before collecting capstone results.
 
-~~~powershell
-.\.venv\Scripts\Activate.ps1
-python capstone_measure.py --label before
-~~~
-
-This performs one warmup, ten separate warm requests, and one intentionally invalid request. It saves the actual responses, ten timing measurements, and corresponding structured request entries in a timestamped file under results/. The bad request checks whether rejections are logged. After your single diagnosed improvement, use --label after and repeat the same test.
-
-### Check log rotation without loading the model
-
-From the project root, run:
+Close any old `python app.py` server. In PowerShell, inside this repository, run:
 
 ~~~powershell
-python -m unittest -v test_capstone_rotation.py
+git pull
+powershell -NoProfile -ExecutionPolicy Bypass -File .\run_unit9_before.ps1
 ~~~
 
-These tests use temporary files. They verify that request and audit records survive file rotation, audit appeals remain linked, individual failures stay visible, the 1 MiB limit is enforced, and historical data is readable after a new read. They do not create capstone measurement results.
+The script uses the existing `.venv\Scripts\python.exe`. It checks Python syntax and runs the isolated unit tests, starts and restarts the local service itself, then tests all five criteria three times. Each trial uses ten warm synthetic HTTP submissions, five intentionally invalid requests, and a temporary 1 MiB log rotation fixture. The actual ten HTTP records must remain visible after restarting the service, while the isolated fixture proves archive rollover and reopening without fabricating HTTP records in the production request log.
 
-### Log rotation and retention
+The results are written to `results/capstone_eval_before_<timestamp>.json` and `.md`. The same output records measured mean client wait, server time, process CPU time, and the time equivalent for 100 requests/day. The script commits the raw logs, results, and installed-package lockfile, then pushes them to GitHub. It does **not** change any criterion or scoring threshold.
 
-Both `logs/requests.jsonl` and `logs/audit.jsonl` rotate automatically before an entry would push the current file beyond **1,048,576 bytes**. Archives are named `requests.000001.jsonl` and `audit.000001.jsonl`, then numbered upward. Older archives are never automatically deleted. The audit reader, appeal lookup, and capstone measurement reader include archived files. `GET /log` defaults to the newest 50 entries and accepts `?limit=N` up to 1,000 to keep the HTTP response bounded.
-
-**Important:** The size limit applies per file, not to the combined history. Archives still consume disk space and should be backed up or reviewed for retention in production. For this local assignment, keep them as evidence.
+**Stop after the BEFORE run.** Review its actual results, choose exactly one improvement justified by the findings, then run the equivalent AFTER checks. If you want just the cost sample with an already running server, `capstone_measure.py` is an optional separate tool and is not the main capstone evaluator.
 
 ### What the logs contain
 
