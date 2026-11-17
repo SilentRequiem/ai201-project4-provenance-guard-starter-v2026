@@ -112,3 +112,14 @@ def read_jsonl(active: Path, limit: int | None = None) -> list[dict]:
 
 def count_jsonl(active: Path) -> int:
     return sum(1 for _ in iter_jsonl(active))
+
+def clear_active(active: Path) -> int:
+    """Explicitly clear only the current file, not any retained archives."""
+    active = Path(active)
+    with _lock:
+        if not active.exists():
+            return 0
+        with active.open("r", encoding="utf-8") as handle:
+            count = sum(1 for line in handle if line.strip())
+        active.unlink()
+        return count
