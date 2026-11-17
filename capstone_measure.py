@@ -18,6 +18,7 @@ import time
 import uuid
 
 import requests
+import log_rotation
 
 
 ROOT = Path(__file__).resolve().parent
@@ -31,17 +32,12 @@ TEXT = (
 
 
 def read_telemetry(ids):
-    if not LOG_PATH.exists():
-        return []
-    matches = []
-    for line in LOG_PATH.read_text(encoding="utf-8").splitlines():
-        try:
-            entry = json.loads(line)
-            if entry.get("input", {}).get("creator_id") in ids:
-                matches.append(entry)
-        except (ValueError, TypeError):
-            continue
-    return matches
+    # The capstone log may rotate while the ten requests are running.
+    # Search all archives, not only requests.jsonl.
+    return [
+        entry for entry in log_rotation.iter_jsonl(LOG_PATH)
+        if entry.get("input", {}).get("creator_id") in ids
+    ]
 
 
 def main():
