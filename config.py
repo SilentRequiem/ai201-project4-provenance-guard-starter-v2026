@@ -108,3 +108,6 @@ RATE_LIMIT_STORAGE = "memory://"
 LOG_DIR = ROOT / "logs"
 AUDIT_LOG = LOG_DIR / "audit.jsonl"
 RESULTS_DIR = ROOT / "results"
+
+# Unit 9 capstone: structured per-request telemetry, separate from decisions.
+REQUEST_TELEMETRY_LOG = LOG_DIR / "requests.jsonl"
