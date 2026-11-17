@@ -87,18 +87,19 @@ def append_jsonl(active: Path, entry: dict) -> None:
 
 def iter_jsonl(active: Path):
     """Stream every complete record from all archives and the active log."""
+    # Hold the same lock as the writer while opening paths. Otherwise a
+    # simultaneous rollover may rename requests.jsonl between listing and open.
     with _lock:
-        paths = all_paths(active)
-    for path in paths:
-        with path.open("r", encoding="utf-8") as handle:
-            for line in handle:
-                if not line.strip():
-                    continue
-                try:
-                    yield json.loads(line)
-                except json.JSONDecodeError:
-                    # Keep older data available despite one damaged entry.
-                    continue
+        for path in all_paths(active):
+            with path.open("r", encoding="utf-8") as handle:
+                for line in handle:
+                    if not line.strip():
+                        continue
+                    try:
+                        yield json.loads(line)
+                    except json.JSONDecodeError:
+                        # Keep older data available despite one damaged entry.
+                        continue
 
 
 def read_jsonl(active: Path, limit: int | None = None) -> list[dict]:
