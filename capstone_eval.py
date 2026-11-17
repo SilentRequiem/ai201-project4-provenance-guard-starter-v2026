@@ -393,6 +393,39 @@ def main():
             "verdict": "MET" if all(x["met"] for x in items) else "MISSED",
         })
 
+    # The cost is measured from the same thirty real warm submissions used
+    # for criteria 1, 2 and 5. CPU seconds are process-wide, not a bill.
+    measured_telemetry = [
+        item
+        for trial in trials
+        for item in trial["criteria"][0]["evidence"]["telemetry"]
+        if item.get("output", {}).get("http_status") == 200
+    ]
+    measured_client_ms = [
+        item["client_duration_ms"]
+        for trial in trials
+        for item in trial["criteria"][0]["evidence"]["requests"]
+        if item.get("status") == 200
+    ]
+    cpu = [item["cpu_seconds"] for item in measured_telemetry
+           if isinstance(item.get("cpu_seconds"), (int, float))]
+    server_ms = [item["duration_ms"] for item in measured_telemetry
+                 if isinstance(item.get("duration_ms"), (int, float))]
+    cost = {
+        "basis": "30 warm local synthetic HTTP submissions across three trials",
+        "sample_count": len(measured_client_ms),
+        "mean_client_seconds": round(statistics.mean(measured_client_ms) / 1000, 6)
+                               if measured_client_ms else None,
+        "mean_server_seconds": round(statistics.mean(server_ms) / 1000, 6)
+                               if server_ms else None,
+        "mean_process_cpu_seconds": round(statistics.mean(cpu), 6) if cpu else None,
+        "hundred_client_seconds_at_measured_mean":
+            round(100 * statistics.mean(measured_client_ms) / 1000, 3)
+            if measured_client_ms else None,
+        "hundred_process_cpu_seconds_at_measured_mean":
+            round(100 * statistics.mean(cpu), 3) if cpu else None,
+    }
+
     summary = {
         "label": args.label,
         "timestamp": datetime.now(timezone.utc).isoformat(),
@@ -403,6 +436,7 @@ def main():
                   "A separate temporary 1 MiB fixture validates archive rollover "
                   "without filling the committed service log with fake HTTP events.",
         "verdicts": verdicts,
+        "cost": cost,
         "trials": trials,
     }
     stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d_%H%M%S")
@@ -423,10 +457,25 @@ def main():
             f"{row['run_1']} | {row['run_2']} | {row['run_3']} | "
             f"**{row['verdict']}** |"
         )
-    md.extend(["", "Complete HTTP responses, timing values, archived-log fixture "
-               "results, and per-criterion traces are in the JSON file.",
-               "No after-run success is claimed until the actual AFTER script runs.",
-               ""])
+    md.extend([
+        "",
+        "## Measured cost",
+        "",
+        f"Measured successful warm requests: {cost['sample_count']}",
+        f"Mean client seconds: {cost['mean_client_seconds']}",
+        f"Mean server seconds: {cost['mean_server_seconds']}",
+        f"Mean process CPU seconds: {cost['mean_process_cpu_seconds']}",
+        f"100 sequential requests/day: "
+        f"{cost['hundred_client_seconds_at_measured_mean']} client-wait seconds "
+        f"and {cost['hundred_process_cpu_seconds_at_measured_mean']} "
+        "process CPU seconds at the measured mean.",
+        "",
+        "Complete HTTP responses, timing values, archived-log fixture results, "
+        "and per-criterion traces are in the JSON file.",
+        "This is measured local compute time, not API spend or a hosting bill.",
+        "No after-run success is claimed until the actual AFTER script runs.",
+        "",
+    ])
     md_path = path.with_suffix(".md")
     md_path.write_text("\n".join(md), encoding="utf-8")
 
