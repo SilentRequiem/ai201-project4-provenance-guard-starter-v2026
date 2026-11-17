@@ -37,3 +37,44 @@ All three label variants must be reachable using at most 6 deliberately chosen t
 5 out of 5 missing, empty, or invalid text requests must be rejected cleanly without causing a 500 error.
 
 **Why this target:** Bad input should never crash the service. The caller should get a clear error instead.
+
+
+# Unit 9 Capstone
+
+## 1. Logging completeness
+
+10/10 requests logged with detailed records and 1 MB rotation
+
+**Why this target:** Comprehensive logging is essential for auditing and debugging purposes.
+
+---
+
+## 2. Timing accuracy
+
+Client and server measurements differ by no more than 200 ms
+
+**Why this target:** Accurate timing is crucial for performance analysis and ensuring the system behaves as expected under real-world conditions.
+
+---
+
+## 3. Log persistence
+
+10/10 records survive a restart, including archived records
+
+**Why this target:** Persistent logs are necessary for long-term auditing and compliance, ensuring that no critical information is lost during system restarts or failures.
+
+---
+
+## 4. Failure logging
+
+5/5 failed requests have their own detailed log entries
+
+**Why this target:** Detailed logging of failed requests is essential for diagnosing and resolving issues, as well as for compliance and auditing purposes.
+
+---
+
+## 5. Average response time
+
+Under 2 seconds across 10 warm requests
+
+**Why this target:** Maintaining a low average response time is critical for user satisfaction and system performance, ensuring that the service remains responsive under typical load conditions.
