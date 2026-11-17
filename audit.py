@@ -126,10 +126,7 @@ def count_entries() -> int:
 
 def clear() -> int:
     """Clear only the active audit file. Archive history is preserved."""
-    count = len(log_rotation.read_jsonl(config.AUDIT_LOG))
-    if config.AUDIT_LOG.exists():
-        config.AUDIT_LOG.unlink()
-    return count
+    return log_rotation.clear_active(config.AUDIT_LOG)
 
 
 def entries_for(content_id: str) -> list[dict]:
