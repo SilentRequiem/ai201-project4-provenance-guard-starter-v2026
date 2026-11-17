@@ -25,14 +25,42 @@ Routes:
 """
 
 import re
+import time
 import uuid
 
-from flask import Flask, jsonify, request
+from flask import Flask, g, jsonify, request
 
 import audit
 import config
+import request_telemetry
 
 app = Flask(__name__)
+
+
+
+# Unit 9 capstone: measure every HTTP request, including 4xx/429/500 results.
+@app.before_request
+def begin_telemetry():
+    g.started_ns = time.perf_counter_ns()
+    g.cpu_started_ns = time.process_time_ns()
+    g.request_id = request_telemetry.new_request_id()
+
+
+@app.after_request
+def finish_telemetry(response):
+    try:
+        request_telemetry.record_request(
+            request=request,
+            response=response,
+            request_id=g.request_id,
+            started_ns=g.started_ns,
+            cpu_started_ns=g.cpu_started_ns,
+        )
+    except Exception:
+        # A telemetry failure should never turn an otherwise valid response
+        # into a service failure.
+        app.logger.exception("Could not write capstone request telemetry")
+    return response
 
 
 # ── Rate limiting — UNIT 8 ────────────────────────────────────────────────────
