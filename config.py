@@ -111,3 +111,6 @@ RESULTS_DIR = ROOT / "results"
 
 # Unit 9 capstone: structured per-request telemetry, separate from decisions.
 REQUEST_TELEMETRY_LOG = LOG_DIR / "requests.jsonl"
+
+# Unit 9 capstone: rotate each JSONL file at 1 MiB. Never auto-delete archives.
+LOG_ROTATION_BYTES = 1024 * 1024
