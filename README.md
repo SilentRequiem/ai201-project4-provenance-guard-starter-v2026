@@ -1058,11 +1058,11 @@ Rotation caps each **individual file**, not total disk use. Archived logs are no
 
 **What It Costs**
 
-Pending measurement. I will measure ten real requests and report the mean execution time in seconds, plus the equivalent time for 100 requests a day.
+Pending the real local run. `capstone_eval.py` measures ten warm HTTP requests in each of three trials and records mean client wait time, server time, and process CPU time. The report multiplies the measured per-request means by 100 for a daily equivalent, rather than inventing API fees.
 
 **Run Log and Verdicts**
 
-Pending my five capstone acceptance criteria and three real trials per criterion. These will be committed only after I write the criteria myself.
+My five criteria are committed in `criteria.md` at commit `25085d33`, before any capstone measurements. They test 10/10 complete request logs, client/server timing within 200 ms, 10/10 logs surviving restart including archives, 5/5 detailed failure logs, and mean warm response time below two seconds. The three-trial results are pending the local BEFORE run.
 
 **The Improvement**
 
@@ -1074,5 +1074,5 @@ Pending the completed before-and-after comparison. The classifier's existing pro
 
 **How I Used AI**
 
-AI helped compare the available capstone shapes, inspect the existing service, and prepare the operational extension. I will write the five acceptance criteria myself, then review the measured results before making a single change.
+AI helped compare the available capstone shapes, inspect the existing service, implement rotation, and prepare the operational test runner. I wrote and committed the five acceptance criteria in `25085d33` before recording results. I will review the measured BEFORE output before making a single change.
 
