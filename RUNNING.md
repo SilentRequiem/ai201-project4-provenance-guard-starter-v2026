@@ -361,6 +361,22 @@ python capstone_measure.py --label before
 
 This performs one warmup, ten separate warm requests, and one intentionally invalid request. It saves the actual responses, ten timing measurements, and corresponding structured request entries in a timestamped file under results/. The bad request checks whether rejections are logged. After your single diagnosed improvement, use --label after and repeat the same test.
 
+### Check log rotation without loading the model
+
+From the project root, run:
+
+~~~powershell
+python -m unittest -v test_capstone_rotation.py
+~~~
+
+These tests use temporary files. They verify that request and audit records survive file rotation, audit appeals remain linked, individual failures stay visible, the 1 MiB limit is enforced, and historical data is readable after a new read. They do not create capstone measurement results.
+
+### Log rotation and retention
+
+Both `logs/requests.jsonl` and `logs/audit.jsonl` rotate automatically before an entry would push the current file beyond **1,048,576 bytes**. Archives are named `requests.000001.jsonl` and `audit.000001.jsonl`, then numbered upward. Older archives are never automatically deleted. The audit reader, appeal lookup, and capstone measurement reader include archived files. `GET /log` defaults to the newest 50 entries and accepts `?limit=N` up to 1,000 to keep the HTTP response bounded.
+
+**Important:** The size limit applies per file, not to the combined history. Archives still consume disk space and should be backed up or reviewed for retention in production. For this local assignment, keep them as evidence.
+
 ### What the logs contain
 
 - logs/audit.jsonl continues to record decisions, appeals, and rejections from the original project.
