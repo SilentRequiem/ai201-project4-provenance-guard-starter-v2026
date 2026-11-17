@@ -1,6 +1,6 @@
 # Running Provenance Guard
 
-Everything about how the starter works.
+Instructions for the existing service and the Unit 9 capstone extension.
 
 This is a **web service**. It runs on your machine and you talk to it with
 `curl` from another terminal. If you've not built a backend before, that's
@@ -76,8 +76,7 @@ curl -X POST http://127.0.0.1:5000/submit \
   -d '{"text": "some writing", "creator_id": "me"}'
 ```
 
-It returns a `501` saying it isn't built yet. **That's the correct starting
-position.**
+The implemented route returns a decision, confidence score, content ID, and the two signal scores.
 
 ---
 
@@ -88,8 +87,8 @@ position.**
 | `POST /ping` | **works** | The example. Don't edit it |
 | `GET /health` | **works** | Is the service up, is the model loaded |
 | `GET /log` | **works** | The audit log, as JSON |
-| `POST /submit` | **you build it** | Milestones 3, 4, 5 |
-| `POST /appeal` | **you build it** | Milestone 5 |
+| `POST /submit` | **works** | Scores text and records decisions |
+| `POST /appeal` | **works** | Records appeals |
 
 ---
 
@@ -306,3 +305,68 @@ is evidence, and the entries you paste into your README are what unit 8 grades.
 
 **Do not delete and recreate this repository.** You submit the same URL both
 units.
+
+
+---
+
+## Unit 9 capstone: local deployment with structured logs
+
+This is **Path B: local with logs**. The app runs outside the editor using local GPT-2. No API key or paid hosting is required. The Unit 9 extension measures each HTTP request and adds a second JSONL log. It does not change the AI decision logic.
+
+### Clean-checkout setup on Windows PowerShell
+
+In a new folder, not inside the existing working copy:
+
+~~~powershell
+git clone https://github.com/SilentRequiem/ai201-project4-provenance-guard-starter-v2026.git
+cd ai201-project4-provenance-guard-starter-v2026
+py -3.13 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+python test.py
+python detector.py
+~~~
+
+Use Python 3.11, 3.12, or 3.13. The tested laptop uses Python 3.13. The project requires Flask, Flask-Limiter, requests, transformers, torch, and gunicorn, with version bounds in requirements.txt. The gpt2 model downloads about **550 MB** on first use. Save exact local dependency versions before submission:
+
+~~~powershell
+python -m pip freeze > requirements-lock.txt
+~~~
+
+Commit requirements-lock.txt alongside your run evidence. It records the exact packages installed on the computer that generated the report.
+
+### One command to start the system
+
+From the project root with the environment active:
+
+~~~powershell
+python app.py
+~~~
+
+Leave that terminal open. The server listens at http://127.0.0.1:5000. It runs directly in PowerShell without VS Code. For a measured run, disable Flask's development debugger before starting:
+
+~~~powershell
+$env:AI201_DEBUG = "0"
+python app.py
+~~~
+
+### Real measurement (second PowerShell window)
+
+Activate the same environment in the second window. **Write and commit your own five Unit 9 criteria before generating evidence.** Then run:
+
+~~~powershell
+.\.venv\Scripts\Activate.ps1
+python capstone_measure.py --label before
+~~~
+
+This performs one warmup, ten separate warm requests, and one intentionally invalid request. It saves the actual responses, ten timing measurements, and corresponding structured request entries in a timestamped file under results/. The bad request checks whether rejections are logged. After your single diagnosed improvement, use --label after and repeat the same test.
+
+### What the logs contain
+
+- logs/audit.jsonl continues to record decisions, appeals, and rejections from the original project.
+- logs/requests.jsonl is new. Each record includes UTC timestamp, request ID, method, route, input summary (creator ID, text length, short preview and SHA-256), output status/result, duration_ms and cpu_seconds.
+- results/capstone_cost_<label>_<timestamp>.json holds ten real measurements and the matching telemetry extract. Cost is measured in seconds of compute and latency, not invented API spend.
+
+The model-load warmup is excluded from the warm cost average. The 100-requests/day estimate is the measured time per request times 100, assuming sequential requests. It is not a hosting bill or a prediction of parallel throughput.
+
+Commit the real request log, result JSON and exact dependency lockfile. Paste at least ten actual structured log entries as text into the Capstone section of README.md. You still need three separate trials of each of your five Unit 9 criteria, before and after one measured improvement.
