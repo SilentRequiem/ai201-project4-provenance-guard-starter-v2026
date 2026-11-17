@@ -1044,7 +1044,7 @@ I'm extending Provenance Guard, the local writing-classification service from Un
 
 **The Shape**
 
-I chose **A: Deploy and instrument** with **Path B: local with logs**. The service loads a local GPT-2 model, so I am keeping the working local run path instead of trying to fit it into a small free hosting instance. The new part is structured request telemetry and a reproducible way to measure execution time. I am not retraining the model, changing the thresholds, adding a new detection signal, or building a new interface.
+I chose **A: Deploy and instrument** with **Path B: local with logs**. The service loads a local GPT-2 model, so I am keeping the working local run path instead of trying to fit it into a small free hosting instance. The new part is structured request telemetry, a reproducible way to measure execution time, and 1 MiB log rotation. I am not retraining the model, changing the thresholds, adding a new detection signal, or building a new interface.
 
 **Running It**
 
@@ -1052,7 +1052,9 @@ The local startup command and the Python, dependency, and model requirements wil
 
 **Instrumentation**
 
-Pending the real instrumented run. Each new request record will capture the time, route, a limited input summary, the response status and result, and elapsed time. The log keeps only an 80-character input preview, a text length, and a SHA-256 digest, not the full submission. That preview could still contain sensitive text, so this local test uses synthetic samples only. Actual entries will be pasted here after running the service.
+Pending the real instrumented run. Each request record will capture the time, route, a limited input summary, the response status and result, and elapsed time. The audit log also records each rejection or appeal as its own event. Both logs rotate at **1 MiB (1,048,576 bytes) per file**. Completed files become numbered archives, such as `requests.000001.jsonl` and `audit.000001.jsonl`. Old archives are preserved, and the readers include archived records when checking history. The `/log` endpoint returns a bounded number of recent entries so it does not load the entire history into the response. The log keeps only an 80-character input preview, a text length, and a SHA-256 digest, not the full submission. That preview could still contain sensitive text, so this local test uses synthetic samples only. Actual entries will be pasted here after running the service.
+
+Rotation caps each **individual file**, not total disk use. Archived logs are not automatically deleted, so disk capacity still needs to be monitored or archives moved to external storage in a real deployment.
 
 **What It Costs**
 
