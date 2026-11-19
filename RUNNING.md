@@ -1,321 +1,73 @@
 # Running Provenance Guard
 
-Instructions for the existing service and the Unit 9 capstone extension.
+Provenance Guard is a local Python/Flask service that analyzes submitted writing using a GPT-2 language-model signal and a writing-style signal. It returns a cautious estimate (`human`, `ai`, or `unsure`), supports appeals, and records structured logs.
 
-This is a **web service**. It runs on your machine and you talk to it with
-`curl` from another terminal. If you've not built a backend before, that's
-assumed — the starter ships one that already answers.
+**Unit 10 Demo Day:** Start with the quick start below. [README.md](README.md) contains the project explanation, original criteria, real before/after results, and limitations. You do not need to rerun the Unit 9 tests for the demo.
 
----
+## Demo Day quick start (Windows PowerShell)
 
-## Before your first class
+**Already have this repository and its `.venv`?** Open PowerShell in the project folder. If you have not updated your working copy, run `git pull` before starting.
 
-```bash
-python3 -m venv .venv
-source .venv/bin/activate          # Windows: .venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-python test.py
-```
+**Terminal 1: start the service**
 
-**You're ready when `python test.py` passes.**
-
-You'll see `[WARN] Detector model — not downloaded yet`:
-
-```bash
-python detector.py
-```
-
-That downloads about 550 MB and scores a sample.
-
-> **No API key for this pair.** Nothing here calls a hosted service. The model
-> that reads your text runs on your own laptop.
-
----
-
-## Your first five minutes
-
-Two terminals. In the first:
-
-```bash
+~~~powershell
+.\.venv\Scripts\Activate.ps1
+$env:AI201_DEBUG = "0"
 python app.py
-```
-
-In the second:
-
-```bash
-curl -X POST http://127.0.0.1:5000/ping \
-  -H "Content-Type: application/json" \
-  -d '{"message": "hello"}'
-```
-
-You should get JSON back. That's the whole idea of a web service — something
-sent it data, it sent something back.
+~~~
 
-> **On Windows, use `curl.exe` and keep it on one line.**
->
-> In PowerShell, `curl` is an alias for a different tool and the command above
-> fails with `Cannot bind parameter 'Headers'` before it ever reaches your
-> service. The `\` line breaks don't work there either. This does:
->
-> ```powershell
-> curl.exe -X POST http://127.0.0.1:5000/ping -H "Content-Type: application/json" -d '{\"message\": \"hello\"}'
-> ```
->
-> Every `curl` command in this file and in the brief works the same way: swap
-> `curl` for `curl.exe` and put it on one line. Git Bash needs no change.
+Leave this terminal running. The service should listen at `http://127.0.0.1:5000`. The first classification may take longer because the model loads into memory.
 
-**Leave `/ping` alone.** It's your control. When something breaks later, check
-`/ping` still answers: if it does, the problem is in your handler; if it
-doesn't, it's the service itself, and that's a help-channel question.
+**Terminal 2: check health and submit writing**
 
-Then try the route you're going to build:
+~~~powershell
+Invoke-RestMethod http://127.0.0.1:5000/health
 
-```bash
-curl -X POST http://127.0.0.1:5000/submit \
-  -H "Content-Type: application/json" \
-  -d '{"text": "some writing", "creator_id": "me"}'
-```
+$body = @{
+    creator_id = "demo_student"
+    text = "This is a demonstration of Provenance Guard. The service evaluates the writing, combines two signals, and records a classification that can be reviewed later."
+} | ConvertTo-Json
 
-The implemented route returns a decision, confidence score, content ID, and the two signal scores.
+$result = Invoke-RestMethod -Uri "http://127.0.0.1:5000/submit" -Method Post -ContentType "application/json" -Body $body
+$result | Format-List
+~~~
 
----
+The response includes `content_id`, `guess`, `confidence`, `label`, `model_score`, `style_score`, and `status`. Those scores are estimates, not proof of authorship. Keep `$result` available for the appeal example below.
 
-## The routes
+**Show that the request was recorded**
 
-| Route | State | What it does |
-|---|---|---|
-| `POST /ping` | **works** | The example. Don't edit it |
-| `GET /health` | **works** | Is the service up, is the model loaded |
-| `GET /log` | **works** | The audit log, as JSON |
-| `POST /submit` | **works** | Scores text and records decisions |
-| `POST /appeal` | **works** | Records appeals |
+~~~powershell
+Invoke-RestMethod "http://127.0.0.1:5000/log?limit=5" | ConvertTo-Json -Depth 7
+Get-Content .\logs\requests.jsonl -Tail 3
+~~~
 
----
+The `/log` route reads the audit history. `logs/requests.jsonl` contains request-level telemetry, including HTTP status, duration, and a limited input summary. Both logs rotate at 1 MiB per file, preserve numbered archives, and remain available through archive-aware readers.
 
-## Every command
+**Optional: demonstrate a failed request and an appeal**
 
-| Command | What it does |
-|---|---|
-| `python test.py` | Checks your environment |
-| `python app.py` | Runs the service |
-| `python detector.py` | Downloads the model and scores a sample — **run before class** |
-| `python detector.py "some text"` | Score one piece of text from the terminal |
-| `python stylometry.py "some text"` | Your style measures, on one piece of text |
-| `python run_attacks.py --set <folder>` | The attack set — **unit 8** |
-| `python run_attacks.py --flood 15` | Push past your rate limit and print the status codes — **unit 8** |
-| `python run_eval.py --label before` | Your five criteria, three trials — **unit 8** |
+~~~powershell
+$badBody = @{ creator_id = "demo_invalid"; text = "" } | ConvertTo-Json
+try {
+    Invoke-RestMethod -Uri "http://127.0.0.1:5000/submit" -Method Post -ContentType "application/json" -Body $badBody
+} catch {
+    $_.ErrorDetails.Message
+}
 
----
+$appeal = @{
+    content_id = $result.content_id
+    reasoning = "I would like a human to review this result."
+} | ConvertTo-Json
 
-## Which piece goes with which milestone
+Invoke-RestMethod -Uri "http://127.0.0.1:5000/appeal" -Method Post -ContentType "application/json" -Body $appeal
+~~~
 
-### Unit 7 — the build
+The empty input should be rejected with HTTP 400 and logged. The appeal should return `under_review` and appear in the audit log. You can stop the service with Ctrl+C in Terminal 1.
 
-| Milestone | What you're doing | Where |
-|---|---|---|
-| 1 | Trace a submission on paper | Nothing to run |
-| 2 | Write your criteria | `criteria.md` — all five are yours |
-| 3 | The route, one signal, the log | `app.py::submit`, `detector.py`, `audit.py` |
-| 4 | Second signal, combine, score | `stylometry.py`, `scoring.py::combine_signals` |
-| 5 | Labels and the appeal path | `scoring.py::score_to_label`, `app.py::appeal` |
-| 6 | Write it up | `README.md` |
+## Setup on a different computer
 
-### Unit 8 — the test
+**Requirements:** Python 3.11, 3.12, or 3.13; enough free memory and disk for PyTorch and the local GPT-2 model; and internet access for the initial package/model download. `requirements.txt` provides the dependency constraints, and `requirements-lock.txt` records the packages installed during the measured capstone run. No API key or paid AI service is needed.
 
-| Milestone | What you're doing | Where |
-|---|---|---|
-| 1 | Rate limiting and the full log | `config.py`, the decorator in `app.py` |
-| 2 | Run the attack set | `run_attacks.py` |
-| 3 | Run your own criteria | `scenarios.py`, `run_eval.py` |
-| 4 | Verdicts and diagnoses | `README.md` |
-| 5 | Fix one thing, re-run | `run_attacks.py --label after` |
-| 6 | What's still broken | `README.md` |
-
----
-
-## Building `/submit` in three passes
-
-The ordering is deliberate. It's how you tell a broken route from a broken
-signal.
-
-**Milestone 3.** Return a hardcoded response. Confirm `curl` gets it back
-**before** you add any logic. Then pull `text` and `creator_id` out. Then call
-one signal. Then log it.
-
-**Milestone 4.** Add the second signal. Combine them. Log both scores.
-
-**Milestone 5.** Turn the score into a label.
-
-> Test each signal from a terminal on its own before wiring it in. If you skip
-> that you'll spend an hour not knowing whether the route or the signal is
-> lying to you.
-
----
-
-## Turning on rate limiting (unit 8)
-
-Three steps:
-
-1. In `config.py`, set `RATE_LIMITING_ENABLED = True` — or run with
-   `AI201_RATE_LIMITS=1`.
-2. Choose your numbers there.
-3. In `app.py`, uncomment the `@limiter.limit(...)` line above `submit`.
-
-Then push past your limit and watch for `429`:
-
-```bash
-python run_attacks.py --flood 15
-```
-
-That sends 15 submissions from one `creator_id` and prints the run of status
-codes — `200 200 200 ... 429 429` — which is exactly what your README's **Rate
-Limiting** section asks you to paste. It also writes `results/flood_<date>.md`.
-
-The attack set can't do this for you. Every attack row submits under its own
-`creator_id`, so a full attack run looks like forty-odd different callers and
-never trips a limit however long it is.
-
-No `429` at all? Either your limit is above 15 a minute, or rate limiting is
-still off. `GET /health` reports which.
-
-Rejections are logged for you. **An attack that shows up only as an absence is
-one you'll never find** — a thousand requests that got a `429` and left no
-trace look exactly like a quiet afternoon.
-
----
-
-## Running it somewhere else (unit 9)
-
-Unit 9 asks you to deploy one of your systems. **Read this before you pick
-which one** — for this project the answer is already decided, and it isn't the
-hosted one.
-
-Flask's built-in server says "development server" on startup because that's
-what it is. A real one comes from `gunicorn`, which is in
-`requirements.txt` and unused until now:
-
-```bash
-gunicorn app:app --bind 0.0.0.0:$PORT
-```
-
-Two settings do the work, and both read the environment:
-
-| Variable | Default | What it does |
-|---|---|---|
-| `HOST` | `127.0.0.1` | Loopback — your machine only. A host needs `0.0.0.0`, or nothing outside the box can reach the service and it looks like the app is down |
-| `PORT` | `5000` | Most hosts hand you a port in `PORT` and expect you to bind exactly that one |
-| `AI201_DEBUG` | `1` | Debug mode. Off automatically whenever `HOST` isn't loopback — an interactive debugger on a public address is a stranger's Python prompt inside your process |
-
-Nothing about your local workflow changes. With no variables set you get
-`http://127.0.0.1:5000` and every `curl` above still works.
-
-### This project will not fit a free host
-
-Say it plainly, because the arithmetic is the point:
-
-| What has to be in memory | Roughly |
-|---|---|
-| `torch` | ~200–800 MB depending on the build |
-| the `gpt2` weights | ~550 MB on disk, loaded into RAM to score |
-| Flask, gunicorn, your code | the rest |
-| **A free tier gives you** | **512 MB** |
-
-That's over budget before a single request arrives — and a free host has no
-persistent disk, so the 550 MB download starts again after every idle
-spin-down. There is no configuration that fixes this. The model is the size it
-is.
-
-**So pair 4 extensions take Path B — local, with logs.** That is the expected
-answer for this project, not a fallback and not a failure. Working out that a
-system doesn't fit its host *before* you spend an evening watching it get
-killed is the skill unit 9 is actually testing. Write the arithmetic above in
-your write-up; that's the deliverable.
-
----
-
-## Where everything lives
-
-| File | What it does |
-|---|---|
-| `config.py` | Every setting: thresholds, weights, rate limits, the model |
-| `app.py` | The service. `/ping` and `/log` work; `/submit` and `/appeal` are yours |
-| `detector.py` | Signal one — the local model. Given to you |
-| `stylometry.py` | Signal two. **Stubs — you build these** |
-| `scoring.py` | Combining and labelling. **Stubs — you build these** |
-| `audit.py` | The audit log writer. Given to you |
-| `run_attacks.py` | Runs the attack set — **unit 8** |
-| `run_eval.py` | Runs your criteria three times — **unit 8** |
-| `scenarios.py` | What your test runs. **You fill this in** |
-| `criteria.md` | Your five criteria. **You write all five** |
-| `logs/audit.jsonl` | Your audit log. **Commit it** |
-| `results/` | Attack runs and run logs. **Commit them** |
-
----
-
-## The two blind spots, up front
-
-Both signals have one, and unit 8's attack set is built out of them. You have
-to name them yourself in Milestone 1 — but knowing they exist now saves you
-from being surprised.
-
-**Signal one** measures how *predictable* your text is. Predictability isn't
-authorship. What it really rewards is common words in short, ordinary
-sentences — someone writing in a second language and staying with vocabulary
-they're sure of, a younger writer, anyone writing plainly on purpose. Writing
-like that scores about as machine-like as machine writing does. (Dense, ornate
-prose often goes the other way and reads as human, because rare words are what
-a language model fails to predict.) So the writers this signal is most likely
-to accuse are the ones with the least room to argue back. That is the false
-positive the whole project is about, and it's structural rather than a bug.
-
-**Signal two** cannot read. It has no idea what the text says. Anything that
-changes the shape without changing the substance moves it — typos, broken-up
-sentences, a pasted quotation. That is very cheap to do on purpose.
-
----
-
-## When something goes wrong
-
-| What you see | What it means |
-|---|---|
-| `501 not_implemented` | Correct at the start — that's the TODO in `app.py` |
-| `404` from curl | Is the server running? Is the path exactly what you typed? |
-| `Cannot bind parameter 'Headers'` | You're in PowerShell, where `curl` is a different tool. Use `curl.exe`, on one line |
-| Request body arrives empty | curl needs `-H "Content-Type: application/json"` |
-| `Address already in use` | A server left running from an earlier attempt. Kill it, don't debug it |
-| The first submission takes 10+ seconds | Signal one is loading the model into memory. Later ones take a second or two |
-| *Every* submission takes 10+ seconds | Something is reloading the model each call. `GET /health` shows `detector_loaded` — if it goes back to `false`, look for a reload in your handler |
-| `DetectorUnavailable` | Run `python detector.py` once to download the model |
-| `/appeal` seems to do nothing | Does the `content_id` you sent actually exist in the log? A typo there fails silently |
-| Every request gets through, no `429` ever | The decorator is uncommented but limiting is still off. Set `RATE_LIMITING_ENABLED` in `config.py` |
-| Flask-Limiter warns about storage | Shouldn't happen — `storage_uri` is preconfigured. If you changed it, put it back |
-| All three of your labels never appear | Your ranges have a gap. `scoring.label_ranges()` prints them |
-
-If the route won't respond, go back to `/ping`. If that answers, the problem is
-in your handler.
-
----
-
-## A note on committing
-
-At least four new commits in unit 7, four more in unit 8.
-
-`logs/` and `results/` are deliberately **not** in `.gitignore`. Your audit log
-is evidence, and the entries you paste into your README are what unit 8 grades.
-
-**Do not delete and recreate this repository.** You submit the same URL both
-units.
-
-
----
-
-## Unit 9 capstone: local deployment with structured logs
-
-This is **Path B: local with logs**. The app runs outside the editor using local GPT-2. No API key or paid hosting is required. The Unit 9 extension measures each HTTP request and adds a second JSONL log. It does not change the AI decision logic.
-
-### Clean-checkout setup on Windows PowerShell
-
-In a new folder, not inside the existing working copy:
+**Windows PowerShell, new checkout**
 
 ~~~powershell
 git clone https://github.com/SilentRequiem/ai201-project4-provenance-guard-starter-v2026.git
@@ -327,65 +79,87 @@ python test.py
 python detector.py
 ~~~
 
-Use Python 3.11, 3.12, or 3.13. The tested laptop uses Python 3.13. The project requires Flask, Flask-Limiter, requests, transformers, torch, and gunicorn, with version bounds in requirements.txt. The gpt2 model downloads about **550 MB** on first use. Save exact local dependency versions before submission:
+If Python 3.13 is not installed, use a supported Python 3.11 or 3.12 installation and adjust the `py -3.13` command. Running `python detector.py` downloads the GPT-2 weights (roughly 550 MB) if they are not cached, then scores a sample.
 
-~~~powershell
-python -m pip freeze > requirements-lock.txt
-~~~
-
-Commit requirements-lock.txt alongside your run evidence. It records the exact packages installed on the computer that generated the report.
-
-### One command to start the system
-
-From the project root with the environment active:
-
-~~~powershell
-python app.py
-~~~
-
-Leave that terminal open. The server listens at http://127.0.0.1:5000. It runs directly in PowerShell without VS Code. For a measured run, disable Flask's development debugger before starting:
+Start the app from the root folder after activation:
 
 ~~~powershell
 $env:AI201_DEBUG = "0"
 python app.py
 ~~~
 
-### Full Unit 9 BEFORE measurement (one PowerShell command)
+**macOS or Linux**
 
-The five Unit 9 criteria were written and committed in `criteria.md` at commit `25085d33` before collecting capstone results.
-
-Close any old `python app.py` server. In PowerShell, inside this repository, run:
-
-~~~powershell
-git pull
-powershell -NoProfile -ExecutionPolicy Bypass -File .\run_unit9_before.ps1
+~~~bash
+git clone https://github.com/SilentRequiem/ai201-project4-provenance-guard-starter-v2026.git
+cd ai201-project4-provenance-guard-starter-v2026
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+python test.py
+python detector.py
+AI201_DEBUG=0 python app.py
 ~~~
 
-The script uses the existing `.venv\Scripts\python.exe`. It checks Python syntax and runs the isolated unit tests, starts and restarts the local service itself, then tests all five criteria three times. Each trial uses ten warm synthetic HTTP submissions, five intentionally invalid requests, and a temporary 1 MiB log rotation fixture. The actual ten HTTP records must remain visible after restarting the service, while the isolated fixture proves archive rollover and reopening without fabricating HTTP records in the production request log.
+Use a Python version from 3.11 through 3.13. The local app is intended for a single machine. These clean-checkout steps are documented for reproducibility, but a fresh installation on someone else's computer was not independently verified during Unit 9.
 
-The results are written to `results/capstone_eval_before_<timestamp>.json` and `.md`. The same output records measured mean client wait, server time, process CPU time, and the time equivalent for 100 requests/day. The script commits the raw logs, results, and installed-package lockfile, then pushes them to GitHub. It does **not** change any criterion or scoring threshold.
+**For Unit 10 peer testing:** Give your partner this file. If they cannot install dependencies and load the model in the allotted five minutes, record the exact step that blocked them. If your laptop is already set up, let them try the live local endpoints as well. Model installation can take longer than the five-minute peer-testing window.
 
-**Stop after the BEFORE run.** Review its actual results, choose exactly one improvement justified by the findings, then run the equivalent AFTER checks. If you want just the cost sample with an already running server, `capstone_measure.py` is an optional separate tool and is not the main capstone evaluator.
+## API routes
 
-### Full Unit 9 AFTER measurement
+| Route | Status | Purpose |
+|---|---|---|
+| `POST /ping` | Implemented | Basic request/response control |
+| `GET /health` | Implemented | Reports service health, model-load status, rate limiting, and audit entry count |
+| `POST /submit` | Implemented | Validates writing, computes both signals, returns a label, and writes a decision |
+| `POST /appeal` | Implemented | Records a challenge to an existing `content_id` as `under_review` |
+| `GET /log?limit=5` | Implemented | Shows recent audit records; defaults to 50, maximum 1,000 |
 
-Only run this after the actual BEFORE results are committed and the single log-reader improvement has been applied. Close any old `python app.py` process. In Windows PowerShell from this repository, use:
+Submissions require a nonempty `creator_id` and valid text. Very short, unsupported, or oversized inputs are rejected rather than being assigned an unreliable classification. Rate limiting is enabled by default at 10 submissions/minute and 200/day per creator. A busy or recently used demo creator ID may receive HTTP 429; use a new creator ID or wait for the limit to reset.
 
-~~~powershell
-git pull
-powershell -NoProfile -ExecutionPolicy Bypass -File .\run_unit9_after.ps1
-~~~
+## Project files
 
-The script rechecks Python syntax and log rotation, then repeats **the same five criteria across three independent trials** using `capstone_eval.py --label after`. It records all HTTP responses, structured log evidence, costs, and the result table. It also runs `capstone_tail_benchmark.py --label after`, which creates temporary synthetic archives and compares the exact old and new last-50 reader algorithms ten times each using the same fixture. These synthetic lookup rows are not represented as actual HTTP service requests. The script then commits and pushes the real after-run evidence.
+| File | Purpose |
+|---|---|
+| `app.py` | Flask endpoints and request-timing hooks |
+| `detector.py` | Local GPT-2 signal |
+| `stylometry.py` | Writing-style signal |
+| `scoring.py` | Combined score and cautious labels |
+| `config.py` | Model, score thresholds, limits, log paths, and 1 MiB rotation size |
+| `audit.py` | Decision, appeal, and rejection audit records |
+| `request_telemetry.py` | Per-request input/output and elapsed-time logging |
+| `log_rotation.py` | Numbered archives and archive-aware reads |
+| `criteria.md` | User-authored acceptance criteria from Units 7 and 9 |
+| `logs/audit.jsonl` | Active audit file |
+| `logs/requests.jsonl` | Active request telemetry |
+| `results/` | Actual Unit 8/9 test logs, results, and benchmark evidence |
+| `test_capstone_rotation.py` | Isolated log rotation regression tests |
+| `capstone_eval.py` | Unit 9 five-criterion, three-trial evaluation |
+| `capstone_tail_benchmark.py` | Controlled old-versus-new log lookup benchmark |
 
-This change optimizes the reading of recent logs. It does not change what data is logged, how long archives are kept, or what the original capstone criteria require. Do not change any other system setting before the comparison.
+## Troubleshooting
 
-### What the logs contain
+| Symptom | What to check |
+|---|---|
+| `.venv\Scripts\Activate.ps1` not found | Create the virtual environment and install `requirements.txt` as shown above |
+| `python` not recognized | Install a supported Python version and open a new terminal |
+| `Address already in use` | Another service is running on port 5000; stop that process before starting another |
+| `/health` works but `detector_loaded` is `false` | The model loads on the first actual submission; `python detector.py` can download/cache it in advance |
+| A first request is unusually slow | GPT-2 is loading into memory; later warm requests are usually faster |
+| HTTP 400 | Missing or invalid JSON, text, or creator ID |
+| HTTP 413 | Submitted text exceeds 20,000 characters |
+| HTTP 422 | Text was judged unscorable by the input guard (for example, emoji-only or fewer than three English words) |
+| HTTP 429 | Creator hit the configured rate limit |
+| HTTP 503 | The local detector could not load or run; check installation, model files, memory, and the server terminal |
+| `curl` behaves strangely in Windows PowerShell | Prefer `Invoke-RestMethod` as in this file, or use `curl.exe` rather than PowerShell's `curl` alias |
+| Appeal returns HTTP 404 | Check that the submitted `content_id` exists in the audit history |
 
-- logs/audit.jsonl continues to record decisions, appeals, and rejections from the original project.
-- logs/requests.jsonl is new. Each record includes UTC timestamp, request ID, method, route, input summary (creator ID, text length, short preview and SHA-256), output status/result, duration_ms and cpu_seconds.
-- results/capstone_cost_<label>_<timestamp>.json holds ten real measurements and the matching telemetry extract. Cost is measured in seconds of compute and latency, not invented API spend.
+The classifier's signals are imperfect. Predictable human writing can resemble generated text, and edited AI text can evade confident detection. The service deliberately includes `unsure` and an appeal route because a score is not proof. Log rotation limits each individual file, **not the total space** used by retained archives. This single-process local configuration is not production hosting.
 
-The model-load warmup is excluded from the warm cost average. The 100-requests/day estimate is the measured time per request times 100, assuming sequential requests. It is not a hosting bill or a prediction of parallel throughput.
+## Reproducing earlier course results (optional)
 
-The real request logs, the before and after evaluation JSON files, the lookup benchmark, and the dependency lockfile are now committed. The Capstone README includes 11 baseline request entries, all five criteria across three trials before and after, and the measured cost. The existing instructions remain available for reproducing the tests on another machine.
+Unit 7 built the two signals, score combination, labels, and appeal path. Unit 8 enabled rate limiting and tested 56 staff attacks; the final validation change improved the count held from 42/56 to 47/56, with nine AI-evasion cases still broken. Unit 9 added structured timing logs and rotation, then measured one recent-log lookup optimization without changing the detector.
+
+The capstone criteria were committed before results. The actual BEFORE and AFTER evaluations are already saved in `results/` and summarized in [README.md](README.md). You **do not need to rerun them** for Demo Day. If you are deliberately reproducing the unit instead, use `run_unit9_before.ps1` and `run_unit9_after.ps1` only with awareness that those scripts generate and commit new evidence.
+
+For Demo Day, keep `criteria.md`, the Capstone tables in `README.md`, and this quick-start section open. The recorded recent-log benchmark was **23.55 ms vs. 2.11 ms** on the same synthetic 1,200-entry fixture, about **11.14 times faster**.
